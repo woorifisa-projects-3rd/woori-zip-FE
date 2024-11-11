@@ -40,3 +40,19 @@ a {
     color-scheme: dark;
   }
 }
+
+/*
+select {
+  -webkit-appearance:none; 
+  -moz-appearance:none; 
+  appearance:none 
+
+}
+
+.select {
+  position: relative;
+}
+
+.select::after{
+  
+} */
