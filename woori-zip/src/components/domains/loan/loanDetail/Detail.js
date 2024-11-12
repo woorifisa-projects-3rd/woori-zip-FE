@@ -1,6 +1,6 @@
 import React from 'react'
 import './Detail.css'
-import CardList from './CardList'
+import CardList from '../loanRecommendation/CardList';
 
 
 
