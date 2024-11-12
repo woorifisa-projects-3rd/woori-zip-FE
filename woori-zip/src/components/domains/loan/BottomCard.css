@@ -1,0 +1,25 @@
+.full-bottom-card {
+    display: flex;
+    justify-content: center;  
+    align-items: flex-start;    
+    height: 50vh;   
+    margin-top: 10px; 
+}
+.bottom-card {
+    display: flex;
+    width: 50%;
+    flex-direction: column;    
+    justify-content: flex-start; 
+    align-items: center;       
+    text-align: center;
+    /* background-color: aqua; */
+ 
+}
+
+#bottom-text {
+    margin: 0;
+    font-size: 24px;
+    color: black;
+    margin-bottom: 20px;
+}
+

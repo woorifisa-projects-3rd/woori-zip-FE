@@ -1,0 +1,20 @@
+.wide-card {
+    position: relative;         
+    width: 700px;
+    height: 300px;
+    font-size : 50px;
+    background-color: #ffffff;
+    text-align: center;  
+    margin-top: 40px; 
+}
+
+#top-text {
+    position: absolute;             
+    top: 0;                        
+    left: 50%;   
+    font-size: 30px;  
+    color: #ffffff;                 
+    transform: translateX(-50%);  
+    margin-top: 20px; 
+}
+
