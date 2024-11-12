@@ -40,3 +40,9 @@ a {
     color-scheme: dark;
   }
 }
+
+.dpb{display: block;}
+
+.gmarket{
+  font-family: var(--font-Gmarket), sans-serif;
+}
