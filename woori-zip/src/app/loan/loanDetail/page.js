@@ -1,5 +1,5 @@
 import React from 'react'
-import Details from '../components/Detail';
+import Details from '@/components/domains/loan/loanDetail/Detail';
 
 
 export default function LoanDetail() {
