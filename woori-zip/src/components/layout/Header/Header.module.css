@@ -54,12 +54,12 @@
   }
 
   .header_title {
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
 
   .signup_link {
     margin-right: 1rem;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: normal;
     color: #0065C4;
   }
@@ -69,7 +69,7 @@
     border: none;
     padding: 0;
     color: #0065C4;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: normal;
   }
 
