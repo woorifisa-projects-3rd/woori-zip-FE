@@ -37,7 +37,7 @@ export default function Home() {
                     {isMobile ? (
                         <div
                             className={styles.mobilePropertyList}
-                            style={{ height: isExpanded ? "50vh" : "20vh" }}
+                            style={{ height: isExpanded ? "50vh" : "10vh" }}
                         >
                             <div className={styles.handle} onClick={togglePropertyList}>
                                 <div className={styles.handleText}>집 목록 보기</div>
