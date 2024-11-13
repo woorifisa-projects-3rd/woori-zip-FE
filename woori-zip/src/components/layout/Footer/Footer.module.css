@@ -1,0 +1,85 @@
+.footerWrapper {
+  width: 100%;
+  background-color: #014C92;
+  margin-top: auto;
+}
+
+.footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #FFFFFF;
+}
+
+.footerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.footerLinks {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 14px;
+  color: #FFFFFF;
+}
+
+.footerLink {
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+/* 개인정보처리방침만 흰색으로 하고 볼드체 적용 */
+.footerLinkBold {
+  font-weight: bold;
+}
+
+.footerLink:hover {
+  color: #FFFFFF;
+}
+
+.footerCompany {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #FFFFFF;
+}
+
+.footerCompanySpan {
+  margin-right: 4px;
+}
+
+.footerCopyright {
+  font-size: 14px;
+  color: #FFFFFF;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.divider {
+  color: #FFFFFF;
+  margin: 0 6px;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 16px;
+  }
+
+  .footerContent {
+    gap: 6px;
+  }
+
+  .footerLinks, .footerCompany, .footerCopyright {
+    font-size: 13px;
+  }
+}
