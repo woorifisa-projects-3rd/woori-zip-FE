@@ -3,7 +3,7 @@
     justify-content: center;  
     align-items: flex-start;    
     height: 50vh;   
-    margin-top: 10px; 
+    background-color: #F4FCFF;
 }
 .bottom-card {
     display: flex;
@@ -12,14 +12,13 @@
     justify-content: flex-start; 
     align-items: center;       
     text-align: center;
-    /* background-color: aqua; */
- 
 }
 
 #bottom-text {
     margin: 0;
     font-size: 24px;
     color: black;
-    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 30px;
 }
 

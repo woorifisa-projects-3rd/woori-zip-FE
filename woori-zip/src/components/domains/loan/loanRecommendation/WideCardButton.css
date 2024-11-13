@@ -10,7 +10,7 @@
 .button {
     padding: 10px 20px;           
     font-size: 16px;               
-    background-color: #232A60;   
+    background-color: #0065C4;   
     color: white;               
     border: none;                 
     border-radius: 5px;          
@@ -19,5 +19,5 @@
 }
 
 .button:hover {
-    background-color: #0e76dd;
+    background-color: #015f99;
   }
