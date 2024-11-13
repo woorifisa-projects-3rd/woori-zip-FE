@@ -1,0 +1,94 @@
+/* PropertyList.module.css */
+
+.listSideBar {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height: 150vh;
+    padding: 0;
+    width: 400px; /* 리스트 바의 가로 너비 설정 */
+    box-sizing: border-box;
+}
+
+.propertyItem {
+    display: flex;
+    padding: 15px 10px;
+    border-bottom: 1px solid #ddd;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative; /* 여기 추가 */
+}
+
+.typeTag {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    color: rgb(186, 186, 186);
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 12px;
+    z-index: 1;
+}
+
+.propertyImage {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.propertyDetails {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.location,
+.maintenance {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.description {
+    font-size: 13px;
+    color: #999;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+
+@media (max-width: 393px) {
+    .listSideBar {
+        width: 100%;
+        padding: 5px;
+    }
+    .propertyItem {
+        flex-direction: column;
+    }
+    .propertyImage {
+        width: 100%;
+        height: auto;
+    }
+    .title,
+    .location,
+    .maintenance,
+    .description {
+        font-size: 12px;
+    }
+}
