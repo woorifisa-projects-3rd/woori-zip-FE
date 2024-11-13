@@ -1,6 +1,5 @@
-// pages/Home.js
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../../components/domains/map/Sidebar';
 import PropertyList from '../../components/domains/map/PropertyList';
 import MapView from '../../components/domains/map/MapView';
@@ -10,10 +9,18 @@ import CategoryMenu from '../../components/domains/map/CategoryMenu';
 
 export default function Home() {
     const [isCategoryMenuVisible, setCategoryMenuVisible] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+    const [isPropertyListVisible, setPropertyListVisible] = useState(false);
 
-    const toggleCategoryMenu = () => {
-        setCategoryMenuVisible(!isCategoryMenuVisible);
-    };
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 393);
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const toggleCategoryMenu = () => setCategoryMenuVisible(!isCategoryMenuVisible);
+    const togglePropertyList = () => setPropertyListVisible(!isPropertyListVisible);
 
     return (
         <div className={styles.container}>
@@ -23,7 +30,20 @@ export default function Home() {
                     <NavBar onCategoryClick={toggleCategoryMenu} />
                 </div>
                 <div className={styles.contentArea}>
-                    <PropertyList />
+                    {isMobile ? (
+                        <>
+                            {isPropertyListVisible && (
+                                <div className={`${styles.mobilePropertyList} ${isPropertyListVisible ? styles.visible : ''}`}>
+                                    <PropertyList />
+                                </div>
+                            )}
+                            <div className={styles.bottomSlider} onClick={togglePropertyList}>
+                                <span>리스트 보기</span>
+                            </div>
+                        </>
+                    ) : (
+                        <PropertyList className={styles.webPropertyList} />
+                    )}
                     <MapView />
                 </div>
             </div>
