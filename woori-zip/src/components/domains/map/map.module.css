@@ -1,5 +1,3 @@
-/* styles/map.module.css */
-
 .container {
     display: flex;
     height: 100vh;
@@ -43,11 +41,10 @@
     overflow-y: auto;
     background-color: #f9f9f9;
     border-right: 1px solid #ddd;
-    order: -1; /* 데스크탑에서 왼쪽 정렬 */
+    order: -1; /* 웹에서 항상 왼쪽에 위치하게 설정 */
     flex-shrink: 0;
 }
 
-/* 모바일 환경 (393px 이하) */
 /* 모바일 환경 (393px 이하) */
 @media (max-width: 393px) {
     .container {
@@ -63,20 +60,19 @@
         height: 100%;
     }
 
-    .contentArea {
-        display: flex;
-        height: 100%; /* 플렉스 높이 고정 */
-    }
-
     .mapContainer {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
+        z-index: 0;
     }
 
     /* 모바일 전용 PropertyList 슬라이드 스타일 */
     .mobilePropertyList {
         position: fixed;
-        bottom: -50%;
+        bottom: 0;
         left: 0;
         right: 0;
         height: 50vh;
@@ -86,8 +82,8 @@
         border-radius: 12px 12px 0 0;
         overflow-y: auto;
         z-index: 10;
-        transition: transform 0.3s ease-in-out;
         transform: translateY(100%);
+        transition: transform 0.3s ease-in-out;
     }
 
     /* 슬라이드된 상태 */
@@ -112,4 +108,3 @@
         z-index: 10;
     }
 }
-

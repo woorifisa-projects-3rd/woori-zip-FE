@@ -13,6 +13,7 @@ export default function Home() {
     const [isPropertyListVisible, setPropertyListVisible] = useState(false);
 
     useEffect(() => {
+        // 화면 크기 체크하여 모바일 여부 설정
         const handleResize = () => setIsMobile(window.innerWidth <= 393);
         handleResize();
         window.addEventListener('resize', handleResize);
@@ -32,11 +33,11 @@ export default function Home() {
                 <div className={styles.contentArea}>
                     {isMobile ? (
                         <>
-                            {isPropertyListVisible && (
-                                <div className={`${styles.mobilePropertyList} ${isPropertyListVisible ? styles.visible : ''}`}>
-                                    <PropertyList />
-                                </div>
-                            )}
+                            {/* PropertyList 슬라이딩 패널 */}
+                            <div className={`${styles.mobilePropertyList} ${isPropertyListVisible ? styles.visible : ''}`}>
+                                <PropertyList />
+                            </div>
+                            {/* 슬라이더 트리거 버튼 */}
                             <div className={styles.bottomSlider} onClick={togglePropertyList}>
                                 <span>리스트 보기</span>
                             </div>
