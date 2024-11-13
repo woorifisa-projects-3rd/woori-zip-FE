@@ -10,10 +10,9 @@ import CategoryMenu from '../../components/domains/map/CategoryMenu';
 export default function Home() {
     const [isCategoryMenuVisible, setCategoryMenuVisible] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
-    const [isPropertyListVisible, setPropertyListVisible] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false); // PropertyList 확장 여부
 
     useEffect(() => {
-        // 화면 크기 체크하여 모바일 여부 설정
         const handleResize = () => setIsMobile(window.innerWidth <= 393);
         handleResize();
         window.addEventListener('resize', handleResize);
@@ -21,7 +20,11 @@ export default function Home() {
     }, []);
 
     const toggleCategoryMenu = () => setCategoryMenuVisible(!isCategoryMenuVisible);
-    const togglePropertyList = () => setPropertyListVisible(!isPropertyListVisible);
+
+    // 클릭 시 PropertyList 높이를 토글
+    const togglePropertyList = () => {
+        setIsExpanded(!isExpanded);
+    };
 
     return (
         <div className={styles.container}>
@@ -32,16 +35,15 @@ export default function Home() {
                 </div>
                 <div className={styles.contentArea}>
                     {isMobile ? (
-                        <>
-                            {/* PropertyList 슬라이딩 패널 */}
-                            <div className={`${styles.mobilePropertyList} ${isPropertyListVisible ? styles.visible : ''}`}>
-                                <PropertyList />
+                        <div
+                            className={styles.mobilePropertyList}
+                            style={{ height: isExpanded ? "50vh" : "20vh" }}
+                        >
+                            <div className={styles.handle} onClick={togglePropertyList}>
+                                <div className={styles.handleText}>집 목록 보기</div>
                             </div>
-                            {/* 슬라이더 트리거 버튼 */}
-                            <div className={styles.bottomSlider} onClick={togglePropertyList}>
-                                <span>리스트 보기</span>
-                            </div>
-                        </>
+                            <PropertyList />
+                        </div>
                     ) : (
                         <PropertyList className={styles.webPropertyList} />
                     )}
