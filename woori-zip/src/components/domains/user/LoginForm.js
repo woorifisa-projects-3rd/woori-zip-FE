@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './login.module.css';
+import styles from './Login.module.css';
 
 import { useFormStatus } from "react-dom";
 
