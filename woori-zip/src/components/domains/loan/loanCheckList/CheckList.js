@@ -3,8 +3,11 @@ import React, { useState } from 'react';
 import styles from './CheckList.module.css'; 
 import TrueFalseButton from './TrueFalseButton';
 
+
+
+
 const CheckList = () => {
-    // 상태 변수들
+    // 나중에 하나로 관리
     const [selectedValue1, setSelectedValue1] = useState('1');
     const [selectedValue2, setSelectedValue2] = useState('1');
     const [selectedValue3, setSelectedValue3] = useState('1');
@@ -176,6 +179,6 @@ const CheckList = () => {
             <button id={styles.loanResultButton}>대출 자격 요건 결과확인</button>
       </div>
     );
-};
-
-export default CheckList;
+  };
+  
+  export default Checklist;

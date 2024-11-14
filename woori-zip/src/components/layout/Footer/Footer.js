@@ -1,17 +1,30 @@
-// components/layout/Footer/Footer.js
-import './Footer.css';
+import styles from './Footer.module.css';
+import Link from 'next/link';
 
 export default function Footer() {
-  return (
-    <div className="footer-wrapper">
-      <footer className="footer">
-        <div className="footer-content">
-          <span className="copyright">©</span>
-          <span className="brand">fisa_crime_watch's</span>
-          <span className="divider">·</span>
-          <span className="brand-service">Woori Zip</span>
-        </div>
-      </footer>
-    </div>
-  );
+ return (
+   <div className={styles.footerWrapper}>
+     <footer className={styles.footer}>
+       <div className={styles.footerContent}>
+         <div className={styles.footerTop}>
+           <span>이용약관</span>
+           <span className={styles.divider}>|</span>
+           <span>개인정보처리방침</span>
+           <span className={styles.divider}>|</span>
+           <span>자주묻는질문</span>
+         </div>
+         <div className={styles.footerBottom}>
+           <span>상호 : (주)우리집</span>
+           <span className={styles.divider}>|</span>
+           <span>대표 : 피사범대</span>
+           <span className={styles.divider}>|</span>
+           <span>이메일 문의: woorizip2024@gmail.com</span>
+         </div>
+         <div className={styles.copyright}>
+           Copyright © WOORIZIP. All rights Reserved.
+         </div>
+       </div>
+     </footer>
+   </div>
+ );
 }
