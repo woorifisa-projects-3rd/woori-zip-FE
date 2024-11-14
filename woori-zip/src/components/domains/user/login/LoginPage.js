@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './LoginPage.module.css';
+import styles from './loginPage.module.css';
 import SubmitButton from './SubmitButton';
 import { validateUsername, validatePassword } from './validation';
 
