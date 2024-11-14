@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useFormStatus } from "react-dom";
-import styles from './loginPage.module.css';
+import styles from './LoginPage.module.css';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
