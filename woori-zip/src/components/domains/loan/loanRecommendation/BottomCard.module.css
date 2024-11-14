@@ -1,25 +1,24 @@
-.full-bottom-card {
+.fullBottomCard {
     display: flex;
     justify-content: center;  
     align-items: flex-start;    
     height: 50vh;   
-    margin-top: 10px; 
+    background-color: #F4FCFF;
 }
-.bottom-card {
+
+.bottomCard {
     display: flex;
     width: 50%;
     flex-direction: column;    
     justify-content: flex-start; 
     align-items: center;       
     text-align: center;
-    /* background-color: aqua; */
- 
 }
 
-#bottom-text {
+#bottomText {
     margin: 0;
     font-size: 24px;
     color: black;
-    margin-bottom: 20px;
+    margin-top: 20px;
+    margin-bottom: 30px;
 }
-
