@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from 'react';
-import styles from './register.module.css';
+import styles from './Register.module.css';
+import styles from '@/components/domains/map/'
 
 function RegisterForm() {
   const [name, setName] = useState('');
