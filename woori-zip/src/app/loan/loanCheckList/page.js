@@ -1,11 +1,10 @@
 import React from 'react';
-import Checklist from '@/components/domains/loan/loanCheckList/CheckList';
+import CheckList from '@/components/domains/loan/loanCheckList/CheckList';
 
 export default function LoanCheckList() {
   return (
     <>
-      <Checklist/>
-    
+      <CheckList/>
     </>
   );
 };

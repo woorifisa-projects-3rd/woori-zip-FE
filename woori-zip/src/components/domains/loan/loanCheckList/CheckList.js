@@ -6,7 +6,8 @@ import TrueFalseButton from './TrueFalseButton';
 
 
 
-const Checklist = () => {
+const CheckList = () => {
+    // 나중에 하나로 관리
     const [selectedValue1, setSelectedValue1] = useState('1');
     const [selectedValue2, setSelectedValue2] = useState('1');
     const [selectedValue3, setSelectedValue3] = useState('1');
@@ -28,7 +29,7 @@ const Checklist = () => {
   
     const options = [
         { value: '1', label: '예' },
-        { value: '2', label: '아니오' },
+        { value: '2', label: '아니오' }
     ];
 
     return (
@@ -182,4 +183,4 @@ const Checklist = () => {
     );
   };
   
-  export default Checklist;
+  export default CheckList;
