@@ -60,6 +60,7 @@
         background-color: transparent;
         gap: 8px;
         z-index: 10;
+        border-right: none;
     }
 
     .menuItem {

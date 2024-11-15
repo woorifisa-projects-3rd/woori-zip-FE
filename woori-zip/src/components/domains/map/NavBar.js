@@ -1,32 +1,153 @@
-// components/NavBar.js
 import React, { useRef, useState } from 'react';
 import CategoryMenu from './CategoryMenu';
 import styles from '../map/NavBar.module.css';
 
 export default function NavBar() {
-    const [isCategoryVisible, setCategoryVisible] = useState(false); // 카테고리 메뉴 상태
+    const [isCategoryVisible, setCategoryVisible] = useState(false);
+    const [isMaintenanceVisible, setMaintenanceVisible] = useState(false);
+    const [isRentTypeVisible, setRentTypeVisible] = useState(false);
+    const [isPriceVisible, setPriceVisible] = useState(false);
+
+    const [maintenanceValue, setMaintenanceValue] = useState(0);
+    const [priceValue, setPriceValue] = useState(0);
+    const [rentType, setRentType] = useState("전체");
+
     const categoryButtonRef = useRef(null);
+    const maintenanceButtonRef = useRef(null);
+    const rentTypeButtonRef = useRef(null);
+    const priceButtonRef = useRef(null);
 
     const toggleCategoryVisibility = () => {
         setCategoryVisible((prev) => !prev);
     };
 
+    const toggleMaintenanceVisibility = () => {
+        setMaintenanceVisible((prev) => !prev);
+    };
+
+    const toggleRentTypeVisibility = () => {
+        setRentTypeVisible((prev) => !prev);
+    };
+
+    const togglePriceVisibility = () => {
+        setPriceVisible((prev) => !prev);
+    };
+
     return (
         <div className={styles.navBar}>
-            {/* 웹 버전: 필터 드롭다운 메뉴와 카테고리 버튼 */}
             <div className={styles.webNav}>
-                <select className={styles.filterSelect}>
-                    <option>월세, 전세</option>
-                </select>
-                <select className={styles.filterSelect}>
-                    <option>거래 금액</option>
-                </select>
-                <select className={styles.filterSelect}>
-                    <option>관리비</option>
-                </select>
+                {/* 월세/전세 버튼 */}
+                <button
+                    ref={rentTypeButtonRef}
+                    onClick={toggleRentTypeVisibility}
+                    className={styles.filterButton}
+                >
+                    월세, 전세 ▼
+                </button>
+                {isRentTypeVisible && (
+                    <div
+                        className={styles.popupMenu}
+                        style={{
+                            top: rentTypeButtonRef.current.getBoundingClientRect().bottom + window.scrollY + 5,
+                            left: rentTypeButtonRef.current.getBoundingClientRect().left -150,
+                        }}
+                    >
+                        <h4 className={styles.menuTitle}>거래 유형</h4>
+                        <div className={styles.toggleButtons}>
+                            <button
+                                onClick={() => setRentType("전체")}
+                                className={`${styles.toggleButton} ${rentType === "전체" ? styles.selected : ""}`}
+                            >
+                                전체
+                            </button>
+                            <button
+                                onClick={() => setRentType("월세")}
+                                className={`${styles.toggleButton} ${rentType === "월세" ? styles.selected : ""}`}
+                            >
+                                월세
+                            </button>
+                            <button
+                                onClick={() => setRentType("전세")}
+                                className={`${styles.toggleButton} ${rentType === "전세" ? styles.selected : ""}`}
+                            >
+                                전세
+                            </button>
+                        </div>
+                        <button onClick={() => setRentTypeVisible(false)} className={styles.applyButton}>
+                            적용
+                        </button>
+                    </div>
+                )}
+
+                {/* 거래 금액 버튼 */}
+                <button
+                    ref={priceButtonRef}
+                    onClick={togglePriceVisibility}
+                    className={styles.filterButton}
+                >
+                    거래 금액 ▼
+                </button>
+                {isPriceVisible && (
+                    <div
+                        className={styles.popupMenu}
+                        style={{
+                            top: priceButtonRef.current.getBoundingClientRect().bottom + window.scrollY + 5,
+                            left: priceButtonRef.current.getBoundingClientRect().left - 150,
+                        }}
+                    >
+                        <label className={styles.rangeLabel}>거래 금액 범위</label>
+                        <input
+                            type="range"
+                            min="0"
+                            max="1000000"
+                            step="100000"
+                            value={priceValue}
+                            onChange={(e) => setPriceValue(e.target.value)}
+                            className={styles.rangeSlider}
+                        />
+                        <div className={styles.rangeValues}>0만 - {(priceValue / 10000).toFixed(0)}만</div>
+                        <button onClick={() => setPriceVisible(false)} className={styles.applyButton}>
+                            적용
+                        </button>
+                    </div>
+                )}
+
+                {/* 관리비 버튼 */}
+                <button
+                    ref={maintenanceButtonRef}
+                    onClick={toggleMaintenanceVisibility}
+                    className={styles.filterButton}
+                >
+                    관리비 ▼
+                </button>
+                {isMaintenanceVisible && (
+                    <div
+                        className={styles.popupMenu}
+                        style={{
+                            top: maintenanceButtonRef.current.getBoundingClientRect().bottom + window.scrollY + 5,
+                            left: maintenanceButtonRef.current.getBoundingClientRect().left - 150,
+                        }}
+                    >
+                        <label className={styles.rangeLabel}>관리비 금액 범위</label>
+                        <input
+                            type="range"
+                            min="0"
+                            max="50000"
+                            step="10000"
+                            value={maintenanceValue}
+                            onChange={(e) => setMaintenanceValue(e.target.value)}
+                            className={styles.rangeSlider}
+                        />
+                        <div className={styles.rangeValues}>0만 - {(maintenanceValue / 10000).toFixed(0)}만</div>
+                        <button onClick={() => setMaintenanceVisible(false)} className={styles.applyButton}>
+                            적용
+                        </button>
+                    </div>
+                )}
+
                 <button
                     ref={categoryButtonRef}
-                    onClick={toggleCategoryVisibility} // 카테고리 버튼 클릭 시 상태 변경
+                    onClick={toggleCategoryVisibility}
                     className={styles.categoryButton}
                 >
                     카테고리 ▼
@@ -34,16 +155,10 @@ export default function NavBar() {
                 <button className={styles.applyButton}>적용</button>
             </div>
 
-            {/* 모바일 버전: 필터 설정 버튼 */}
-            <button className={styles.mobileFilterButton} onClick={toggleCategoryVisibility}>
-                필터 설정하기
-            </button>
-
-            {/* 모바일과 웹 모두에서 카테고리 메뉴를 한 번만 렌더링 */}
             {isCategoryVisible && (
                 <CategoryMenu
                     isVisible={isCategoryVisible}
-                    onClose={toggleCategoryVisibility} // 카테고리 메뉴의 닫기 버튼 핸들러
+                    onClose={toggleCategoryVisibility}
                     buttonRef={categoryButtonRef}
                 />
             )}

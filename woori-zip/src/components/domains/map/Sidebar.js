@@ -1,5 +1,5 @@
-// components/Sidebar.js
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import CategoryMenu from './CategoryMenu';
 import styles from '../map/Sidebar.module.css';
 
 export default function Sidebar({ selectedCategory, onSelectCategory }) {
@@ -9,14 +9,21 @@ export default function Sidebar({ selectedCategory, onSelectCategory }) {
       { name: '주택/빌라', image: '/images/map/house.png', key: 'house' },
       { name: '아파트', image: '/images/map/apartment.png', key: 'apartment' },
     ];
-  
+
+    const filterButtonRef = useRef(null);
+    const [isFilterVisible, setFilterVisible] = useState(false);
+
     const handleClick = (key) => {
         if (typeof onSelectCategory === 'function') {
-          onSelectCategory(key);
-        } 
-      };
-    
-      return (
+            onSelectCategory(key);
+        }
+    };
+
+    const toggleFilterMenu = () => {
+        setFilterVisible((prev) => !prev);
+    };
+
+    return (
         <div className={styles.sidebar}>
           {categories.map((category) => (
             <div
@@ -30,6 +37,24 @@ export default function Sidebar({ selectedCategory, onSelectCategory }) {
               <span className={styles.text}>{category.name}</span>
             </div>
           ))}
+
+          {/* 모바일에서만 표시되는 필터 설정 버튼 */}
+          <button
+            ref={filterButtonRef}
+            className={styles.mobileFilterButton}
+            onClick={toggleFilterMenu}
+          >
+            필터 설정하기
+          </button>
+
+          {/* 필터 메뉴 */}
+          {isFilterVisible && (
+            <CategoryMenu
+              isVisible={isFilterVisible}
+              onClose={() => setFilterVisible(false)}
+              buttonRef={filterButtonRef}
+            />
+          )}
         </div>
-      );
-    }
+    );
+}
