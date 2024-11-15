@@ -11,6 +11,7 @@ export default function NavBar() {
     const [maintenanceValue, setMaintenanceValue] = useState(0);
     const [priceValue, setPriceValue] = useState(0);
     const [rentType, setRentType] = useState("전체");
+    const [selectedCategory, setSelectedCategory] = useState(null); // 카테고리 상태 추가
 
     const categoryButtonRef = useRef(null);
     const maintenanceButtonRef = useRef(null);
@@ -33,6 +34,14 @@ export default function NavBar() {
         setPriceVisible((prev) => !prev);
     };
 
+    const handleFinalApply = () => {
+        console.log("사용자 선택 상태:");
+        console.log(`거래 유형: ${rentType}`);
+        console.log(`거래 금액: 0만 - ${(priceValue / 10000).toFixed(0)}만`);
+        console.log(`관리비: 0만 - ${(maintenanceValue / 10000).toFixed(0)}만`);
+        console.log(`카테고리: ${selectedCategory || "선택 안 됨"}`);
+    };
+
     return (
         <div className={styles.navBar}>
             <div className={styles.webNav}>
@@ -49,7 +58,7 @@ export default function NavBar() {
                         className={styles.popupMenu}
                         style={{
                             top: rentTypeButtonRef.current.getBoundingClientRect().bottom + window.scrollY + 5,
-                            left: rentTypeButtonRef.current.getBoundingClientRect().left -150,
+                            left: rentTypeButtonRef.current.getBoundingClientRect().left - 150,
                         }}
                     >
                         <h4 className={styles.menuTitle}>거래 유형</h4>
@@ -145,6 +154,7 @@ export default function NavBar() {
                     </div>
                 )}
 
+                {/* 카테고리 버튼 */}
                 <button
                     ref={categoryButtonRef}
                     onClick={toggleCategoryVisibility}
@@ -152,7 +162,6 @@ export default function NavBar() {
                 >
                     카테고리 ▼
                 </button>
-                <button className={styles.applyButton}>적용</button>
             </div>
 
             {isCategoryVisible && (
@@ -160,8 +169,11 @@ export default function NavBar() {
                     isVisible={isCategoryVisible}
                     onClose={toggleCategoryVisibility}
                     buttonRef={categoryButtonRef}
+                    onSelectCategory={(category) => setSelectedCategory(category)} // 카테고리 선택 핸들링
                 />
             )}
+
+            <button onClick={handleFinalApply} className={styles.applyButton}>적용 최종</button>
         </div>
     );
 }
