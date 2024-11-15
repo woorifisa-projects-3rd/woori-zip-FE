@@ -11,7 +11,11 @@ export default function NavBar() {
     const [maintenanceValue, setMaintenanceValue] = useState(0);
     const [priceValue, setPriceValue] = useState(0);
     const [rentType, setRentType] = useState("전체");
-    const [selectedCategory, setSelectedCategory] = useState(null); // 카테고리 상태 추가
+    const [categoryState, setCategoryState] = useState({
+        category: '선택하지 않음',
+        walkingDistance: 10,
+        facilityCount: 3,
+      });
 
     const categoryButtonRef = useRef(null);
     const maintenanceButtonRef = useRef(null);
@@ -34,12 +38,17 @@ export default function NavBar() {
         setPriceVisible((prev) => !prev);
     };
 
+    const handleCategoryApply = (updatedState) => {
+        setCategoryState(updatedState);
+        setCategoryVisible(false);
+      };
+      
     const handleFinalApply = () => {
         console.log("사용자 선택 상태:");
         console.log(`거래 유형: ${rentType}`);
         console.log(`거래 금액: 0만 - ${(priceValue / 10000).toFixed(0)}만`);
         console.log(`관리비: 0만 - ${(maintenanceValue / 10000).toFixed(0)}만`);
-        console.log(`카테고리: ${selectedCategory || "선택 안 됨"}`);
+        console.log('사용자 선택 상태:', categoryState);
     };
 
     return (
@@ -169,9 +178,10 @@ export default function NavBar() {
                     isVisible={isCategoryVisible}
                     onClose={toggleCategoryVisibility}
                     buttonRef={categoryButtonRef}
-                    onSelectCategory={(category) => setSelectedCategory(category)} // 카테고리 선택 핸들링
+                    categoryState={categoryState}
+                    onApply={handleCategoryApply}
                 />
-            )}
+        )}
 
             <button onClick={handleFinalApply} className={styles.applyButton}>적용 최종</button>
         </div>
