@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import CategoryMenu from './CategoryMenu';
 import styles from '../map/NavBar.module.css';
 
-export default function NavBar() {
+export default function NavBar({ onCategoryClick, mapState }) {
     const [isCategoryVisible, setCategoryVisible] = useState(false);
     const [isMaintenanceVisible, setMaintenanceVisible] = useState(false);
     const [isRentTypeVisible, setRentTypeVisible] = useState(false);
@@ -15,41 +15,38 @@ export default function NavBar() {
         category: '선택하지 않음',
         walkingDistance: 10,
         facilityCount: 3,
-      });
+    });
 
     const categoryButtonRef = useRef(null);
     const maintenanceButtonRef = useRef(null);
     const rentTypeButtonRef = useRef(null);
     const priceButtonRef = useRef(null);
 
+    // 카테고리 메뉴 토글
     const toggleCategoryVisibility = () => {
         setCategoryVisible((prev) => !prev);
     };
 
-    const toggleMaintenanceVisibility = () => {
-        setMaintenanceVisible((prev) => !prev);
-    };
-
-    const toggleRentTypeVisibility = () => {
-        setRentTypeVisible((prev) => !prev);
-    };
-
-    const togglePriceVisibility = () => {
-        setPriceVisible((prev) => !prev);
-    };
-
+    // 카테고리 적용
     const handleCategoryApply = (updatedState) => {
         setCategoryState(updatedState);
         setCategoryVisible(false);
-      };
-      
+    };
+
+    // 최종 적용 버튼 클릭 시 동작
     const handleFinalApply = () => {
         console.log("사용자 선택 상태:");
         console.log(`거래 유형: ${rentType}`);
         console.log(`거래 금액: 0만 - ${(priceValue / 10000).toFixed(0)}만`);
         console.log(`관리비: 0만 - ${(maintenanceValue / 10000).toFixed(0)}만`);
-        console.log('사용자 선택 상태:', categoryState);
+        console.log("사용자 선택 상태:", categoryState);
+        console.log("현재 지도 상태:", mapState); // 부모에서 전달된 최신 지도 상태 출력
     };
+
+    // mapState 변경 시 로그 출력
+    useEffect(() => {
+        console.log("NavBar에서 받은 mapState:", mapState);
+    }, [mapState]);
 
     return (
         <div className={styles.navBar}>
@@ -57,7 +54,7 @@ export default function NavBar() {
                 {/* 월세/전세 버튼 */}
                 <button
                     ref={rentTypeButtonRef}
-                    onClick={toggleRentTypeVisibility}
+                    onClick={() => setRentTypeVisible((prev) => !prev)}
                     className={styles.filterButton}
                 >
                     월세, 전세 ▼
@@ -72,24 +69,15 @@ export default function NavBar() {
                     >
                         <h4 className={styles.menuTitle}>거래 유형</h4>
                         <div className={styles.toggleButtons}>
-                            <button
-                                onClick={() => setRentType("전체")}
-                                className={`${styles.toggleButton} ${rentType === "전체" ? styles.selected : ""}`}
-                            >
-                                전체
-                            </button>
-                            <button
-                                onClick={() => setRentType("월세")}
-                                className={`${styles.toggleButton} ${rentType === "월세" ? styles.selected : ""}`}
-                            >
-                                월세
-                            </button>
-                            <button
-                                onClick={() => setRentType("전세")}
-                                className={`${styles.toggleButton} ${rentType === "전세" ? styles.selected : ""}`}
-                            >
-                                전세
-                            </button>
+                            {["전체", "월세", "전세"].map((type) => (
+                                <button
+                                    key={type}
+                                    onClick={() => setRentType(type)}
+                                    className={`${styles.toggleButton} ${rentType === type ? styles.selected : ""}`}
+                                >
+                                    {type}
+                                </button>
+                            ))}
                         </div>
                         <button onClick={() => setRentTypeVisible(false)} className={styles.applyButton}>
                             적용
@@ -100,7 +88,7 @@ export default function NavBar() {
                 {/* 거래 금액 버튼 */}
                 <button
                     ref={priceButtonRef}
-                    onClick={togglePriceVisibility}
+                    onClick={() => setPriceVisible((prev) => !prev)}
                     className={styles.filterButton}
                 >
                     거래 금액 ▼
@@ -133,7 +121,7 @@ export default function NavBar() {
                 {/* 관리비 버튼 */}
                 <button
                     ref={maintenanceButtonRef}
-                    onClick={toggleMaintenanceVisibility}
+                    onClick={() => setMaintenanceVisible((prev) => !prev)}
                     className={styles.filterButton}
                 >
                     관리비 ▼
@@ -171,19 +159,21 @@ export default function NavBar() {
                 >
                     카테고리 ▼
                 </button>
+                {isCategoryVisible && (
+                    <CategoryMenu
+                        isVisible={isCategoryVisible}
+                        onClose={toggleCategoryVisibility}
+                        buttonRef={categoryButtonRef}
+                        categoryState={categoryState}
+                        onApply={handleCategoryApply}
+                    />
+                )}
             </div>
 
-            {isCategoryVisible && (
-                <CategoryMenu
-                    isVisible={isCategoryVisible}
-                    onClose={toggleCategoryVisibility}
-                    buttonRef={categoryButtonRef}
-                    categoryState={categoryState}
-                    onApply={handleCategoryApply}
-                />
-        )}
-
-            <button onClick={handleFinalApply} className={styles.applyButton}>적용 최종</button>
+            {/* 최종 적용 버튼 */}
+            <button onClick={handleFinalApply} className={styles.applyButton}>
+                적용 최종
+            </button>
         </div>
     );
 }

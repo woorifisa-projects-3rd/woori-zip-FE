@@ -11,6 +11,7 @@ export default function Home() {
     const [isCategoryMenuVisible, setCategoryMenuVisible] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false); // PropertyList 확장 여부
+    const [mapState, setMapState] = useState({}); // 지도 상태를 저장하는 state
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 393);
@@ -21,17 +22,23 @@ export default function Home() {
 
     const toggleCategoryMenu = () => setCategoryMenuVisible(!isCategoryMenuVisible);
 
-    // 클릭 시 PropertyList 높이를 토글
     const togglePropertyList = () => {
         setIsExpanded(!isExpanded);
     };
+
+    useEffect(() => {
+        console.log('Home에서 업데이트된 mapState:', mapState);
+    }, [mapState]);
 
     return (
         <div className={styles.container}>
             <Sidebar />
             <div className={styles.mainContent}>
                 <div className={styles.navBarWrapper}>
-                    <NavBar onCategoryClick={toggleCategoryMenu} />
+                    <NavBar 
+                        onCategoryClick={toggleCategoryMenu} 
+                        mapState={mapState} // NavBar에 mapState 전달
+                    />
                 </div>
                 <div className={styles.contentArea}>
                     {isMobile ? (
@@ -47,7 +54,9 @@ export default function Home() {
                     ) : (
                         <PropertyList className={styles.webPropertyList} />
                     )}
-                    <MapView />
+                    <MapView 
+                        onMapChange={setMapState} // MapView에 setMapState 전달
+                    />
                 </div>
             </div>
             {isCategoryMenuVisible && (
