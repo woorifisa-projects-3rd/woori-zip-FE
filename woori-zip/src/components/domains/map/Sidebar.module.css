@@ -6,9 +6,9 @@
     padding: 15px;
     width: 100px;
     border-right: 1px solid #e1e1e1;
-}
-
-.menuItem {
+  }
+  
+  .menuItem {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,98 +23,76 @@
     color: #333;
     border: 1px solid transparent;
     font-weight: bold;
-}
-
-.menuItem:hover {
+  }
+  
+  .menuItem:hover {
     border-color: black;
     border-width: 1.5px;
-}
-
-.selected {
+  }
+  
+  .selected {
     border: 2px solid black;
-}
-
-.icon {
+  }
+  
+  .icon {
     width: 40px;
     height: 40px;
     margin-bottom: 5px;
     object-fit: cover;
-}
-
-.text {
+  }
+  
+  .text {
     font-size: 14px;
     text-align: center;
     color: #333;
-}
-
-/* 필터 설정 버튼 스타일 */
-.mobileFilterButton {
-    display: none; /* 기본값은 숨김 */
-    margin-top: 10px;
-    padding: 10px;
-    background-color: white;
-    color: black;
-    border: none;
-    border-radius: 5px;
-    font-size: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.mobileFilterButton:hover {
-    background-color: #005bb5;
-}
-
-/* 모바일 반응형 */
-@media (max-width: 393px) {
+  }
+  
+  /* 모바일 반응형 */
+  @media (max-width: 393px) {
     .sidebar {
-        position: absolute;
-        top: 60px;
-        left: 5px;
-        padding: 5px;
-        width: 70px;
-        display: flex;
-        flex-direction: column;
-        background-color: transparent;
-        gap: 8px;
-        z-index: 10;
-        border-right: none;
+      position: absolute;
+      top: 60px;
+      left: 5px;
+      padding: 5px;
+      width: 70px;
+      display: flex;
+      flex-direction: column;
+      background-color: transparent;
+      gap: 8px;
+      z-index: 10;
+      border-right: none;
     }
-
+  
     .menuItem {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 50px;
-        height: 50px;
-        padding: 5px;
-        background-color: white;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: background-color 0.2s, transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 50px;
+      height: 50px;
+      padding: 5px;
+      background-color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.2s;
     }
-
+  
     .menuItem:hover {
-        background-color: #f0f0f0;
-        transform: scale(1.05);
+      background-color: #f0f0f0;
+      transform: scale(1.05);
     }
-
+  
     .selected {
-        border: 2px solid #0070f3;
+      border: 2px solid #0070f3;
     }
-
+  
     .icon {
-        width: 24px;
-        height: 24px;
-        margin-bottom: 4px;
+      width: 24px;
+      height: 24px;
+      margin-bottom: 4px;
     }
-
+  
     .text {
-        font-size: 8px;
+      font-size: 8px;
     }
-
-    /* 모바일에서 필터 버튼 표시 */
-    .mobileFilterButton {
-        display: block;
-    }
-}
+  }
+  
