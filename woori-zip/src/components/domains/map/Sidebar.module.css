@@ -22,7 +22,7 @@
     font-size: 14px;
     color: #333;
     border: 1px solid transparent;
-    font-weight: bold; /* 모든 글씨를 진하게 */
+    font-weight: bold;
 }
 
 .menuItem:hover {
@@ -31,7 +31,7 @@
 }
 
 .selected {
-    border: 2px solid black; /* 선택된 항목에만 검정색 테두리 */
+    border: 2px solid black;
 }
 
 .icon {
@@ -47,14 +47,32 @@
     color: #333;
 }
 
+/* 필터 설정 버튼 스타일 */
+.mobileFilterButton {
+    display: none; /* 기본값은 숨김 */
+    margin-top: 10px;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-size: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.mobileFilterButton:hover {
+    background-color: #005bb5;
+}
+
 /* 모바일 반응형 */
 @media (max-width: 393px) {
     .sidebar {
         position: absolute;
         top: 60px;
-        left: 5px; /* 왼쪽 간격을 줄임 */
-        padding: 5px; /* 모바일에서 padding 줄이기 */
-        width: 70px; /* 모바일에서 전체 sidebar 가로 길이 줄이기 */
+        left: 5px;
+        padding: 5px;
+        width: 70px;
         display: flex;
         flex-direction: column;
         background-color: transparent;
@@ -93,5 +111,10 @@
 
     .text {
         font-size: 8px;
+    }
+
+    /* 모바일에서 필터 버튼 표시 */
+    .mobileFilterButton {
+        display: block;
     }
 }

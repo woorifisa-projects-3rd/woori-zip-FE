@@ -1,0 +1,43 @@
+.mobileHeader {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* 버튼을 오른쪽 정렬 */
+    padding: 10px;
+    /* background-color: rgba(255, 255, 255, 0.9); */
+    position: fixed; /* 화면 상단 고정 */
+    top: 10px; /* 화면 상단에서 약간 아래에 배치 */
+    right: 10px; /* 오른쪽에 고정 */
+    z-index: 1100; /* 지도와 겹치지 않도록 높은 z-index 설정 */
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
+    width: auto; /* 필요한 만큼만 차지 */
+  }
+  
+  .hamburgerButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px; /* 필터 버튼과 간격 추가 */
+  }
+  
+  .hamburgerButton img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .filterButton {
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .filterButton:hover {
+    background-color: #005bb5;
+  }
+  

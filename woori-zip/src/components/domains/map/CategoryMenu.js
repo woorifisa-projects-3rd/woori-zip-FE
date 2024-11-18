@@ -38,13 +38,12 @@ export default function CategoryMenu({ isVisible, onClose, buttonRef, onApply })
   }, [isVisible, buttonRef, isMobile]);
 
   const handleApply = () => {
-    // Directly use the state variables instead of localState
     onApply({
       selectedCategory,
       walkingDistance,
       facilityCount,
     });
-    onClose(); // Close menu after applying
+    onClose();
   };
 
   if (!isVisible) return null;
@@ -112,45 +111,53 @@ export default function CategoryMenu({ isVisible, onClose, buttonRef, onApply })
             <div className={styles.rangeValues}>{(maintenanceValue / 10000).toFixed(0)}만 - 5만</div>
           </div>
           <div className={styles.options}>
-        <label className={styles.categoryLabel}>카테고리</label>
-        {['선택하지 않음', '자동차정비/유지', '문화/취미', '서적/문구', '의류', '음식료품', '식당/카페'].map(
-          (category) => (
-            <button
-              key={category}
-              className={`${styles.optionButton} ${
-                localState.selectedCategory === category ? styles.selected : ''
-              }`}
-              onClick={() =>
-                setLocalState((prev) => ({ ...prev, selectedCategory: category }))
-              }
-            >
-              {category}
-            </button>
-          )
-        )}
-      </div>
+            <label className={styles.categoryLabel}>카테고리</label>
+            {['선택하지 않음', '자동차정비/유지', '문화/취미', '서적/문구', '의류', '음식료품', '식당/카페'].map(
+              (category) => (
+                <button
+                  key={category}
+                  className={`${styles.optionButton} ${
+                    selectedCategory === category ? styles.selected : ''
+                  }`}
+                  onClick={() => setSelectedCategory(category)}
+                >
+                  {category}
+                </button>
+              )
+            )}
+          </div>
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>집에서부터 도보 거리</label>
             <div className={styles.inputFieldWrapper}>
-              <input type="number" defaultValue="10" className={styles.inputField} />
+              <input
+                type="number"
+                value={walkingDistance}
+                onChange={(e) => setWalkingDistance(e.target.value)}
+                className={styles.inputField}
+              />
               <span className={styles.unitLabel}>분</span>
             </div>
           </div>
           <div className={styles.inputGroup}>
             <label className={styles.inputLabel}>카테고리 시설 개수</label>
             <div className={styles.inputFieldWrapper}>
-              <input type="number" defaultValue="3" className={styles.inputField} />
+              <input
+                type="number"
+                value={facilityCount}
+                onChange={(e) => setFacilityCount(e.target.value)}
+                className={styles.inputField}
+              />
               <span className={styles.unitLabel}>개</span>
             </div>
           </div>
           <div className={styles.actionButtons}>
             <button className={styles.cancelButton} onClick={onClose}>닫기</button>
-            <button className={styles.applyButton}>적용</button>
+            <button className={styles.applyButton} onClick={handleApply}>적용</button>
           </div>
         </>
       ) : (
         <>
-           <div className={styles.header}>
+          <div className={styles.header}>
             <h4 className={styles.menuTitle}>카테고리</h4>
             <span className={styles.menuDescription}>카테고리는 1가지만 선택 가능합니다.</span>
           </div>

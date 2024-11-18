@@ -114,5 +114,6 @@
 @media (max-width: 393px) {
   .navBar {
       display: none;
+      z-index: 1100; /* MobileHeader보다 높은 값 설정 */
   }
 }
