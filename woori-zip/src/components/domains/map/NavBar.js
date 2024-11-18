@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import CategoryMenu from './CategoryMenu';
 import styles from '../map/NavBar.module.css';
 
-export default function NavBar({ onCategoryClick, mapState }) {
+export default function NavBar({ onCategoryClick, selectedCategory, mapState }) {
     const [isCategoryVisible, setCategoryVisible] = useState(false);
     const [isMaintenanceVisible, setMaintenanceVisible] = useState(false);
     const [isRentTypeVisible, setRentTypeVisible] = useState(false);
@@ -41,6 +41,7 @@ export default function NavBar({ onCategoryClick, mapState }) {
         console.log(`관리비: 0만 - ${(maintenanceValue / 10000).toFixed(0)}만`);
         console.log("사용자 선택 상태:", categoryState);
         console.log("현재 지도 상태:", mapState); // 부모에서 전달된 최신 지도 상태 출력
+        console.log("사용자 선택 상태:", { category: selectedCategory });
     };
 
     // mapState 변경 시 로그 출력

@@ -14,6 +14,7 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false); // PropertyList 확장 여부
   const [mapState, setMapState] = useState({}); // 지도 상태를 저장하는 state
+  const [selectedCategory, setSelectedCategory] = useState("선택하지 않음"); // 선택된 카테고리 상태
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 393);
@@ -30,20 +31,31 @@ export default function Home() {
     setIsExpanded(!isExpanded);
   };
 
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category); // Sidebar에서 선택한 카테고리를 저장
+  };
+
   useEffect(() => {
     console.log("Home에서 업데이트된 mapState:", mapState);
   }, [mapState]);
 
+  useEffect(() => {
+    console.log("선택된 카테고리:", selectedCategory);
+  }, [selectedCategory]);
+
   return (
     <div className={styles.container}>
       {/* Sidebar는 항상 유지 */}
-      <Sidebar />
+      <Sidebar
+        selectedCategory={selectedCategory}
+        onSelectCategory={handleCategorySelect} // Sidebar에서 선택된 카테고리를 받음
+      />
 
       <div className={styles.mainContent}>
         {/* NavBar */}
         <div className={styles.navBarWrapper}>
           <NavBar
-            onCategoryClick={toggleCategoryMenu}
+            selectedCategory={selectedCategory} // NavBar에 선택된 카테고리 전달
             mapState={mapState} // NavBar에 mapState 전달
           />
         </div>
