@@ -14,7 +14,7 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false); // PropertyList 확장 여부
   const [mapState, setMapState] = useState({}); // 지도 상태를 저장하는 state
-  const [selectedCategory, setSelectedCategory] = useState("선택하지 않음"); // 선택된 카테고리 상태
+  const [houseType, setHouseType] = useState("선택하지 않음"); // 선택된 주택 유형 상태
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 393);
@@ -32,7 +32,7 @@ export default function Home() {
   };
 
   const handleCategorySelect = (category) => {
-    setSelectedCategory(category); // Sidebar에서 선택한 카테고리를 저장
+    setHouseType(category); // Sidebar에서 선택한 주택 유형을 저장
   };
 
   useEffect(() => {
@@ -40,22 +40,22 @@ export default function Home() {
   }, [mapState]);
 
   useEffect(() => {
-    console.log("선택된 카테고리:", selectedCategory);
-  }, [selectedCategory]);
+    console.log("선택된 주택 유형:", houseType);
+  }, [houseType]);
 
   return (
     <div className={styles.container}>
       {/* Sidebar는 항상 유지 */}
       <Sidebar
-        selectedCategory={selectedCategory}
-        onSelectCategory={handleCategorySelect} // Sidebar에서 선택된 카테고리를 받음
+        houseType={houseType}
+        onSelectCategory={handleCategorySelect} // Sidebar에서 선택된 주택 유형을 받음
       />
 
       <div className={styles.mainContent}>
         {/* NavBar */}
         <div className={styles.navBarWrapper}>
           <NavBar
-            selectedCategory={selectedCategory} // NavBar에 선택된 카테고리 전달
+            houseType={houseType} // NavBar에 선택된 주택 유형 전달
             mapState={mapState} // NavBar에 mapState 전달
           />
         </div>

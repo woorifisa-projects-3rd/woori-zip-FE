@@ -60,7 +60,7 @@ export default function CategoryMenu({ isVisible, onClose, buttonRef, onApply })
           <div className={styles.header}>
             <h4 className={styles.menuTitle}>거래 유형</h4>
             <div className={styles.toggleButtons}>
-              {['전체', '월세', '전세'].map((type) => (
+              {['모두', '월세', '전세'].map((type) => (
                 <button
                   key={type}
                   className={`${styles.toggleButton} ${selectedTransactionType === type ? styles.selected : ''}`}
@@ -112,7 +112,7 @@ export default function CategoryMenu({ isVisible, onClose, buttonRef, onApply })
           </div>
           <div className={styles.options}>
             <label className={styles.categoryLabel}>카테고리</label>
-            {['선택하지 않음', '자동차정비/유지', '문화/취미', '서적/문구', '의류', '음식료품', '식당/카페'].map(
+            {['선택하지 않음', '자동차정비/유지', '문화/취미', '서적/문구', '의류', '요식업', '식당/카페'].map(
               (category) => (
                 <button
                   key={category}
