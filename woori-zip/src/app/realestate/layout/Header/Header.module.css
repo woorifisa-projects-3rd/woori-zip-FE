@@ -1,0 +1,79 @@
+.header {
+  display: flex;
+  flex-direction: column; /* 세로 방향으로 정렬 */
+  align-items: flex-end; /* 오른쪽으로 정렬 */
+  padding: 1rem 2rem;
+  background-color: #F4FCFF;
+  font-family: var(--font-Gmarket), sans-serif;
+}
+
+.header_top {
+  display: flex;
+  justify-content: flex-end; /* 오른쪽으로 정렬 */
+  margin-bottom: 0.5rem; /* 로고와의 세로 간격 */
+}
+
+.header_left {
+  margin-right: auto; /* 로고를 왼쪽으로 밀어냄 */
+}
+
+.header_title {
+  color: #0065C4;
+  font-size: 2rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.signup_link {
+  color: #0065C4;
+  margin-right: 1.5rem;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.signup_link:hover {
+  text-decoration: underline;
+}
+
+.login_button {
+  padding: 0.75rem 1.5rem;
+  background-color: #0065C4;
+  color: white;
+  border: 2px solid #0065C4;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login_button:hover {
+  background-color: #0b70cf;
+  color: white;
+}
+
+.webButton {
+  display: block;
+}
+
+.mobileButton {
+  display: none;
+}
+
+@media screen and (max-width: 393px) {
+  .header {
+    padding: 16px;
+  }
+
+  .header_title {
+    font-size: 1.5rem;
+  }
+
+  .webButton {
+    display: none;
+  }
+
+  .mobileButton {
+    display: block;
+  }
+}
