@@ -15,6 +15,8 @@ export default function Home() {
   const [isExpanded, setIsExpanded] = useState(false); // PropertyList 확장 여부
   const [mapState, setMapState] = useState({}); // 지도 상태를 저장하는 state
   const [houseType, setHouseType] = useState("원/투룸"); // 선택된 주택 유형 상태
+  const [houseInfo, setHouseInfo] = useState(null);
+  
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 393);
@@ -33,6 +35,10 @@ export default function Home() {
 
   const handleCategorySelect = (category) => {
     setHouseType(category); // Sidebar에서 선택한 주택 유형을 저장
+  };
+
+  const handleHouseInfoUpdate = (data) => {
+    setHouseInfo(data); // NavBar에서 데이터를 업데이트
   };
 
   useEffect(() => {
@@ -57,6 +63,7 @@ export default function Home() {
           <NavBar
             houseType={houseType} // NavBar에 선택된 주택 유형 전달
             mapState={mapState} // NavBar에 mapState 전달
+            onHouseInfoUpdate={handleHouseInfoUpdate}
           />
         </div>
 
@@ -70,10 +77,10 @@ export default function Home() {
               <div className={styles.handle} onClick={togglePropertyList}>
                 <div className={styles.handleText}>집 목록 보기</div>
               </div>
-              <PropertyList />
+              <PropertyList filterData={houseInfo?.houseContents || []}/>
             </div>
           ) : (
-            <PropertyList className={styles.webPropertyList} />
+            <PropertyList filterData={houseInfo?.houseContents || []} className={styles.webPropertyList} />
           )}
           <MapView onMapChange={setMapState} />
         </div>

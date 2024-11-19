@@ -4,7 +4,7 @@ import CategoryMenu from "./CategoryMenu";
 import RangeSlider from "./RangeSlider"; // RangeSlider 컴포넌트 추가
 import styles from "../map/NavBar.module.css";
 
-export default function NavBar({ onCategoryClick, houseType, mapState }) {
+export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
     const [isCategoryVisible, setCategoryVisible] = useState(false);
     const [isMaintenanceVisible, setMaintenanceVisible] = useState(false);
     const [isRentTypeVisible, setRentTypeVisible] = useState(false);
@@ -14,6 +14,8 @@ export default function NavBar({ onCategoryClick, houseType, mapState }) {
     const [priceRange, setPriceRange] = useState([0, 1000000]); // 월세 범위
     const [maintenanceRange, setMaintenanceRange] = useState([0, 50000]); // 관리비 범위
     const [rentType, setRentType] = useState("모두");
+    const [houseInfo, setHouseInfo] = useState(null);
+
 
     const [categoryState, setCategoryState] = useState({
         category: "선택하지 않음", // 다른 분류를 관리
@@ -73,18 +75,19 @@ export default function NavBar({ onCategoryClick, houseType, mapState }) {
         console.log(`요청 URL: ${apiUrl}`);
 
         fetch(apiUrl, { method: "GET" })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("네트워크 응답에 문제가 있습니다.");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log("API 응답 데이터:", data);
-            })
-            .catch((error) => {
-                console.error("API 호출 오류:", error);
-            });
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("네트워크 응답에 문제가 있습니다.");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            console.log("API 응답 데이터:", data);
+            onHouseInfoUpdate(data);
+        })
+        .catch((error) => {
+            console.error("API 호출 오류:", error);
+        });    
     };
 
 
