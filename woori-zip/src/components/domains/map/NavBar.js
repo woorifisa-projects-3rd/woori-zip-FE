@@ -13,12 +13,12 @@ export default function NavBar({ onCategoryClick, houseType, mapState }) {
     const [depositRange, setDepositRange] = useState([0, 100000]); // 보증금 범위
     const [priceRange, setPriceRange] = useState([0, 1000000]); // 월세 범위
     const [maintenanceRange, setMaintenanceRange] = useState([0, 50000]); // 관리비 범위
-    const [rentType, setRentType] = useState("전체");
+    const [rentType, setRentType] = useState("모두");
 
     const [categoryState, setCategoryState] = useState({
         category: "선택하지 않음", // 다른 분류를 관리
-        walkingDistance: 10,
-        facilityCount: 3,
+        walkingDistance: 0,
+        facilityCount: 0,
     });
 
     const categoryButtonRef = useRef(null);
@@ -39,32 +39,35 @@ export default function NavBar({ onCategoryClick, houseType, mapState }) {
 
     // 최종 적용 버튼 클릭 시 동작
     const handleFinalApply = () => {
-        console.log("카테고리 상태 (categoryState):", categoryState);
-        console.log(`보증금 범위: ${depositRange[0] / 10000}만 - ${depositRange[1] / 10000}만`);
-        console.log(`월세 범위: ${priceRange[0] / 10000}만 - ${priceRange[1] / 10000}만`);
-        console.log(`관리비 범위: ${maintenanceRange[0] / 10000}만 - ${maintenanceRange[1] / 10000}만`);
-        console.log("주택 유형 (houseType):", houseType);
-        console.log("현재 지도 상태:", mapState);
-        console.log("카테고리 세부 사항:", categoryState.selectedCategory);
+        // console.log("카테고리 상태 (categoryState):", categoryState);
+        // console.log(`보증금 범위: ${depositRange[0] / 10000}만 - ${depositRange[1] / 10000}만`);
+        // console.log(`월세 범위: ${priceRange[0] / 10000}만 - ${priceRange[1] / 10000}만`);
+        // console.log(`관리비 범위: ${maintenanceRange[0] / 10000}만 - ${maintenanceRange[1] / 10000}만`);
+        // console.log("주택 유형 (houseType):", houseType);
+        // console.log("현재 지도 상태:", mapState);
+        // console.log("카테고리 세부 사항:", categoryState.category);
 
-        const params = new URLSearchParams({
-            level: mapState.zoomLevel || 6,
-            southWestLatitude: mapState.southWestLatitude || 0,
-            southWestLongitude: mapState.southWestLongitude || 0,
-            northEastLatitude: mapState.northEastLatitude || 0,
-            northEastLongitude: mapState.northEastLongitude || 0,
-            houseType: houseType,
-            housingExpenses: rentType !== "모두" ? rentType : undefined,
-            minDeposit: depositRange[0],
-            maxDeposit: depositRange[1],
-            minMonthlyRentFee: priceRange[0],
-            maxMonthlyRentFee: priceRange[1],
-            minMaintenanceFee: maintenanceRange[0],
-            maxMaintenanceFee: maintenanceRange[1],
-            category: categoryState.selectedCategory,
-            walking: categoryState.walkingDistance,
-            facilityCount: categoryState.facilityCount,
-        });
+        const params = new URLSearchParams();
+
+        // 조건부로 파라미터 추가
+        if (mapState.zoomLevel !== undefined) params.append("level", mapState.zoomLevel);
+        if (mapState.southWestLatitude !== undefined) params.append("southWestLatitude", mapState.southWestLatitude);
+        if (mapState.southWestLongitude !== undefined) params.append("southWestLongitude", mapState.southWestLongitude);
+        if (mapState.northEastLatitude !== undefined) params.append("northEastLatitude", mapState.northEastLatitude);
+        if (mapState.northEastLongitude !== undefined) params.append("northEastLongitude", mapState.northEastLongitude);
+        if (houseType) params.append("houseType", houseType);
+        if (rentType !== "모두") params.append("housingExpenses", rentType);
+        if (depositRange[0] >= 0) params.append("minDeposit", depositRange[0]);
+        if (depositRange[1] >= 0) params.append("maxDeposit", depositRange[1]);
+        if (priceRange[0] >= 0) params.append("minMonthlyRentFee", priceRange[0]);
+        if (priceRange[1] >= 0) params.append("maxMonthlyRentFee", priceRange[1]);
+        if (maintenanceRange[0] >= 0) params.append("minMaintenanceFee", maintenanceRange[0]);
+        if (maintenanceRange[1] >= 0) params.append("maxMaintenanceFee", maintenanceRange[1]);
+        if (categoryState.category && categoryState.category !== "선택하지 않음") {
+            params.append("category", categoryState.category);
+        }
+        if (categoryState.walkingDistance > 0) params.append("walking", categoryState.walkingDistance);
+        if (categoryState.facilityCount > 0) params.append("facilityCount", categoryState.facilityCount);
 
         const apiUrl = `http://localhost:8080/api/v1/houses?${params.toString()}`;
         console.log(`요청 URL: ${apiUrl}`);
@@ -83,6 +86,7 @@ export default function NavBar({ onCategoryClick, houseType, mapState }) {
                 console.error("API 호출 오류:", error);
             });
     };
+
 
     useEffect(() => {
         console.log("NavBar에서 전달받은 houseType (주택 유형):", houseType);
@@ -113,7 +117,7 @@ export default function NavBar({ onCategoryClick, houseType, mapState }) {
                     >
                         <h4 className={styles.menuTitle}>거래 유형</h4>
                         <div className={styles.toggleButtons}>
-                            {["전체", "월세", "전세"].map((type) => (
+                            {["모두", "월세", "전세"].map((type) => (
                                 <button
                                     key={type}
                                     onClick={() => setRentType(type)}
@@ -149,7 +153,7 @@ export default function NavBar({ onCategoryClick, houseType, mapState }) {
                         <RangeSlider
                             values={depositRange}
                             min={0}
-                            max={1000000}
+                            max={1000000000}
                             step={10000}
                             onChange={(values) => setDepositRange(values)}
                             label="보증금 범위"
@@ -159,7 +163,7 @@ export default function NavBar({ onCategoryClick, houseType, mapState }) {
                         <RangeSlider
                             values={priceRange}
                             min={0}
-                            max={2000000}
+                            max={2000000000}
                             step={100000}
                             onChange={(values) => setPriceRange(values)}
                             label="월세 금액 범위"
@@ -190,7 +194,7 @@ export default function NavBar({ onCategoryClick, houseType, mapState }) {
                         <RangeSlider
                             values={maintenanceRange}
                             min={0}
-                            max={50000}
+                            max={5000000}
                             step={10000}
                             onChange={(values) => setMaintenanceRange(values)}
                             label="관리비 금액 범위"

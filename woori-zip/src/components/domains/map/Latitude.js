@@ -4,11 +4,11 @@ import MapView from './MapView';
 
 export default function Latitude() {
   const [mapState, setMapState] = useState({
-    southWestLatitude: 0,
-    southWestLongitude: 0,
-    northEastLatitude: 0,
-    northEastLongitude: 0,
-    zoomLevel: 0,
+    southWestLatitude: 37.51377252451862,
+    southWestLongitude: 126.94733579996854,
+    northEastLatitude: 37.61902018831534,
+    northEastLongitude: 127.00978649788111,
+    zoomLevel: 7,
   });
 
   const handleMapStateChange = (updatedState) => {

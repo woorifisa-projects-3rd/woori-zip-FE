@@ -14,7 +14,7 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false); // PropertyList 확장 여부
   const [mapState, setMapState] = useState({}); // 지도 상태를 저장하는 state
-  const [houseType, setHouseType] = useState("선택하지 않음"); // 선택된 주택 유형 상태
+  const [houseType, setHouseType] = useState("원/투룸"); // 선택된 주택 유형 상태
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 393);
@@ -81,7 +81,13 @@ export default function Home() {
 
       {/* 필터 메뉴 */}
       {isCategoryMenuVisible && (
-        <CategoryMenu isVisible={isCategoryMenuVisible} onClose={toggleCategoryMenu} />
+        <CategoryMenu isVisible={isCategoryMenuVisible} onClose={toggleCategoryMenu} 
+            houseType={houseType} 
+            mapState={mapState}
+            onApply={(filterData) => {
+              console.log("적용된 필터 데이터:", filterData);
+            }}
+        />
       )}
 
       {/* MobileHeader는 모바일 환경에서만 렌더링 */}
