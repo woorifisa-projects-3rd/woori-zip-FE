@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import styles from './page.module.css';
-import Header from './layout/Header/Header';
-import Footer from './layout/Footer/Footer';
-import MembersList from './components/userManagement/MembersList/MembersList';
-import AgentList from './components/userManagement/AgentList/AgentList';
-import ManagerList from './components/userManagement/ManagerList/ManagerList';
-import LogSearch from './components/LogManagement/LogSearch';
-import LoanView from './components/LoanManagement/LoanView';
-
+import Footer from '@/components/layout/Footer/Footer';
+import Header from '@/components/layout/Header/Header';
+import MembersList from '@/components/domains/manager/userManagement/ManagerList/ManagerList';
+import AgentList from '@/components/domains/manager/userManagement/AgentList/AgentList';
+import ManagerList from '@/components/domains/manager/userManagement/ManagerList/ManagerList';
+import LogSearch from '@/components/domains/manager/LogManagement/LogSearch';
+import LoanView from '@/components/domains/manager/LoanManagement/LoanView';
+import NavSection from '@/components/domains/manager/NavSection';
 
 const Manager = () => {
   const [mainTab, setMainTab] = useState('사용자 관리');
@@ -17,7 +17,7 @@ const Manager = () => {
   const [showSubTabs, setShowSubTabs] = useState(true);
 
   const handleMainTabChange = (tab) => {
-    setMainTab(tab);  
+    setMainTab(tab);
     if (tab === '사용자 관리') {
       setShowSubTabs(true);
       setSubTab('회원 조회');
@@ -31,7 +31,7 @@ const Manager = () => {
   };
 
   const renderContent = () => {
-    switch(mainTab) {
+    switch (mainTab) {
       case '사용자 관리':
         if (subTab === '회원 조회') {
           return <MembersList />;
@@ -54,6 +54,13 @@ const Manager = () => {
   return (
     <div className={styles.pageWrapper}>
       <Header 
+        mainTab={mainTab}
+        subTab={subTab}
+        onMainTabChange={handleMainTabChange}
+        onSubTabChange={handleSubTabChange}
+        showSubTabs={showSubTabs}
+      />
+      <NavSection
         mainTab={mainTab}
         subTab={subTab}
         onMainTabChange={handleMainTabChange}

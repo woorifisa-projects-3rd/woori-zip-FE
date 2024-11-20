@@ -1,8 +1,5 @@
 .footerWrapper {
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  position: relative;
+  width: 100%;
   background-color: #014C92;
   padding: 20px 0;
 }
@@ -10,22 +7,21 @@
 .footer {
   max-width: 1300px;
   margin: 0 auto;
-  text-align: center;
-  padding: 0 20px;
+  text-align: center;  /* 추가 */
 }
 
 .footerContent {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  align-items: center;
+  align-items: center;  /* 추가 */
 }
 
-.footerTop,
+.footerTop, 
 .footerBottom {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center;  /* 추가 */
   gap: 8px;
   color: #FFFFFF;
   font-size: 0.875rem;
@@ -39,25 +35,25 @@
   color: #FFFFFF;
   font-size: 0.875rem;
   margin-top: 4px;
-  text-align: center;
+  text-align: center;  /* 추가 */
   font-weight: bold;
 }
 
 .text {
   font-weight: bold;
+
 }
 
 @media screen and (max-width: 393px) {
   .footerWrapper {
     padding: 16px;
-    margin-top: -70px;
   }
 
   .footerContent {
     font-size: 0.75rem;
   }
 
-  .footerTop,
+  .footerTop, 
   .footerBottom {
     font-size: 0.5rem;
   }
