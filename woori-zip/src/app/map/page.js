@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../../components/domains/map/Sidebar";
 import PropertyList from "../../components/domains/map/PropertyList";
 import MapView from "../../components/domains/map/MapView";
+import PropertyDetails from "../../components/domains/map/PropertyDetails";
 import styles from "../../components/domains/map/map.module.css";
 import NavBar from "../../components/domains/map/NavBar";
 import CategoryMenu from "../../components/domains/map/CategoryMenu";
@@ -10,11 +11,13 @@ import MobileHeader from "../../components/domains/map/MobileHeader";
 
 export default function Home() {
   const [isCategoryMenuVisible, setCategoryMenuVisible] = useState(false);
-  const [isSidebarVisible, setSidebarVisible] = useState(false); // Sidebar 표시 여부
+  const [isSidebarVisible, setSidebarVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false); // PropertyList 확장 여부
-  const [mapState, setMapState] = useState({}); // 지도 상태를 저장하는 state
-  const [houseType, setHouseType] = useState("원/투룸"); // 선택된 주택 유형 상태
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [mapState, setMapState] = useState({});
+  const [houseType, setHouseType] = useState("원/투룸");
+  const [houseInfo, setHouseInfo] = useState(null); // Remove initial dummy data
+  const [selectedProperty, setSelectedProperty] = useState(null);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 393);
@@ -32,35 +35,50 @@ export default function Home() {
   };
 
   const handleCategorySelect = (category) => {
-    setHouseType(category); // Sidebar에서 선택한 주택 유형을 저장
+    setHouseType(category);
+  };
+
+  const handleHouseInfoUpdate = (data) => {
+    setHouseInfo(data);
+  };
+
+  const handlePropertyClick = async (propertyId) => {
+    console.log("Clicked Property ID:", propertyId);
+    try {
+      const response = await fetch(`http://localhost:8080/api/v1/houses/${propertyId}`);
+      if (!response.ok) throw new Error("Failed to fetch property details");
+      const data = await response.json();
+      console.log("Fetched Property Details:", data);
+      setSelectedProperty(data);
+    } catch (error) {
+      console.error("Error fetching property details:", error);
+    }
+  };
+
+  const handleClosePropertyDetails = () => {
+    setSelectedProperty(null); // Close the property details modal
   };
 
   useEffect(() => {
-    console.log("Home에서 업데이트된 mapState:", mapState);
-  }, [mapState]);
-
-  useEffect(() => {
-    console.log("선택된 주택 유형:", houseType);
-  }, [houseType]);
+    console.log("Selected Property Details:", selectedProperty);
+  }, [selectedProperty]);
 
   return (
     <div className={styles.container}>
-      {/* Sidebar는 항상 유지 */}
       <Sidebar
         houseType={houseType}
-        onSelectCategory={handleCategorySelect} // Sidebar에서 선택된 주택 유형을 받음
+        onSelectCategory={handleCategorySelect}
       />
 
       <div className={styles.mainContent}>
-        {/* NavBar */}
         <div className={styles.navBarWrapper}>
           <NavBar
-            houseType={houseType} // NavBar에 선택된 주택 유형 전달
-            mapState={mapState} // NavBar에 mapState 전달
+            houseType={houseType}
+            mapState={mapState}
+            onHouseInfoUpdate={handleHouseInfoUpdate}
           />
         </div>
 
-        {/* Map and PropertyList */}
         <div className={styles.contentArea}>
           {isMobile ? (
             <div
@@ -70,31 +88,44 @@ export default function Home() {
               <div className={styles.handle} onClick={togglePropertyList}>
                 <div className={styles.handleText}>집 목록 보기</div>
               </div>
-              <PropertyList />
+              <PropertyList
+                filterData={houseInfo?.houseContents || []}
+                onPropertyClick={handlePropertyClick}
+              />
             </div>
           ) : (
-            <PropertyList className={styles.webPropertyList} />
+            <PropertyList
+              filterData={houseInfo?.houseContents || []}
+              className={styles.webPropertyList}
+              onPropertyClick={handlePropertyClick}
+            />
           )}
           <MapView onMapChange={setMapState} />
+          {selectedProperty && (
+            <PropertyDetails
+              property={selectedProperty}
+              onClose={handleClosePropertyDetails}
+            />
+          )}
         </div>
       </div>
 
-      {/* 필터 메뉴 */}
       {isCategoryMenuVisible && (
-        <CategoryMenu isVisible={isCategoryMenuVisible} onClose={toggleCategoryMenu} 
-            houseType={houseType} 
-            mapState={mapState}
-            onApply={(filterData) => {
-              console.log("적용된 필터 데이터:", filterData);
-            }}
+        <CategoryMenu
+          isVisible={isCategoryMenuVisible}
+          onClose={toggleCategoryMenu}
+          houseType={houseType}
+          mapState={mapState}
+          onApply={(filterData) => {
+            console.log("Applied Filter Data:", filterData);
+          }}
         />
       )}
 
-      {/* MobileHeader는 모바일 환경에서만 렌더링 */}
       {isMobile && (
         <MobileHeader
-          onHamburgerClick={toggleSidebar} // 햄버거 버튼 클릭 시 Sidebar 토글
-          onFilterClick={toggleCategoryMenu} // 필터 버튼 클릭 시 CategoryMenu 토글
+          onHamburgerClick={toggleSidebar}
+          onFilterClick={toggleCategoryMenu}
         />
       )}
     </div>

@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 import styles from './page.module.css';
-import Header from './layout/Header/Header';
-import Footer from './layout/Footer/Footer';
-import Tabs from './components/Tabs/Tabs';
-import AgentInfo from './components/AgentInfo/AgentInfo';
-import UploadedProperties from './components/UploadedProperties/UploadedProperties';
+import Footer from '@/components/layout/Footer/Footer'
+import Header from '@/components/layout/Header/Header'
+import Tabs from '@/components/domains/realsestate/Tabs/Tabs';
+import AgentInfo from '@/components/domains/realsestate/AgentInfo/AgentInfo';
+import UploadedProperties from '@/components/domains/realsestate/UploadedProperties/UploadedProperties';
 
 const RealEstate = () => {
   const [activeTab, setActiveTab] = useState('중개사 정보 확인');

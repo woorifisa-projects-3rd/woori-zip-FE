@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 import styles from './page.module.css';
-import Header from './layout/Header/Header';
-import Footer from './layout/Footer/Footer';
-import Tabs from './components/Tabs/Tabs';
-import Member from './components/MemberInfo/Member';
-import BookMarks from './components/Bookmarks/BookMarks';
-import Loan from './components/loan/loan';
+import Footer from '@/components/layout/Footer/Footer'
+import Header from '@/components/layout/Header/Header'
+import Tabs from '@/components/domains/mypage/Tabs/Tabs';
+import Member from '@/components/domains/mypage/MemberInfo/Member';
+import BookMarks from '@/components/domains/mypage/Bookmarks/BookMarks';
+import Loan from '@/components/domains/mypage/loan/loan';
+
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('회원 정보 확인');
