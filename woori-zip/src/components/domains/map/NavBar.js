@@ -10,9 +10,9 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
     const [isRentTypeVisible, setRentTypeVisible] = useState(false);
     const [isPriceVisible, setPriceVisible] = useState(false);
 
-    const [depositRange, setDepositRange] = useState([0, 100000]); // 보증금 범위
-    const [priceRange, setPriceRange] = useState([0, 1000000]); // 월세 범위
-    const [maintenanceRange, setMaintenanceRange] = useState([0, 50000]); // 관리비 범위
+    const [depositRange, setDepositRange] = useState([0, 1000000000]); // 보증금 범위
+    const [priceRange, setPriceRange] = useState([0, 2000000000]); // 월세 범위
+    const [maintenanceRange, setMaintenanceRange] = useState([0, 5000000]); // 관리비 범위
     const [rentType, setRentType] = useState("모두");
     const [houseInfo, setHouseInfo] = useState(null);
 
@@ -52,7 +52,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
         const params = new URLSearchParams();
 
         // 조건부로 파라미터 추가
-        if (mapState.zoomLevel !== undefined) params.append("level", mapState.zoomLevel);
+        params.append("level", mapState.zoomLevel !== undefined ? mapState.zoomLevel : 7); // 기본값 7 설정
         if (mapState.southWestLatitude !== undefined) params.append("southWestLatitude", mapState.southWestLatitude);
         if (mapState.southWestLongitude !== undefined) params.append("southWestLongitude", mapState.southWestLongitude);
         if (mapState.northEastLatitude !== undefined) params.append("northEastLatitude", mapState.northEastLatitude);
