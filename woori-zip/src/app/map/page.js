@@ -30,6 +30,8 @@ export default function Home() {
   const [isSidebarVisible, setSidebarVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [mapViewData, setMapViewData] = useState(null); // MapView로 전달할 데이터 상태 추가
+
 
   // 지도 상태 초기값 세팅
   const [mapState, setMapState] = useState({
@@ -101,16 +103,27 @@ export default function Home() {
   const handleCategorySelect = (category) => setHouseType(category);
 
   const handleHouseInfoUpdate = (data) => {
-    setHouseInfo(data);
-    setHouseData(data.houseContents || []);
-    setMapLocations(
-      (data.houseContents || []).map((house) => ({
-        lat: house.latitude,
-        lng: house.longitude,
-        houseId: house.houseId,
-      }))
-    );
+    console.log("NavBar에서 전달받은 데이터:", data);
+  
+    // 데이터가 유효한 경우에만 업데이트 수행
+    if (data && data.houseContents) {
+      setHouseInfo(data);
+      setHouseData(data.houseContents);
+      setMapLocations(
+        data.houseContents.map((house) => ({
+          lat: house.latitude,
+          lng: house.longitude,
+          houseId: house.houseId,
+        }))
+      );
+  
+      // MapView 컴포넌트로 전달할 데이터 추가
+      setMapViewData({
+        data
+      });
+    }
   };
+  
 
   const handlePropertyClick = async (propertyId) => {
     console.log("Clicked Property ID:", propertyId);
@@ -157,10 +170,13 @@ export default function Home() {
             />
           )}
           <MapView
+            property={selectedProperty}
             locations={mapLocations}
             selectedLocation={selectedLocation}
             onMapChange={setMapState}
+            mapViewData={mapViewData} // 추가된 데이터 전달
           />
+
           {selectedProperty && (
             <PropertyDetails
               property={selectedProperty}

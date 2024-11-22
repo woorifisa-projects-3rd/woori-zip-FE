@@ -1,11 +1,19 @@
 import { useEffect, useRef } from 'react';
 import styles from '../map/mapView.module.css';
 
-const MapView = ({ filters, locations = [], selectedLocation, onMapChange = () => {} }) => {
+const MapView = ({ filters, locations = [], facilities = [],mapViewData, onMapChange = () => {} }) => {
   const mapRef = useRef(null);
   const isMapLoaded = useRef(false);
   const geocoder = useRef(null);
   const overlays = useRef([]);
+  const markers = useRef([]);
+  const facilityMarkers = useRef([]);
+  useEffect(() => {
+    if (mapViewData) {
+      console.log("MapView에서 받은 데이터:", mapViewData);
+      // 필요한 데이터 처리 로직 추가
+    }
+  }, [mapViewData]);
 
   useEffect(() => {
     if (!isMapLoaded.current) {
@@ -43,13 +51,13 @@ const MapView = ({ filters, locations = [], selectedLocation, onMapChange = () =
 
   const handleMapIdle = async () => {
     if (!mapRef.current) return;
-
+  
     const bounds = mapRef.current.getBounds();
     const zoomLevel = mapRef.current.getLevel();
-
+  
     const southWest = bounds.getSouthWest();
     const northEast = bounds.getNorthEast();
-
+  
     const mapState = {
       southWestLatitude: southWest.getLat(),
       southWestLongitude: southWest.getLng(),
@@ -57,6 +65,20 @@ const MapView = ({ filters, locations = [], selectedLocation, onMapChange = () =
       northEastLongitude: northEast.getLng(),
       zoomLevel,
     };
+  
+    if (onMapChange) {
+      const mapData = await onMapChange(mapState);
+  
+      // 지도 상태에 맞는 데이터가 있는지 확인
+      if (mapData && mapData.houses) {
+        facilityMarkers.current = mapData.houses.map((house) => ({
+          lat: house.lat,
+          lng: house.lng,
+          title: house.title,
+        }));
+        console.log("Updated Facility Markers:", facilityMarkers.current);
+      }
+    }
 
     if (onMapChange) {
       onMapChange(mapState);
@@ -64,7 +86,7 @@ const MapView = ({ filters, locations = [], selectedLocation, onMapChange = () =
 
     // 줌 레벨에 따라 다른 데이터 업데이트
     if (zoomLevel >= 1 && zoomLevel <= 5) {
-      updateMarkers(locations, 'pin'); // 핀만 표시
+      displayMarkers(locations); // 마커 표시
     } else if (zoomLevel >= 6 && zoomLevel <= 8) {
       updateMarkers(locations, 'dong'); // 동 표시
     } else if (zoomLevel >= 9 && zoomLevel <= 14) {
@@ -72,12 +94,135 @@ const MapView = ({ filters, locations = [], selectedLocation, onMapChange = () =
     }
   };
 
+  const displayMarkers = (places) => {
+    if (!mapRef.current) return;
+  
+    // 기존 마커와 오버레이 제거
+    markers.current.forEach((marker) => marker.setMap(null));
+    markers.current = [];
+    overlays.current.forEach((overlay) => overlay.setMap(null));
+    overlays.current = [];
+  
+    // 기존 시설 마커 제거
+    facilityMarkers.current.forEach((marker) => marker.setMap(null));
+    facilityMarkers.current = [];
+  
+    places.forEach((place) => {
+      const position = new window.kakao.maps.LatLng(place.lat, place.lng); // lat, lng 사용
+  
+      // **주택 커스텀 오버레이 콘텐츠 정의**
+      const overlayContent = document.createElement('div');
+      overlayContent.style.cssText = `
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        background: #efffe6;
+        border-radius: 20px;
+        border: 1px solid #d5d5d5;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        font-size: 14px;
+        color: #333;
+        font-weight: 500;
+        cursor: pointer;
+      `;
+      overlayContent.dataset.houseId = place.houseId;
+      overlayContent.innerHTML = `
+        <span style="margin-right: 6px;">House ${place.houseId}</span>
+        <img src="/icons/icon-marker.svg" alt="icon" style="width: 16px; height: 16px;" />
+      `;
+  
+      // 클릭 이벤트 추가
+      overlayContent.addEventListener('click', () => {
+        console.log(`Clicked House ID: ${place.houseId}`);
+      
+        // mapViewData에서 facilities 가져오기
+        const facilities = mapViewData?.data?.houses.find(
+          (house) => house.houseId === place.houseId
+        )?.facilities;
+      
+        console.log("Facilities for Clicked House:", facilities);
+      
+        // 기존 시설 마커 제거
+        facilityMarkers.current.forEach((marker) => marker.setMap(null));
+        facilityMarkers.current = [];
+      
+        // 관련 시설 마커 지도에 추가
+        if (facilities && facilities.length > 0) {
+          facilities.forEach((facility) => {
+            const facilityPosition = new window.kakao.maps.LatLng(
+              facility.latitude,
+              facility.longitude
+            );
+      
+            const facilityMarker = new kakao.maps.Marker({
+              position: facilityPosition,
+              title: `Facility ${facility.facilityId}`, // 마커 툴팁 텍스트
+              image: new kakao.maps.MarkerImage(
+                '/icons/facility-icon.svg', // 시설 마커 아이콘 경로
+                new kakao.maps.Size(30, 30), // 마커 크기
+                { offset: new kakao.maps.Point(12, 12) } // 마커 중심점
+              ),
+            });
+      
+            console.log(
+              `Adding facility marker: ${facility.facilityId}, Position: ${facility.latitude}, ${facility.longitude}`
+            );
+      
+            // 시설 마커를 지도에 추가
+            facilityMarker.setMap(mapRef.current);
+            facilityMarkers.current.push(facilityMarker);
+          });
+      
+          console.log("Facilities markers added to the map.");
+        } else {
+          console.log(`No facilities found for House ID: ${place.houseId}`);
+        }
+      });
+      
+      
+      
+  
+      const overlay = new kakao.maps.CustomOverlay({
+        position,
+        content: overlayContent,
+        yAnchor: 1.5, // 말풍선 포인터 위치 조정
+      });
+  
+      // 지도에 오버레이 추가
+      overlay.setMap(mapRef.current);
+      markers.current.push(overlay);
+  
+      // 초기 시설 마커 표시
+      if (place.facilities && place.facilities.length > 0) {
+        place.facilities.forEach((facility) => {
+          const facilityPosition = new kakao.maps.LatLng(facility.latitude, facility.longitude);
+  
+          const facilityMarker = new kakao.maps.Marker({
+            position: facilityPosition,
+            title: `Facility ${facility.facilityId}`,
+            image: new kakao.maps.MarkerImage(
+              '/icons/facility-icon.png',
+              new kakao.maps.Size(24, 24),
+              { offset: new kakao.maps.Point(12, 12) }
+            ),
+          });
+  
+          facilityMarker.setMap(mapRef.current);
+          facilityMarkers.current.push(facilityMarker);
+        });
+      }
+    });
+  };
+  
+  
   const updateMarkers = async (locations, displayMode) => {
     if (!mapRef.current || !geocoder.current) return;
 
     // 기존 오버레이 제거
     overlays.current.forEach((overlay) => overlay.setMap(null));
     overlays.current = [];
+    markers.current.forEach((marker) => marker.setMap(null));
+    markers.current = [];
 
     const markerData = await Promise.all(
       locations.map(async (location) => {

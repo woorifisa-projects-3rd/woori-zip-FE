@@ -93,11 +93,24 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
         params.append("maxMonthlyRentFee", priceRange[1]);
         params.append("minMaintenanceFee", maintenanceRange[0]);
         params.append("maxMaintenanceFee", maintenanceRange[1]);
-        if (categoryState.category !== "선택하지 않음") {
+        if (
+            categoryState.category && 
+            categoryState.category !== "선택하지 않음" && 
+            categoryState.category !== undefined && 
+            categoryState.category !== "undefined"
+        ) {
             params.append("category", categoryState.category);
+        
+            // category가 유효한 경우에만 walkingDistance와 facilityCount 추가
+            if (categoryState.walkingDistance > 0) {
+                params.append("walking", categoryState.walkingDistance);
+            }
+            if (categoryState.facilityCount > 0) {
+                params.append("facilityCount", categoryState.facilityCount);
+            }
         }
-        if (categoryState.walkingDistance > 0) params.append("walking", categoryState.walkingDistance);
-        if (categoryState.facilityCount > 0) params.append("facilityCount", categoryState.facilityCount);
+        
+        
 
         const apiUrl = `http://localhost:8080/api/v1/houses?${params.toString()}`;
         console.log(`최종 요청 URL: ${apiUrl}`);
