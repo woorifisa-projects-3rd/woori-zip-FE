@@ -3,14 +3,14 @@ import styles from '../map/mapView.module.css';
 
 const MapView = ({ filters, locations = [], selectedLocation, onMapChange = () => {} }) => {
   const mapRef = useRef(null);
-  const clustererRef = useRef(null);
   const isMapLoaded = useRef(false);
   const geocoder = useRef(null);
+  const overlays = useRef([]);
 
   useEffect(() => {
     if (!isMapLoaded.current) {
       const script = document.createElement('script');
-      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services,clusterer`;
+      script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`;
       script.async = true;
       document.head.appendChild(script);
 
@@ -26,29 +26,7 @@ const MapView = ({ filters, locations = [], selectedLocation, onMapChange = () =
 
             geocoder.current = new window.kakao.maps.services.Geocoder();
 
-            clustererRef.current = new window.kakao.maps.MarkerClusterer({
-              map: mapRef.current,
-              averageCenter: true,
-              minLevel: 6,
-              disableClickZoom: true,
-              styles: [
-                {
-                  width: '50px',
-                  height: '50px',
-                  background: 'rgba(255, 255, 255, 0.9)',
-                  border: '2px solid #004c80',
-                  borderRadius: '50%',
-                  color: '#004c80',
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  fontSize: '14px',
-                  lineHeight: '50px',
-                },
-              ],
-            });
-
             kakao.maps.event.addListener(mapRef.current, 'idle', handleMapIdle);
-            kakao.maps.event.addListener(clustererRef.current, 'clusterover', handleClusterHover);
 
             isMapLoaded.current = true;
           });
@@ -63,7 +41,7 @@ const MapView = ({ filters, locations = [], selectedLocation, onMapChange = () =
     }
   }, []);
 
-  const handleMapIdle = () => {
+  const handleMapIdle = async () => {
     if (!mapRef.current) return;
 
     const bounds = mapRef.current.getBounds();
@@ -83,64 +61,90 @@ const MapView = ({ filters, locations = [], selectedLocation, onMapChange = () =
     if (onMapChange) {
       onMapChange(mapState);
     }
+
+    // 줌 레벨에 따라 다른 데이터 업데이트
+    if (zoomLevel >= 1 && zoomLevel <= 5) {
+      updateMarkers(locations, 'pin'); // 핀만 표시
+    } else if (zoomLevel >= 6 && zoomLevel <= 8) {
+      updateMarkers(locations, 'dong'); // 동 표시
+    } else if (zoomLevel >= 9 && zoomLevel <= 14) {
+      updateMarkers(locations, 'gu'); // 구 표시
+    }
   };
 
-  const handleClusterHover = (cluster) => {
-    const markers = cluster.getMarkers();
-    const dongNames = markers.map((marker) => marker.customData?.dong || '알 수 없음');
-    console.log('Hovered Cluster:', dongNames.join(', '));
-  };
+  const updateMarkers = async (locations, displayMode) => {
+    if (!mapRef.current || !geocoder.current) return;
 
-  const updateMarkers = async (locations) => {
-    if (!mapRef.current || !clustererRef.current || !geocoder.current) return;
+    // 기존 오버레이 제거
+    overlays.current.forEach((overlay) => overlay.setMap(null));
+    overlays.current = [];
 
-    clustererRef.current.clear();
-
-    const markers = await Promise.all(
+    const markerData = await Promise.all(
       locations.map(async (location) => {
         const position = new window.kakao.maps.LatLng(location.lat, location.lng);
-        const dongName = await getDongNameFromCoords(position);
-        const marker = new window.kakao.maps.Marker({
+
+        let regionName;
+        if (displayMode === 'dong') {
+          regionName = await getRegionNameFromCoords(position, 'H'); // 동 이름
+        } else if (displayMode === 'gu') {
+          regionName = await getRegionNameFromCoords(position, 'B'); // 구 이름
+        } else {
+          regionName = location.name || '알 수 없음'; // 핀 이름
+        }
+
+        return {
           position,
-          title: dongName || '알 수 없음',
-        });
-        marker.customData = { dong: dongName }; // Marker에 "동" 정보 저장
-        console.log('Marker Data:', marker.customData);
-        return marker;
+          regionName,
+        };
       })
     );
 
-    clustererRef.current.addMarkers(markers);
+    const groupedData = markerData.reduce((acc, item) => {
+      if (!acc[item.regionName]) {
+        acc[item.regionName] = { count: 0, position: item.position };
+      }
+      acc[item.regionName].count += 1;
+      return acc;
+    }, {});
 
-    // 클러스터 내부 텍스트 동적으로 추가
-    clustererRef.current._clusters.forEach((cluster) => {
-      const markers = cluster.getMarkers();
-      const dongNames = markers.map((marker) => marker.customData?.dong || '알 수 없음');
-      const uniqueDongs = [...new Set(dongNames)];
-      const clusterText = `${uniqueDongs.join(', ')} (${markers.length})`;
+    Object.keys(groupedData).forEach((regionName) => {
+      const { count, position } = groupedData[regionName];
 
-      // CustomOverlay를 클러스터 중심에 추가
+      const overlayContent = `
+        <div style="
+          display: flex;
+          align-items: center;
+          padding: 5px 10px;
+          background: rgba(0, 123, 255, 0.8);
+          color: white;
+          border-radius: 20px;
+          border: 1px solid #004c80;
+          font-size: 14px;
+          font-weight: bold;
+        ">
+          ${regionName} (${count})
+        </div>
+      `;
+
       const overlay = new kakao.maps.CustomOverlay({
-        position: cluster.getCenter(),
-        content: `<div style="width: 50px; height: 50px; background: rgba(255, 255, 255, 0.9); 
-                    border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-                    font-weight: bold; color: #004c80; border: 2px solid #004c80;">
-                    ${clusterText}
-                  </div>`,
-                yAnchor: 0.5,
+        position,
+        content: overlayContent,
+        yAnchor: 0.5,
       });
+
       overlay.setMap(mapRef.current);
+      overlays.current.push(overlay);
     });
   };
 
-  const getDongNameFromCoords = (coords) => {
+  const getRegionNameFromCoords = (coords, regionType) => {
     return new Promise((resolve) => {
       geocoder.current.coord2RegionCode(coords.getLng(), coords.getLat(), (result, status) => {
         if (status === kakao.maps.services.Status.OK) {
-          const dongRegion = result.find((r) => r.region_type === 'H');
-          resolve(dongRegion ? dongRegion.region_3depth_name : null);
+          const region = result.find((r) => r.region_type === regionType);
+          resolve(region ? (regionType === 'B' ? region.region_2depth_name : region.region_3depth_name) : '알 수 없음');
         } else {
-          resolve(null);
+          resolve('알 수 없음');
         }
       });
     });
@@ -148,7 +152,7 @@ const MapView = ({ filters, locations = [], selectedLocation, onMapChange = () =
 
   useEffect(() => {
     if (locations.length > 0) {
-      updateMarkers(locations);
+      handleMapIdle();
     }
   }, [locations, filters]);
 
