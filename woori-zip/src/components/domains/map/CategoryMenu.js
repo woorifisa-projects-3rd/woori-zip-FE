@@ -69,11 +69,11 @@ export default function CategoryMenu({
             params.append("minMaintenanceFee", maintenanceRange[0]);
             params.append("maxMaintenanceFee", maintenanceRange[1]);
         }
-        if (selectedCategory && selectedCategory !== "선택하지 않음") {
-            params.append("category", selectedCategory);
+        if (categoryState.category !== "선택하지 않음") {
+          params.append("category", categoryState.category);
         }
-        if (walkingDistance) params.append("walking", walkingDistance);
-        if (facilityCount) params.append("facilityCount", facilityCount);
+        if (categoryState.walkingDistance > 0) params.append("walking", categoryState.walkingDistance);
+        if (categoryState.facilityCount > 0) params.append("facilityCount", categoryState.facilityCount);
 
         const apiUrl = `http://localhost:8080/api/v1/houses?${params.toString()}`;
         console.log(`요청 URL: ${apiUrl}`);
@@ -93,7 +93,7 @@ export default function CategoryMenu({
             });
     }
     onApply({
-      selectedCategory,
+      category: selectedCategory,
       walkingDistance,
       facilityCount,
       depositRange,
