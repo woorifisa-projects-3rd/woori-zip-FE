@@ -50,11 +50,7 @@
     object-fit: cover;
     border-radius:50%;
   }
-  
-  .loanText {
-    /* flex: 1; */
-  }
-  
+
   .loanTitle {
     font-size: 18px;
     font-weight: bold;
