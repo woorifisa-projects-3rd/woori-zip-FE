@@ -27,6 +27,25 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
     const rentTypeButtonRef = useRef(null);
     const priceButtonRef = useRef(null);
 
+    const navRef = useRef(null); // NavBar 전체를 감싸는 ref
+
+    // 외부 클릭 이벤트 처리
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (navRef.current && !navRef.current.contains(event.target)) {
+                setCategoryVisible(false);
+                setMaintenanceVisible(false);
+                setRentTypeVisible(false);
+                setPriceVisible(false);
+            }
+        };
+
+        window.addEventListener("click", handleClickOutside);
+        return () => {
+            window.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
+
     // 지도 상태가 변경될 때 데이터 요청
     useEffect(() => {
         if (!mapState || JSON.stringify(mapState) === JSON.stringify(prevMapState)) {
@@ -141,7 +160,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
     };
 
     return (
-        <div className={styles.navBar}>
+        <div ref={navRef} className={styles.navBar}>
             <div className={styles.webNav}>
                 {/* 월세/전세 버튼 */}
                 <button
