@@ -1,9 +1,9 @@
-import RegisterForm from "@/components/domains/user/register/RegisterPage"
+import RegisterIntro from "@/components/domains/user/register/RegisterIntro"
 
 function RegisterPage() {
   return (
     <div>
-      <RegisterForm />
+      <RegisterIntro />
     </div>
   )
 }
