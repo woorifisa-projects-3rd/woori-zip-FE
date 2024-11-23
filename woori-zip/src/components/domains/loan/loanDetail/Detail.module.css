@@ -17,7 +17,66 @@
     margin-top : 30px;
     margin-bottom: 20px;
 }
+.titleAndImageBox {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    width: 100%; 
+}
+.leftBox {
+    background-color: aqua;
+    width: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+}
 
+.rightBox {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    width: 40%; 
+}
+.loanTitle {
+    font-size: 40px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+.loanImage {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #0065C4;
+    margin-right: 20px; 
+    object-fit: cover;
+    margin-left: auto;
+    margin-top: 10px;
+}
+
+.loanType {
+    width: 55px;
+    height: auto;
+    text-align: center;
+    color: #ffffff;
+    background-color: #0065C4;
+    border-radius: 10px;
+    box-shadow: 0 1.5px 1.5px #145088; 
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.line {
+    width: 80vh;
+    height: 1px;
+    margin-top: 2% ;
+    margin-left: 5%;
+    margin-right: 5%;
+    background-color: rgba(200, 200, 200, 0.5); 
+}
+.loanDescription {
+    margin:20px;
+}
 .bottomBox {
     width: 90vh;
     height: 80vh;
@@ -35,7 +94,9 @@
  .bottomBox::-webkit-scrollbar {
      display: none;
  }
- 
+ .loanContent {
+    margin: 20px;
+ }
 .goToChecklistButton{
     padding: 10px 20px;           
     font-size: 16px;               

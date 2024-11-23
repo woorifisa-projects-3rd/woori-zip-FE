@@ -1,20 +1,34 @@
 "use client";
-import React, { useState } from "react";
+import React, {useState } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link"; 
 import styles from "./CardList.module.css";  
 
-const dummyData = [
-  { id: 1, image: "https://fisa-woorizip.s3.ap-northeast-2.amazonaws.com/images/loanPage/images__20__360.jpg" },
-  { id: 2, image: "/api/placeholder/300/200?text=Item+2" },
-  { id: 3, image: "/api/placeholder/300/200?text=Item+3" },
-  { id: 4, image: "/api/placeholder/300/200?text=Item+4" },
-  { id: 5, image: "/api/placeholder/300/200?text=Item+5" },
-  { id: 6, image: "/api/placeholder/300/200?text=Item+6" },
-];
+// const dummyData = [
+//   { id: 1, image: "https://fisa-woorizip.s3.ap-northeast-2.amazonaws.com/images/loanPage/images__20__360.jpg" },
+//   { id: 2, image: "/api/placeholder/300/200?text=Item+2" },
+//   { id: 3, image: "/api/placeholder/300/200?text=Item+3" },
+//   { id: 4, image: "/api/placeholder/300/200?text=Item+4" },
+//   { id: 5, image: "/api/placeholder/300/200?text=Item+5" },
+//   { id: 6, image: "/api/placeholder/300/200?text=Item+6" },
+// ];
 
-const CardList = () => {
+const CardList = ({ items, isLoading, error }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
+
+  if (!items || !Array.isArray(items)) {
+    return <p>아이템이 비어있습니다</p>;
+  }
+  
+  if (isLoading) {
+    return <p>로딩 중...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   // 터치 이벤트 핸들러들
   const onTouchStart = (e) => {
@@ -44,7 +58,7 @@ const CardList = () => {
   // 다음/이전 슬라이드 핸들러
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
-      Math.min(dummyData.length - 2, prevIndex + 2)
+      Math.min(items.length - 2, prevIndex + 2)
     );
   };
 
@@ -53,10 +67,10 @@ const CardList = () => {
   };
 
   // 총 슬라이드 수 계산
-  const totalSlides = Math.ceil(dummyData.length / 2);
+  const totalSlides = Math.ceil(items.length / 2);
 
   // 현재 보여줄 카드들만 선택
-  const visibleCards = dummyData.slice(currentIndex, currentIndex + 2);
+  const visibleCards = items.slice(currentIndex, currentIndex + 2);
 
   return (
     <div className={styles.cardContainer}>
@@ -68,16 +82,18 @@ const CardList = () => {
       >
         {visibleCards.map((item) => (
           <div key={item.id} className={styles.cardItem}>
-            <div className={styles.imageContainer}>
-              <img
-                className={styles.cardImage}
-                src={item.image}
-                alt={`Item ${item.id}`}
-              />
-            </div>
-            <div className={styles.cardContent}>
-              <button className={styles.detailButton}>상세보기</button>
-            </div>
+            <Link href = {`/loan/loanDetail/${item.id}`}>
+              <div className={styles.imageContainer}>
+                <img
+                  className={styles.cardImage}
+                  src={item.image}
+                  alt={`Item ${item.id}`}
+                />
+              </div>
+              <div className={styles.cardContent}>
+                <button className={styles.detailButton}>상세보기</button>
+              </div>
+            </Link>
           </div>
         ))}
       </div>
@@ -92,7 +108,7 @@ const CardList = () => {
         </button>
       )}
 
-      {currentIndex < dummyData.length - 2 && (
+      {currentIndex < items.length - 2 && (
         <button
           onClick={handleNext}
           className={`${styles.navButton} ${styles.next}`}

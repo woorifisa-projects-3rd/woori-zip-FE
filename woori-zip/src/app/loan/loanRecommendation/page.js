@@ -4,9 +4,10 @@ import BottomCard from '@/components/domains/loan/loanRecommendation/BottomCard'
 
 
 export default function LoanRecommendation() {
+
   return (
     <>
-      <BackCard/>
+      <BackCard />
       <BottomCard/>
     </>
   );
