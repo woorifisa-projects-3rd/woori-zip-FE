@@ -26,6 +26,7 @@ const defaultFilters = {
 };
 
 export default function Home() {
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [isCategoryMenuVisible, setCategoryMenuVisible] = useState(false);
   const [isSidebarVisible, setSidebarVisible] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -130,6 +131,8 @@ export default function Home() {
         <CategoryMenu
           isVisible={isCategoryMenuVisible}
           onClose={toggleCategoryMenu}
+          selectedCategory={selectedCategory}
+          onCategorySelect={setSelectedCategory} 
           houseType={houseType}
           mapState={mapState}
           onApply={(filterData) => {

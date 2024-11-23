@@ -175,7 +175,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
                         className={styles.popupMenu}
                         style={{
                             top: rentTypeButtonRef.current.getBoundingClientRect().bottom + window.scrollY + 5,
-                            left: rentTypeButtonRef.current.getBoundingClientRect().left - 150,
+                            left: rentTypeButtonRef.current.getBoundingClientRect().left - 80,
                         }}
                     >
                         <h4 className={styles.menuTitle}>거래 유형</h4>
@@ -209,7 +209,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
                         className={styles.popupMenu}
                         style={{
                             top: priceButtonRef.current.getBoundingClientRect().bottom + window.scrollY + 5,
-                            left: priceButtonRef.current.getBoundingClientRect().left - 150,
+                            left: priceButtonRef.current.getBoundingClientRect().left - 80,
                         }}
                     >
                         {/* 보증금 범위 */}
@@ -251,7 +251,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
                         className={styles.popupMenu}
                         style={{
                             top: maintenanceButtonRef.current.getBoundingClientRect().bottom + window.scrollY + 5,
-                            left: maintenanceButtonRef.current.getBoundingClientRect().left - 150,
+                            left: maintenanceButtonRef.current.getBoundingClientRect().left - 80,
                         }}
                     >
                         <RangeSlider
