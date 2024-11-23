@@ -1,0 +1,61 @@
+.container {
+  display: flex;
+  flex-direction: column; /* 세로로 정렬 */
+  justify-content: center; /* 콘텐츠들을 수직 가운데 정렬 */
+  align-items: center; /* 콘텐츠들을 수평 가운데 정렬 */
+  height: 100vh;
+  background-color: #F4FCFF;
+}
+
+.tabBox {
+  width: 100%;
+  text-align: center; /* 탭을 가운데 정렬 */
+}
+
+.componentBox {
+  display: flex; /* 내부 요소 정렬을 위해 추가 */
+  justify-content: center; /* 가로 방향 정렬 */
+  align-items: center; /* 세로 방향 정렬 */
+  flex-direction: column; /* 자식 요소를 세로로 배치 */
+  width: 100%; /* 부모 요소 크기를 기준으로 조정 */
+  max-width: 400px; /* 최대 너비 설정 */
+  height: 380px;
+  padding-bottom: 20px;
+  background-color: #F4FCFF;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  text-align: center;
+}
+
+.loginContent {
+  display: flex; /* flexbox 적용 */
+  flex-direction: column; /* 자식 요소를 세로로 배치 */
+  justify-content: center; /* 세로 방향 가운데 정렬 */
+  align-items: center; /* 가로 방향 가운데 정렬 */
+  width: 100%; /* 부모 요소 너비에 맞춤 */
+}
+
+.text {
+  margin: 20px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.loginButton {
+  background-color: #014c92;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.loginButton:hover {
+  background-color: #005bb5;
+}
+
+.image {
+  margin-bottom: 20px;
+}

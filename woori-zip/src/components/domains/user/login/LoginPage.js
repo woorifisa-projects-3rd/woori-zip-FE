@@ -63,12 +63,9 @@ function Login({onLogin}) {
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
-        <img className={styles.logo}
-          src="/images/banklogo.png" alt="Logo" width={90} height={30}
-        />
         <form onSubmit={handleSubmit}>
           <div>
-            <p className={styles.semiTitle}>아이디</p>
+          <p className={styles.sectionKeyword} style={{ fontSize: '14px', marginBottom: '5px', textAlign: 'left'}}>아이디</p>
             <input
               type="text"
               placeholder="아이디를 입력하세요"
@@ -82,7 +79,7 @@ function Login({onLogin}) {
           </div>
 
           <div>
-            <p className={styles.sectionKeyword} style={{ fontSize: '10px', marginBottom: '5px'}}>비밀번호</p>
+            <p className={styles.sectionKeyword} style={{ fontSize: '14px', marginBottom: '5px', textAlign: 'left'}}>비밀번호</p>
             <input
               type="password"
               placeholder="비밀번호를 입력하세요"
@@ -103,7 +100,6 @@ function Login({onLogin}) {
         </form>
 
         <div className={styles.links}>
-          <p>아직 회원이 아닌신가요?</p>
           <a href="#" className={styles.link} onClick={handleSignupClick}>가입하기</a>
         </div>
       </div>
