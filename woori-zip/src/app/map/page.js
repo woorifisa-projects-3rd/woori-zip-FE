@@ -118,6 +118,7 @@ export default function Home() {
             locations={mapLocations}
             selectedLocation={selectedLocation}
             onMapChange={setMapState}
+            mapViewData={houseInfo} // houseInfo를 전달
           />
           {selectedProperty && (
             <PropertyDetails
