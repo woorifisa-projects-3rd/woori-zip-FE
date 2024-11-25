@@ -27,6 +27,25 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
     const rentTypeButtonRef = useRef(null);
     const priceButtonRef = useRef(null);
 
+    const navRef = useRef(null); // NavBar 전체를 감싸는 ref
+
+    // 외부 클릭 이벤트 처리
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (navRef.current && !navRef.current.contains(event.target)) {
+                setCategoryVisible(false);
+                setMaintenanceVisible(false);
+                setRentTypeVisible(false);
+                setPriceVisible(false);
+            }
+        };
+
+        window.addEventListener("click", handleClickOutside);
+        return () => {
+            window.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
+
     // 지도 상태가 변경될 때 데이터 요청
     useEffect(() => {
         if (!mapState || JSON.stringify(mapState) === JSON.stringify(prevMapState)) {
@@ -141,7 +160,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
     };
 
     return (
-        <div className={styles.navBar}>
+        <div ref={navRef} className={styles.navBar}>
             <div className={styles.webNav}>
                 {/* 월세/전세 버튼 */}
                 <button
@@ -156,7 +175,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
                         className={styles.popupMenu}
                         style={{
                             top: rentTypeButtonRef.current.getBoundingClientRect().bottom + window.scrollY + 5,
-                            left: rentTypeButtonRef.current.getBoundingClientRect().left - 150,
+                            left: rentTypeButtonRef.current.getBoundingClientRect().left - 80,
                         }}
                     >
                         <h4 className={styles.menuTitle}>거래 유형</h4>
@@ -190,7 +209,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
                         className={styles.popupMenu}
                         style={{
                             top: priceButtonRef.current.getBoundingClientRect().bottom + window.scrollY + 5,
-                            left: priceButtonRef.current.getBoundingClientRect().left - 150,
+                            left: priceButtonRef.current.getBoundingClientRect().left - 80,
                         }}
                     >
                         {/* 보증금 범위 */}
@@ -232,7 +251,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
                         className={styles.popupMenu}
                         style={{
                             top: maintenanceButtonRef.current.getBoundingClientRect().bottom + window.scrollY + 5,
-                            left: maintenanceButtonRef.current.getBoundingClientRect().left - 150,
+                            left: maintenanceButtonRef.current.getBoundingClientRect().left - 80,
                         }}
                     >
                         <RangeSlider

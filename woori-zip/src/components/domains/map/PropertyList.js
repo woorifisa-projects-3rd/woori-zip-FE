@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../map/PropertyList.module.css";
 
 const PropertyList = ({ data, onPropertyClick }) => {
-  const [bookmarkedIds, setBookmarkedIds] = useState(
-    data.filter((property) => property.bookmark).map((property) => property.houseId)
-  );
+  const [bookmarkedIds, setBookmarkedIds] = useState([]);
+
+  // data가 변경될 때 bookmarkedIds를 초기화
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+      setBookmarkedIds(data.filter((property) => property.bookmark).map((property) => property.houseId));
+    }
+  }, [data]);
 
   const toggleBookmark = (propertyId) => {
     if (bookmarkedIds.includes(propertyId)) {

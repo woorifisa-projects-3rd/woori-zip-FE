@@ -136,9 +136,10 @@ const MapView = ({ filters, locations = [], facilities = [],mapViewData, onMapCh
         console.log(`Clicked House ID: ${place.houseId}`);
       
         // mapViewData에서 facilities 가져오기
-        const facilities = mapViewData?.data?.houses.find(
-          (house) => house.houseId === place.houseId
+        const facilities = mapViewData?.houses?.find(
+          (house) => String(house.houseId) === String(place.houseId)
         )?.facilities;
+        
       
         console.log("Facilities for Clicked House:", facilities);
       

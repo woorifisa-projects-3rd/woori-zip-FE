@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import styles from "../map/CategoryMenu.module.css";
+import { fetchHouseList } from "@/app/api/map/houseApi";
 import RangeSlider from "./RangeSlider";
 
 export default function CategoryMenu({
@@ -44,54 +45,59 @@ export default function CategoryMenu({
 
   const handleApply = () => {
     if (isMobile) {
-        // URLSearchParams 객체 생성
-        const params = new URLSearchParams();
-
-        // 조건부로 매개변수를 추가
-        if (mapState.zoomLevel) params.append("level", mapState.zoomLevel);
-        if (mapState.southWestLatitude) params.append("southWestLatitude", mapState.southWestLatitude);
-        if (mapState.southWestLongitude) params.append("southWestLongitude", mapState.southWestLongitude);
-        if (mapState.northEastLatitude) params.append("northEastLatitude", mapState.northEastLatitude);
-        if (mapState.northEastLongitude) params.append("northEastLongitude", mapState.northEastLongitude);
-        if (houseType) params.append("houseType", houseType);
-        if (selectedTransactionType && selectedTransactionType !== "모두") {
-            params.append("housingExpenses", selectedTransactionType);
+      // URLSearchParams 객체 생성
+      const params = new URLSearchParams();
+  
+      // 조건부로 매개변수를 추가
+      if (mapState.zoomLevel) params.append("level", mapState.zoomLevel);
+      if (mapState.southWestLatitude) params.append("southWestLatitude", mapState.southWestLatitude);
+      if (mapState.southWestLongitude) params.append("southWestLongitude", mapState.southWestLongitude);
+      if (mapState.northEastLatitude) params.append("northEastLatitude", mapState.northEastLatitude);
+      if (mapState.northEastLongitude) params.append("northEastLongitude", mapState.northEastLongitude);
+      if (houseType) params.append("houseType", houseType);
+      if (selectedTransactionType && selectedTransactionType !== "모두") {
+        params.append("housingExpenses", selectedTransactionType);
+      }
+      if (depositRange[0] || depositRange[1]) {
+        params.append("minDeposit", depositRange[0]);
+        params.append("maxDeposit", depositRange[1]);
+      }
+      if (monthlyRentRange[0] || monthlyRentRange[1]) {
+        params.append("minMonthlyRentFee", monthlyRentRange[0]);
+        params.append("maxMonthlyRentFee", monthlyRentRange[1]);
+      }
+      if (maintenanceRange[0] || maintenanceRange[1]) {
+        params.append("minMaintenanceFee", maintenanceRange[0]);
+        params.append("maxMaintenanceFee", maintenanceRange[1]);
+      }
+      if (selectedCategory && selectedCategory !== "선택하지 않음") {
+        params.append("category", selectedCategory);
+        if (walkingDistance > 0) {
+          params.append("walking", walkingDistance);
         }
-        if (depositRange[0] || depositRange[1]) {
-            params.append("minDeposit", depositRange[0]);
-            params.append("maxDeposit", depositRange[1]);
+        if (facilityCount > 0) {
+          params.append("facilityCount", facilityCount);
         }
-        if (monthlyRentRange[0] || monthlyRentRange[1]) {
-            params.append("minMonthlyRentFee", monthlyRentRange[0]);
-            params.append("maxMonthlyRentFee", monthlyRentRange[1]);
-        }
-        if (maintenanceRange[0] || maintenanceRange[1]) {
-            params.append("minMaintenanceFee", maintenanceRange[0]);
-            params.append("maxMaintenanceFee", maintenanceRange[1]);
-        }
-        if (categoryState.category !== "선택하지 않음") {
-          params.append("category", categoryState.category);
-        }
-        if (categoryState.walkingDistance > 0) params.append("walking", categoryState.walkingDistance);
-        if (categoryState.facilityCount > 0) params.append("facilityCount", categoryState.facilityCount);
-
-        const apiUrl = `http://localhost:8080/api/v1/houses?${params.toString()}`;
-        console.log(`요청 URL: ${apiUrl}`);
-
-        fetch(apiUrl, { method: "GET" })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("네트워크 응답에 문제가 있습니다.");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log("API 응답 데이터:", data);
-            })
-            .catch((error) => {
-                console.error("API 호출 오류:", error);
-            });
+      }
+  
+      const apiUrl = `http://localhost:8080/api/v1/houses?${params.toString()}`;
+      console.log(`요청 URL: ${apiUrl}`);
+  
+      fetch(apiUrl, { method: "GET" })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("네트워크 응답에 문제가 있습니다.");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("API 응답 데이터:", data);
+        })
+        .catch((error) => {
+          console.error("API 호출 오류:", error);
+        });
     }
+  
     onApply({
       category: selectedCategory,
       walkingDistance,
@@ -103,6 +109,7 @@ export default function CategoryMenu({
     });
     onClose();
   };
+  
 
   if (!isVisible) return null;
 
