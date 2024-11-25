@@ -32,7 +32,7 @@
     max-width: 800px;
     margin: 0 auto;
     position: relative;
-    padding: 0 40px; /* 좌우 네비게이션 버튼을 위한 공간 */
+    padding: 0 40px; 
 }
   
 .cardSlider {
@@ -44,8 +44,8 @@
 
 .cardItem {
     flex: 0 0 calc(50% - 8px);
-    min-width: 250px; /* 최소 너비 설정 */
-    max-width: 350px; /* 최대 너비 설정 */
+    min-width: 250px; 
+    max-width: 350px;
     border: 1px solid #eee;
     border-radius: 8px;
     overflow: hidden;

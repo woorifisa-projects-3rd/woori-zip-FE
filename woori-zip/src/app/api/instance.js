@@ -12,7 +12,7 @@ import { cookies } from 'next/headers'; // 서버 사이드에서 쿠키를 처�
 
 const fetchInstance = async (url, options) => {
   const session = await auth();
-  // const accessToken = session?.user?.accessToken;
+  const accessToken = session?.user?.accessToken;
 
   const headers = {
     ...options.headers,
@@ -25,9 +25,9 @@ const fetchInstance = async (url, options) => {
     headers['Content-Type'] = 'application/json';
   }
 
-  // if (accessToken) {
-    headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MywibWVtYmVyUm9sZSI6Ik1FTUJFUiIsImlzcyI6Indvb3JpemlwIiwiaWF0IjoxNzMyNTE5MTg4LCJleHAiOjE3MzI1MjI3ODh9.rDTB4jYY9UtZ99R1iAjE8LwdZ4609Dqv60KIxZ20Cfg`;
-  //} 
+  if (accessToken) {
+    headers.Authorization = `Bearer ${accessToken}`;
+  } 
 
   try {
     const response = await fetch(`http://localhost:8080/api/v1/${url}`, {

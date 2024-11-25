@@ -42,13 +42,14 @@
     border-radius: 30px;
     margin-top : 30px;
     margin-bottom: 20px;
-    margin-left: 20px;
+    
 }
 .titleAndImageBox {
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
     width: 100%; 
+    margin: 10px;
 }
 .leftBox {
     width: 60vh;
@@ -92,15 +93,16 @@
 }
 
 .line {
-    width: 85vh;
+    width: 90%;
     height: 1px;
     margin-top: 2% ;
-    margin-left: 1%;
+    margin-left: 3%;
     margin-right: 4%;
+
     background-color: rgba(200, 200, 200, 0.5); 
 }
 .loanDescription {
-    margin:20px;
+    margin:30px;
 }
 
     
