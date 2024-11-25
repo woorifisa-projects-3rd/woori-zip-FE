@@ -5,23 +5,24 @@
     background-color: #ffffff;
     margin-top: 30px; 
     border-radius: 30px;
+    
 }
 .loanName {
     font-size :20px;
     text-align: left;  
     margin-left: 40px;
     padding-top: 30px;
-
 }
-.topText {
-    position: absolute;             
-    top: 0;                        
-    left: 50%;   
-    font-size: 20px;  
-    color: #ffffff;     
-    width: 100%;            
-    transform: translateX(-50%);  
-    margin-top: 20px; 
+#topText {
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  transform: translateX(-50%);
+  font-size: 20px;
+  color: #ffffff;
+  width: 100%;
+  text-align: center;
+  z-index: 10;
 }
 .backCard {
     width: 100%;
@@ -31,6 +32,7 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
+    position: relative;
 }
 
 .topBox {
@@ -49,7 +51,6 @@
     width: 100%; 
 }
 .leftBox {
-    /* background-color: aqua; */
     width: 60vh;
     display: flex;
     flex-direction: column;
@@ -103,5 +104,3 @@
 }
 
     
-
-

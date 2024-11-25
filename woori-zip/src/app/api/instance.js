@@ -26,7 +26,7 @@ const fetchInstance = async (url, options) => {
   }
 
   // if (accessToken) {
-    headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MywibWVtYmVyUm9sZSI6Ik1FTUJFUiIsImlzcyI6Indvb3JpemlwIiwiaWF0IjoxNzMyNTEzMTMyLCJleHAiOjE3MzI1MTY3MzJ9.JLnzO_wlNTpgyI0i3I3BdIbAxaTCjq7u2hrbtQ8mqoM`;
+    headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MywibWVtYmVyUm9sZSI6Ik1FTUJFUiIsImlzcyI6Indvb3JpemlwIiwiaWF0IjoxNzMyNTE5MTg4LCJleHAiOjE3MzI1MjI3ODh9.rDTB4jYY9UtZ99R1iAjE8LwdZ4609Dqv60KIxZ20Cfg`;
   //} 
 
   try {

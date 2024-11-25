@@ -1,7 +1,7 @@
 @media screen and (max-width: 393px) {
 .full {
     background-color: #F4FCFF;
-    min-height: 100vh;
+    height: auto;
     width: 100%;
     margin: 0;
     padding: 0;
@@ -9,13 +9,14 @@
 .recommendContainer {
     margin-top: 10vw;
     width:100%;
-    height : 200vw;
+    height : auto;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
     display: flex;
     padding: 20px 0;
     background-color: #F4FCFF;
+    
 }
 .recommendText {
     background-color: #F4FCFF;
@@ -33,12 +34,14 @@
     border: 1px solid #ddd;
     text-align: center;
     display: flex;
-    flex-direction: column; /* 세로로 요소를 배치 */
+    flex-direction: column; 
     align-items: center;
+    position: relative;
 }
-.recomendImg {
+.loanImage{
     width: 200px;
     height: 200px;
+    background-color: #52606c;
     border-radius: 8px;
     box-sizing: border-box;
 }

@@ -1,5 +1,4 @@
 "use client"
-"use client"
 import React, { useEffect, useState } from 'react'
 import {useSearchParams} from 'next/navigation';
 import { loanChecklistApi } from '@/components/domains/loan/api/loanAPI'
@@ -9,6 +8,11 @@ import WebViewLoanCheckList from '@/components/domains/loan/loanCheckList/WebVie
 
 
 export default function LoanCheckList() {
+  const  loanGoodsType  =  useSearchParams().get('loanGoodsType');
+  const [loanQuestions, setLoanQuestions] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); 
+  const [error, setError] = useState(null); 
+
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(()=> {
@@ -20,11 +24,6 @@ export default function LoanCheckList() {
     window.addEventListener('resize',handleResize); //윈도우 크기 변경시 이벤트 리스너 등록
     return () => window.removeEventListener('resize',handleResize); // 이벤트 리스너 제거
   },[]);
-
-  const  loanGoodsType  =  useSearchParams().get('loanGoodsType');
-  const [loanQuestions, setLoanQuestions] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); 
-  const [error, setError] = useState(null); 
 
   useEffect(() => {
 
@@ -54,7 +53,7 @@ export default function LoanCheckList() {
 
   return (
     <>
-    {isMobile ? <WebViewLoanCheckList/> : <CheckList loanQuestions ={loanQuestions} isLoading={isLoading}/>}
+    {isMobile ? <WebViewLoanCheckList loanQuestions ={loanQuestions}/> : <CheckList loanQuestions ={loanQuestions} isLoading={isLoading}/>}
     </>
   );
 };

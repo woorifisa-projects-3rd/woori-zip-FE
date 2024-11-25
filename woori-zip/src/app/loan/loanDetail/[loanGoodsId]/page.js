@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from "next/navigation";
 import Details from '@/components/domains/loan/loanDetail/Detail';
-
+import WebViewLoanDetail from '@/components/domains/loan/loanDetail/WebViewLoanDetail';
 
 export default function LoanDetail() {
   const { loanGoodsId } = useParams();
   const [loanDetails, setLoanDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true); 
   const [error, setError] = useState(null); 
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (!loanGoodsId) return;  
@@ -34,13 +35,28 @@ export default function LoanDetail() {
     fetchLoanDetails();  
   }, [loanGoodsId]);  
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 393);
+    };
+
+    handleResize(); 
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
   if (isLoading) return <p>로딩 중...</p>; 
 
   if (error) return <p>{error}</p>; 
   
   return (
     <>
-      <Details loanDetails={loanDetails}/>    
+    {isMobile ? (
+        <WebViewLoanDetail loanDetails={loanDetails} />
+      ) : (<Details loanDetails={loanDetails}/>    
+
+    )}
     </>
   );
 };
