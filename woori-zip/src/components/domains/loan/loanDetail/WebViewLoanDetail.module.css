@@ -1,0 +1,130 @@
+@media screen and (max-width: 393px) {
+.productContainer {
+    padding: 20px;
+    background-color: #fff;
+}
+
+.productHeader {
+    margin-bottom: 16px;
+}
+
+.productTitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.productTag {
+    background-color: #EEF3F8;
+    color: #666;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.productDescription {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.productInfoSection {
+    background-color: #F3F5F7;
+    width:100%;
+    /* 접혔을 때 처리 */
+    /* height를 auto로 변경하고 transition 추가 */
+    height: auto;
+    transition: all 0.3s ease;
+    margin-top: 40vw;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    margin-bottom: 24px;
+}
+
+
+.line {
+    border: none;  /* 기본 스타일을 제거 */
+    /* border-top: 1px solid #ddd;  /* 1px 두께의 회색 선 */
+    /* margin: 10px 0;  선 위아래에 간격 추가 */
+}  
+.infoHeader {
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.arrow {
+    transition: transform 0.3s ease;
+}
+
+.arrow.expanded {
+    transform: rotate(180deg);
+}
+
+.infoContent {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease;
+}
+
+.infoContent.show {
+    height: auto;
+    border-top: 1px solid #eee;
+}
+
+.contentInner {
+    padding: 16px;
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: center;
+    width: 100vw; 
+    padding: 16px;
+    gap: 5px;
+    /* 버튼 그룹을 하단에 고정 */
+    position: fixed;
+    bottom: 5px;
+    left: 0;
+    right: 0;
+    /* 다른 요소들보다 위에 보이도록 z-index 설정 */
+    z-index: 10;
+}
+
+.callBtn {
+    width:180px;
+    padding: 16px;
+    border-radius: 30px;
+    border: 1px solid #d7e8f9;
+    color: #0065C4;
+    background-color: #d7e8f9;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.gotoOtherLoanBtn {
+    width:180px;
+    padding: 16px;
+    border-radius: 30px;
+    background-color: #0065C4;
+    border: 1px solid #d7e8f9;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.gotoOtherLoanBtn:hover {
+    background-color: #0052a3;
+}
+
+.callBtn:hover {
+    background-color: #d7e8f9;
+}
+}

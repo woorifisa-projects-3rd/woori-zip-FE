@@ -36,6 +36,7 @@ const WideCard = ({loanRecommendations}) => {
           </div>
             <WideCardButton loanGoodsId = {loanGoodsId}/>
           </div>
+
         </div>
       </div>
     );

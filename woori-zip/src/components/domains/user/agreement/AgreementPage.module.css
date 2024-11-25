@@ -1,0 +1,189 @@
+.pageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #F4FCFF;
+  }
+  
+  .container {
+    width: 380px;
+    background-color: #F4FCFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    padding: 20px;
+    
+  }
+  
+  .agreementBox {
+    width: 100%;
+    height: 470px; /* 고정 높이 설정 */
+    background: #F4FCFF;
+    padding: 30px;
+    margin : 10px;
+    border-radius: 8px;
+    box-sizing: border-box; /* padding이 포함되도록 */
+    overflow-y: auto; /* 스크롤 활성화 */
+  }
+  
+  
+  .title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .agreementItem {
+    padding: 16px 0;
+  }
+  
+  .checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .checkbox {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    appearance: none;
+    border: 1px solid #2b74e4;
+    border-radius: 3px;
+    background-color: #F4FCFF;
+  }
+  
+  /* 체크되었을 때 스타일 추가 */
+  .checkbox:checked {
+    background-color: #2b74e4;
+    border: 1px solid #2b74e4;
+    position: relative;
+  }
+  
+  .checkbox:checked::after {
+    content: "✔"; /* 체크 표시 */
+    color: #fff;
+    font-size: 10px;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+  }
+  
+  .checkboxText {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .required {
+    color: #2b74e4;
+    font-size: 10px;
+    margin-left: 4px;
+  }
+  
+  .optional {
+    color: #888;
+    font-size: 10px;
+  }
+  
+  .agreementItemSub {
+    margin-left: 30px;
+  }
+  
+  .detailButton {
+    color: #2b74e4;
+    background: none;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 4px 0;
+  
+    display: flex;
+    justify-self: right;
+    margin-right: 25px;
+  }
+  
+  .submitButton {
+    width: 100%;
+    padding: 14px;
+    background-color: #2b74e4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .submitButton:hover {
+    background-color: #2461c2;
+  }
+  
+  
+  /* 스크롤러 스타일 */
+  .scroll-container {
+    max-height: 200px; /* 스크롤러의 최대 높이 지정 */
+    overflow-y: auto;  /* 세로 스크롤을 활성화 */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+  }
+  
+  .description {
+    font-size: 12px;
+  }
+  
+  
+  .lsc {
+    font-size: 10px;
+    color: #666;
+    line-height: 1.5;
+    max-height: 60px; 
+    overflow-y: auto; 
+    scrollbar-width: 3px; 
+  }
+  
+  .lsc::-webkit-scrollbar {
+    width: 8px;
+  } 
+  
+  .lsc::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background of the track */
+    border-radius: 4px;
+  }
+  
+  .lsc::-webkit-scrollbar-thumb {
+    background-color: #0065C4
+    ; /* Scrollbar thumb color */
+    border-radius: 4px;
+    border: 2px solid #0065C4; /* Space around the thumb */
+  }
+  
+  .lsc::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Thumb color on hover */
+  }
+  
+  /* Custom scrollbar for Firefox */
+  .lsc {
+    scrollbar-width: thin;
+    scrollbar-color: #0065C4 #d9d9d9;
+  }
+  
+  .descriptionSub {
+    font-size: 12px;
+    margin-right: 10px;
+  }
+  
+  .hr {
+    margin: 10px;
+    color: #d9d9d9;
+  
+  }

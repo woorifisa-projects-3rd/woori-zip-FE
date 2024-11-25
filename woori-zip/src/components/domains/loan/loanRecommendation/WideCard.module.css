@@ -13,12 +13,13 @@
     padding-top: 30px;
 
 }
-#topText {
+.topText {
     position: absolute;             
     top: 0;                        
     left: 50%;   
     font-size: 20px;  
-    color: #ffffff;                 
+    color: #ffffff;     
+    width: 100%;            
     transform: translateX(-50%);  
     margin-top: 20px; 
 }
@@ -100,3 +101,7 @@
 .loanDescription {
     margin:20px;
 }
+
+    
+
+
