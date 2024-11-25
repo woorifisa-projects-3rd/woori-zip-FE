@@ -21,7 +21,6 @@ export default function LoanDetail() {
           throw new Error('데이터를 불러오는데 실패했습니다');
         }
         const data = await response.json();
-        console.log(loanGoodsId);
         setLoanDetails(data);
       } catch (err) {
         setError(err.message);
