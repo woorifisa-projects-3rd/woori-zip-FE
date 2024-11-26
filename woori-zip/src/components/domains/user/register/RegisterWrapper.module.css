@@ -3,13 +3,13 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f4fcff; /* 배경색 */
+    background-color: white;
   }
   
   .scrollContainer {
     width: 400px;
     height: 450px;
-    background-color: #f4fcff; /* 흰 배경 */
+    background-color: white;
   
     border-radius: 8px;
     overflow-y: hidden; /* 스크롤 가능 */

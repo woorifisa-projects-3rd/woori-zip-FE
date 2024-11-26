@@ -4,7 +4,7 @@
   justify-content: center; /* 콘텐츠들을 수직 가운데 정렬 */
   align-items: center; /* 콘텐츠들을 수평 가운데 정렬 */
   height: 100vh;
-  background-color: #F4FCFF;
+  background-color: white;
 }
 
 .tabBox {
@@ -21,7 +21,7 @@
   max-width: 400px; /* 최대 너비 설정 */
   height: 380px;
   padding-bottom: 20px;
-  background-color: #F4FCFF;
+  background-color: white;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
   text-align: center;
@@ -38,11 +38,11 @@
 .text {
   margin: 20px 0;
   font-size: 16px;
-  color: #333;
+  color: var(--color-text-dark);
 }
 
 .loginButton {
-  background-color: #014c92;
+  background-color: var(--color-blue-dark);
   color: #fff;
   padding: 10px 20px;
   border: none;
@@ -53,7 +53,7 @@
 }
 
 .loginButton:hover {
-  background-color: #005bb5;
+  background-color: var(--color-blue-dark);
 }
 
 .image {

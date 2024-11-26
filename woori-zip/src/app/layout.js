@@ -1,14 +1,12 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import Header from "@/components/layout/Header/Header";
+import FooterRenderer from "@/components/layout/Footer/FooterRenderer";
+import HeaderRenderer from "@/components/layout/Header/HeaderRenderer";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
+const pretendardFont = localFont({
+  src: "/fonts/Pretendard-ExtraBold.ttf", // public 폴더를 기준으로 설정
+  variable: "--font-pretendard",
   weight: "100 900",
 });
 
@@ -20,8 +18,24 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+      <body
+        className={`${pretendardFont.variable}`}
+        style={{ display: "flex", flexDirection: "column", height: "100vh" }}
+      >
+        <div className="layout-container">
+          {/* Header 추가 */}
+          <header className="header-container">
+            <HeaderRenderer />
+          </header>
+
+          {/* 페이지 콘텐츠 */}
+          <main style={{ flex: "1", width: "100%" }}>{children}</main>
+
+          {/* FooterRenderer로 Footer 렌더링 */}
+          <footer className="footer-container">
+            <FooterRenderer />
+          </footer>
+        </div>
       </body>
     </html>
   );
