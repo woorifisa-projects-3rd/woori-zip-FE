@@ -27,7 +27,7 @@ const fetchInstance = async (url, options) => {
 
   if (accessToken) {
     headers.Authorization = `Bearer ${accessToken}`;
-  }
+  } 
 
   try {
     const response = await fetch(`http://localhost:8080/api/v1/${url}`, {
