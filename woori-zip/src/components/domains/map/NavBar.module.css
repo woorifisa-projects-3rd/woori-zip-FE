@@ -34,7 +34,7 @@
   background-color: var(--color-blue);
   color: white;
   border: none;
-  font-weight: bold;
+  font-family: var(--font-pretendard-regular);
 }
 
 .applyButton:hover {
@@ -46,7 +46,7 @@
 .applyButton:focus,
 .filterButton:focus {
   outline: none;
-  box-shadow: 0px 0px 4px rgba(0, 112, 243, 0.6);
+  box-shadow: 0px 0px 4px var(--color-blue);
 }
 
 .webNav {
@@ -110,6 +110,30 @@
   color: var(--color-light-gray);
   text-align: right;
 }
+
+.authButtons {
+  margin-left: auto;
+  display: flex;
+  gap: 12px;
+}
+
+.authButton {
+  padding: 8px 16px;
+  border: 1px solid var(--color-border-light);
+  color:white;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: var(--color-blue);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: var(--font-pretendard-regular);
+}
+
+.authButton:hover {
+  background-color: var(--color-blue-dark);
+  color: white;
+}
+
 
 /* 모바일에서 NavBar 숨김 */
 @media (max-width: 393px) {

@@ -1,8 +1,9 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
 import CategoryMenu from "./CategoryMenu";
-import RangeSlider from "./RangeSlider"; // RangeSlider 컴포넌트 추가
+import RangeSlider from "./RangeSlider";
 import styles from "../map/NavBar.module.css";
+import Link from 'next/link';
 
 export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
     const [isCategoryVisible, setCategoryVisible] = useState(false);
@@ -304,6 +305,15 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
             <button onClick={handleFinalApply} className={styles.applyButton}>
                 검색
             </button>
+
+            <div className={styles.authButtons}>
+                <Link href="/user/login">
+                    <button className={styles.authButton}>로그인</button>
+                </Link>
+                <Link href="/user/register">
+                    <button className={styles.authButton}>회원가입</button>
+                </Link>
+            </div>
         </div>
     );
 }
