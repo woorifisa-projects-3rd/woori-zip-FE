@@ -1,12 +1,20 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* 진한 회색깔 및 hover 기능 */
   --color-light-gray: #888;
+  /* 연한 테두리 색 */
   --color-border-light: #ddd;
-  --color-blue: #0070f3;
-  --color-bg: #F4FCFF;
-  --color-text-dark: #333;
+    /* 파란색 */
+    --color-blue: #0070f3;
+  /* 진한 파란색 */
   --color-blue-dark: #0065C4;
+  /* 배경 색 */
+  --color-bg: #F4FCFF;
+  /* 글씨 색깔 */
+  --color-text-dark: #333;
+
+  /* 폰트 */
   --font-pretendard: 'Pretendard', sans-serif;
 }
 
@@ -65,10 +73,3 @@ header,
 footer {
   transition: all 0.3s ease; 
 }
-
-/* @media (max-width: 393px) {
-  .header-container,
-  .footer-container {
-    display: none; 
-  }
-} */
