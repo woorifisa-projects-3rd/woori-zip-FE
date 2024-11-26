@@ -1,16 +1,16 @@
 @media screen and (max-width: 393px) {
 .full {
-    background-color: #F4FCFF;
+    background-color: var(--color-bg);
     height: auto;
 }
 #topText {
     font-size: 20px;
     padding: 20px;
-    color: black;
+    color: var(--color-text-dark);
     width:100%;
 }
 .adviceBox {
-    background-color: #F3F5F7;
+    background-color: var(--color-bg);
     height: 20vw;
     width: 95%;
     margin: 10px;
@@ -21,7 +21,7 @@
 }
 
 .checklistContainer {
-    background-color:#F3F5F7;
+    background-color:var(--color-bg);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -35,7 +35,7 @@
     margin-left: 10px;
     /* width: 100vh; */
     height: auto;
-    background-color: #F4FCFF;
+    background-color: var(--color-bg);;
     /* 내용이 넘치면 세로 스크롤 */
     overflow-y: auto; 
     padding: 10px;
@@ -47,7 +47,7 @@
 #loanResultButton{
     padding: 10px 20px;           
     font-size: 16px;               
-    background-color: #0065C4;   
+    background-color: var(--color-blue); 
     color: white;               
     border: none;                 
     border-radius: 5px;
@@ -64,7 +64,7 @@
 
 
 #loanResultButton:hover {
-    background-color: #0e76dd;
+    background-color: var(--color-blue);
   }
 
 }

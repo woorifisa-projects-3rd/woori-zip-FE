@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   padding: 20px 16px;
-  background-color: #F4FCFF;
+  background-color: white;
 }
 
 .emptyState {
@@ -12,7 +12,7 @@
   width: 100%;
   color: #666;
   font-size: 16px;
-  background-color: #fff;
+  background-color: white;
 }
 
 .propertyGrid {
@@ -33,7 +33,7 @@
   position: relative;
   width: 100%;
   padding-bottom: 75%;
-  background-color: #f5f5f5;
+  background-color: white;
 }
 
 .imagePlaceholder {
@@ -45,7 +45,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #666;
+  color: var(--color-border-light);
   font-size: 14px;
 }
 
@@ -62,7 +62,7 @@
 
 .star {
   font-size: 20px;
-  color: #FFD700;
+  color: yellow;
 }
 
 .propertyInfo {
@@ -77,12 +77,12 @@
 }
 
 .type {
-  color: #0066FF;
+  color: var(--color-blue);
   font-size: 13px;
 }
 
 .location {
-  color: #666;
+  color: var(--color-light-gray);
   font-size: 13px;
 }
 
@@ -94,7 +94,7 @@
 
 .details {
   font-size: 13px;
-  color: #666;
+  color: var(--color-light-gray);
   line-height: 1.5;
 }
 

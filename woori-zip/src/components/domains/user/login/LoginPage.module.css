@@ -2,12 +2,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #F4FCFF;
+  background-color: white;
 }
 
 .formContainer {
   width: 220px;
-  background-color: #F4FCFF;
+  background-color: white;
   border-radius: 8px;
   text-align: center;
 }
@@ -16,7 +16,7 @@
   margin-bottom: 50px;
   margin-top: 30px;
   font-size: 16px;
-  color: #333;
+  color: var(--color-text-dark);
   line-height: 1.5;
   font-weight: bold;
 }
@@ -27,7 +27,7 @@
   margin: 10px 0;
   font-size: 14px;
   color: white;
-  background-color: #0065C4;
+  background-color: var(--color-blue);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -35,16 +35,16 @@
 }
 
 .loginButton:hover {
-  background-color: #466ea3;
+  background-color: var(--color-blue-dark);
 }
 
 .inputField {
   width: 100%;
   padding: 8px;
   border-radius: 5px;
-  border: 1px solid #0065C4;
+  border: 1px solid var(--color-blue);
   margin-bottom: 10px;
-  background-color: #F4FCFF;
+  background-color: white;
   font-size: 12px;
 }
 
@@ -60,13 +60,13 @@
 
 .link {
   font-size: 10px;
-  color: #0065C4;
+  color: var(--color-blue);
   font: bold;
   display: inline;
 }
 
 .link:hover {
-  color: #466ea3;
+  color: var(--color-blue-dark);
   font: bold;
   text-decoration: underline;
 }

@@ -1,12 +1,12 @@
 .container {
-    background-color:#F3F5F7;
+    background-color:var(--color-bg);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 160vh;
     margin: 0;
     flex-direction: column;
-    background-color: #F4FCFF;
+    background-color: var(--color-bg);
 }
 .topBox {
     width: 90vh;
@@ -39,7 +39,7 @@
 .goToChecklistButton{
     padding: 10px 20px;           
     font-size: 16px;               
-    background-color: #0065C4;   
+    background-color: var(--color-blue);
     color: white;               
     border: none;                 
     border-radius: 5px;          
@@ -50,5 +50,5 @@
 
 
 .goToChecklistButton:hover {
-    background-color: #015f99;
+    background-color: var(--color-blue-dark);
   }

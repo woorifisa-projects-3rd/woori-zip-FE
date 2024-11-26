@@ -6,7 +6,7 @@
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     width: 400px;
     margin: 0 auto;
-    background-color: #014c92;
+    background-color: var(--color-blue-dark);
   }
   
   .tabButton {
@@ -14,7 +14,7 @@
     padding: 10px 20px;
     cursor: pointer;
     background-color: transparent;
-    color: #fff;
+    color: white;
     font-weight: bold;
     border: none;
     outline: none;
@@ -22,15 +22,15 @@
   }
   
   .tabButton:hover {
-    background-color: #5a9ff4;
+    background-color: var(--color-blue-dark);
     margin: 8px;
     border-radius: 6px;
   }
   
   .tabButton.active {
-    background-color: #fff;
+    background-color: white;
     color: #4285f4;
-    border: 2px solid #add8e6;
+    border: 2px solid var(--color-border-light);
     border-radius: 6px;
     margin: 8px;
   }

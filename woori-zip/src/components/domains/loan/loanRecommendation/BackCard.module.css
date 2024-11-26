@@ -1,7 +1,7 @@
 .backCard {
     width: 100%;
     height: 380px;
-    background-color: #0065C4;
+    background-color: var(--color-blue);
     display: flex;
     justify-content: center;
     align-items: center;

@@ -3,7 +3,7 @@
     justify-content: center;  
     align-items: flex-start;    
     height: 50vh;   
-    background-color: #F4FCFF;
+    background-color: var(--color-light-gray);
 }
 
 .bottomCard {
@@ -18,7 +18,7 @@
 #bottomText {
     margin: 0;
     font-size: 24px;
-    color: black;
+    color: var(--color-text-dark);
     margin-top: 20px;
     margin-bottom: 30px;
 }

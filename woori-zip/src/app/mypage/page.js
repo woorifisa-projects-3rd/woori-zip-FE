@@ -15,7 +15,6 @@ const MyPage = () => {
 
   return (
     <div className={styles.pageWrapper}>
-      <Header />
       <div className={styles.container}>
         <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
         <div className={styles.content}>
@@ -24,7 +23,6 @@ const MyPage = () => {
           {activeTab === '최근 본 대출 상품' && <Loan />}
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

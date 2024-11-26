@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "../map/PropertyList.module.css";
+import { addBookmark, deleteBookmark } from "@/app/api/map/houseApi";
 
 const PropertyList = ({ data, onPropertyClick }) => {
   const [bookmarkedIds, setBookmarkedIds] = useState([]);
@@ -11,13 +12,28 @@ const PropertyList = ({ data, onPropertyClick }) => {
     }
   }, [data]);
 
-  const toggleBookmark = (propertyId) => {
+  const toggleBookmark = async (propertyId) => {
+    console.log(`북마크 토글 시도: ${propertyId}`);
     if (bookmarkedIds.includes(propertyId)) {
-      setBookmarkedIds(bookmarkedIds.filter((id) => id !== propertyId));
+      // 북마크 삭제 요청
+      try {
+        console.log(`북마크 삭제 요청: ${propertyId}`);
+        await deleteBookmark(propertyId);
+        setBookmarkedIds(bookmarkedIds.filter((id) => id !== propertyId));
+      } catch (error) {
+        console.error("북마크 삭제 실패:", error);
+      }
     } else {
-      setBookmarkedIds([...bookmarkedIds, propertyId]);
+      // 북마크 추가 요청
+      try {
+        console.log(`북마크 추가 요청: ${propertyId}`);
+        await addBookmark(propertyId);
+        setBookmarkedIds([...bookmarkedIds, propertyId]);
+      } catch (error) {
+        console.error("북마크 추가 실패:", error);
+      }
     }
-  };
+  };  
 
   return (
     <div className={styles.listContainer}>
@@ -43,7 +59,11 @@ const PropertyList = ({ data, onPropertyClick }) => {
           </div>
           {/* 이미지 */}
           <div className={styles.imageWrapper}>
-            <img src={property.representativeImage || "/images/home.jpg"} alt={property.houseType} className={styles.propertyImage} />
+            <img
+              src={property.representativeImage || "/images/home.jpg"}
+              alt={property.houseType}
+              className={styles.propertyImage}
+            />
           </div>
           {/* 상세 정보 */}
           <div className={styles.propertyDetails}>
@@ -56,7 +76,9 @@ const PropertyList = ({ data, onPropertyClick }) => {
             <p className={styles.location}>
               {property.gu} {property.dong}
             </p>
-            <p className={styles.maintenance}>관리비: {property.maintenanceFee.toLocaleString()}원</p>
+            <p className={styles.maintenance}>
+              관리비: {property.maintenanceFee.toLocaleString()}원
+            </p>
             <p className={styles.description}>
               {property.comment.length > 17
                 ? `${property.comment.substring(0, 17)}...`
