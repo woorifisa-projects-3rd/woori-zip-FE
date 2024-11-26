@@ -20,13 +20,13 @@
   font-size: 2.4rem;
   font-weight: bold;
   color: var(--color-text-dark);
-  margin-bottom: 8px;
 }
 
 .top_text h2 {
   font-size: 1.6rem;
-  color: var(--color-light-gray);
+  color: var(--color-text-dark);
   line-height: 1.5;
+  font-family: var(--font-pretendard-regular);
 }
 
 .blue_text {
@@ -43,7 +43,7 @@
   grid-template-columns: 3fr 1.5fr;
   gap: 32px;
   max-width: 1300px;
-  margin: 0 auto;
+  margin: 20px auto;
 }
 
 /* 좌측 카테고리 카드 그리드 */
@@ -56,18 +56,16 @@
 /* 개별 카드 스타일 */
 .property_card {
   background-color: white;
-  border-radius: 16px;
+  border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  padding: 24px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  height: 220px;
+  height: 180px; 
   cursor: pointer !important;
-  -webkit-cursor: pointer !important;
-  pointer-events: auto !important;
 }
 
 .property_card:hover {
@@ -79,19 +77,28 @@
 }
 
 .property_card h2 {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: bold;
   color: var(--color-text-dark);
-  margin: 0 0 16px;
+  margin: 0 0 12px;
 }
 
 .property_card img {
-  width: 60px;
-  height: 60px;
+  width: 50px; 
+  height: 50px;
   object-fit: contain;
   position: absolute;
-  right: 24px;
-  bottom: 24px;
+  right: 16px;
+  bottom: 16px;
+}
+
+.property_card p {
+  font-size: 0.9rem; 
+  color: var(--color-light-gray);
+  line-height: 1.4;
+  margin: 0;
+  padding-top: 4px;
+  font-family: var(--font-pretendard-regular);
 }
 
 /* 소비 패턴 분석 배너 스타일 */
@@ -132,6 +139,7 @@
   font-size: 1.0rem;
   line-height: 1.2;
   margin-bottom: 16px;
+  font-family: var(--font-pretendard-regular);
 }
 
 .info_graph_text p {
@@ -147,15 +155,6 @@
   object-fit: contain;
   transition: transform 0.2s ease;
 }
-
-.property_card p {
-  font-size: 1rem;
-  color: var(--color-border-light);;
-  line-height: 1.4;
-  margin: 0;
-  padding-top: 8px;
-}
-
 
 /* 모바일 웹뷰 (393px) 미디어쿼리 */
 @media screen and (max-width: 393px) {
@@ -217,8 +216,8 @@
   }
 
   .property_card p {
-    font-size: 0.rem; /* 본문 크기 조정 */
-    color: var(--color-border-light);
+    font-size: 0.6rem;
+    color: var(--color-light-gray);
     line-height: 1.4;
     margin: 0;
   }
