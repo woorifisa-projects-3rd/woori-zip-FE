@@ -127,11 +127,6 @@ a.secondary {
 }
 
 @media (max-width: 600px) {
-  .page {
-    
-    
-  }
-
   .main {
     align-items: center;
   }
