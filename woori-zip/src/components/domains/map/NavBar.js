@@ -60,7 +60,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
             params.append("northEastLatitude", mapState.northEastLatitude || 0);
             params.append("northEastLongitude", mapState.northEastLongitude || 0);
 
-            //동일
+            // 동일
             if (houseType) params.append("houseType", houseType);
             if (rentType !== "모두") params.append("housingExpenses", rentType);
             params.append("minDeposit", depositRange[0]);
@@ -113,13 +113,13 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
         params.append("minMaintenanceFee", maintenanceRange[0]);
         params.append("maxMaintenanceFee", maintenanceRange[1]);
         if (
-            categoryState.category && 
-            categoryState.category !== "선택하지 않음" && 
-            categoryState.category !== undefined && 
+            categoryState.category &&
+            categoryState.category !== "선택하지 않음" &&
+            categoryState.category !== undefined &&
             categoryState.category !== "undefined"
         ) {
             params.append("category", categoryState.category);
-        
+
             // category가 유효한 경우에만 walkingDistance와 facilityCount 추가
             if (categoryState.walkingDistance > 0) {
                 params.append("walking", categoryState.walkingDistance);
@@ -128,8 +128,6 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
                 params.append("facilityCount", categoryState.facilityCount);
             }
         }
-        
-        
 
         const apiUrl = `http://localhost:8080/api/v1/houses?${params.toString()}`;
         console.log(`최종 요청 URL: ${apiUrl}`);
@@ -148,9 +146,13 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
             });
     };
 
-    // 카테고리 메뉴 토글
-    const toggleCategoryVisibility = () => {
-        setCategoryVisible((prev) => !prev);
+    // 추가된 코드: 한 번에 한 모달만 열리도록 설정
+    const openModal = (modalSetter) => {
+        setCategoryVisible(false);
+        setMaintenanceVisible(false);
+        setRentTypeVisible(false);
+        setPriceVisible(false);
+        modalSetter(true);
     };
 
     // 카테고리 적용
@@ -159,16 +161,26 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
         setCategoryVisible(false);
     };
 
+    const toggleModal = (modalSetter, isVisible) => {
+        setCategoryVisible(false);
+        setMaintenanceVisible(false);
+        setRentTypeVisible(false);
+        setPriceVisible(false);
+
+        // 현재 모달이 열려 있는 경우 닫기, 아니면 열기
+        modalSetter(!isVisible);
+    };
+
     return (
         <div ref={navRef} className={styles.navBar}>
             <div className={styles.webNav}>
                 {/* 월세/전세 버튼 */}
                 <button
                     ref={rentTypeButtonRef}
-                    onClick={() => setRentTypeVisible((prev) => !prev)}
+                    onClick={() => toggleModal(setRentTypeVisible, isRentTypeVisible)}
                     className={styles.filterButton}
                 >
-                    월세, 전세 ▼
+                    월세, 전세 ∨
                 </button>
                 {isRentTypeVisible && (
                     <div
@@ -199,10 +211,10 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
                 {/* 거래 금액 버튼 */}
                 <button
                     ref={priceButtonRef}
-                    onClick={() => setPriceVisible((prev) => !prev)}
+                    onClick={() => toggleModal(setPriceVisible, isPriceVisible)}
                     className={styles.filterButton}
                 >
-                    거래 금액 ▼
+                    거래 금액 ∨
                 </button>
                 {isPriceVisible && (
                     <div
@@ -241,10 +253,10 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
                 {/* 관리비 버튼 */}
                 <button
                     ref={maintenanceButtonRef}
-                    onClick={() => setMaintenanceVisible((prev) => !prev)}
+                    onClick={() => toggleModal(setMaintenanceVisible, isMaintenanceVisible)}
                     className={styles.filterButton}
                 >
-                    관리비 ▼
+                    관리비 ∨
                 </button>
                 {isMaintenanceVisible && (
                     <div
@@ -272,15 +284,15 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
                 {/* 카테고리 버튼 */}
                 <button
                     ref={categoryButtonRef}
-                    onClick={toggleCategoryVisibility}
+                    onClick={() => toggleModal(setCategoryVisible, isCategoryVisible)}
                     className={styles.categoryButton}
                 >
-                    카테고리 ▼
+                    카테고리 ∨
                 </button>
                 {isCategoryVisible && (
                     <CategoryMenu
                         isVisible={isCategoryVisible}
-                        onClose={toggleCategoryVisibility}
+                        onClose={() => setCategoryVisible(false)}
                         buttonRef={categoryButtonRef}
                         categoryState={categoryState}
                         onApply={handleCategoryApply}
@@ -290,7 +302,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
 
             {/* 최종 적용 버튼 */}
             <button onClick={handleFinalApply} className={styles.applyButton}>
-                적용 최종
+                검색
             </button>
         </div>
     );

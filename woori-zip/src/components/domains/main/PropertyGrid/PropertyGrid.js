@@ -38,7 +38,7 @@ export default function PropertyGrid() {
                 모~든 전월세 매물을 한 번에!
               </p>
               <img
-                src="https://fisa-woorizip.s3.ap-northeast-2.amazonaws.com/images/mainpage/home-svgrepo-com+2+(1).png"
+                src="https://fisa-woorizip.s3.ap-northeast-2.amazonaws.com/images/map/oneroom.png"
                 alt="원룸 이미지"
               />
             </div>
@@ -55,7 +55,7 @@ export default function PropertyGrid() {
                 <br />
               </p>
               <img
-                src="https://fisa-woorizip.s3.ap-northeast-2.amazonaws.com/images/mainpage/buildings-3-svgrepo-com+2+(1).png"
+                src="https://fisa-woorizip.s3.ap-northeast-2.amazonaws.com/images/map/officetel.png"
                 alt="오피스텔 이미지"
               />
             </div>
@@ -71,7 +71,7 @@ export default function PropertyGrid() {
                 모~든 매물!
               </p>
               <img
-                src="https://fisa-woorizip.s3.ap-northeast-2.amazonaws.com/images/mainpage/Frame+224+(1).png"
+                src="https://fisa-woorizip.s3.ap-northeast-2.amazonaws.com/images/map/house.png"
                 alt="주택 이미지"
               />
             </div>
@@ -87,7 +87,7 @@ export default function PropertyGrid() {
                 풍부한 단지정보 및 실시간 랭킹까지!
               </p>
               <img
-                src="https://fisa-woorizip.s3.ap-northeast-2.amazonaws.com/images/mainpage/buildings-svgrepo-com+(2)+1+(1).png"
+                src="https://fisa-woorizip.s3.ap-northeast-2.amazonaws.com/images/map/apartment.png"
                 alt="아파트 이미지"
               />
             </div>
@@ -111,7 +111,7 @@ export default function PropertyGrid() {
               </div>
               <div className={styles.Image_big}>
                 <Image
-                  src="https://fisa-woorizip.s3.ap-northeast-2.amazonaws.com/images/mainpage/bar-chart+1.png"
+                  src="https://fisa-woorizip.s3.ap-northeast-2.amazonaws.com/images/mainpage/bar-chart.png"
                   width={isMobile ? 80 : 150}
                   height={isMobile ? 80 : 150}
                   alt="Graph"

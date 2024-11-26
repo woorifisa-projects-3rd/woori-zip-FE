@@ -4,10 +4,16 @@ import Header from "@/components/layout/Header/Header";
 import FooterRenderer from "@/components/layout/Footer/FooterRenderer";
 import HeaderRenderer from "@/components/layout/Header/HeaderRenderer";
 
-const pretendardFont = localFont({
+const pretendardBold = localFont({
   src: "/fonts/Pretendard-ExtraBold.ttf", // public 폴더를 기준으로 설정
   variable: "--font-pretendard",
   weight: "100 900",
+});
+
+const pretendardRegular = localFont({
+  src: '/fonts/Pretendard-Regular.ttf',
+  variable: '--font-pretendard-regular',
+  weight: '400',
 });
 
 export const metadata = {
@@ -19,7 +25,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${pretendardFont.variable}`}
+        className={`${pretendardRegular.variable} ${pretendardBold.variable}`}
         style={{ display: "flex", flexDirection: "column", height: "100vh" }}
       >
         <div className="layout-container">
