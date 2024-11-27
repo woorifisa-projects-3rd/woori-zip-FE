@@ -11,8 +11,8 @@ import { cookies } from 'next/headers'; // 서버 사이드에서 쿠키를 처�
 // }
 
 const fetchInstance = async (url, options) => {
-  const session = await auth();
-  const accessToken = session?.user?.accessToken;
+  // const session = await auth();
+  // const accessToken = session?.user?.accessToken;
 
   const headers = {
     ...options.headers,
@@ -25,9 +25,8 @@ const fetchInstance = async (url, options) => {
     headers['Content-Type'] = 'application/json';
   }
 
-  if (accessToken) {
-    headers.Authorization = `Bearer ${accessToken}`;
-  } 
+  // if (accessToken) {
+    headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MTEsIm1lbWJlclJvbGUiOiJNRU1CRVIiLCJpc3MiOiJ3b29yaXppcCIsImlhdCI6MTczMjY4MzI0NSwiZXhwIjoxNzMzMDQzMjQ1fQ.icN1Sx0qHtkeXscvVSrhoEjgSEi2i31CpCqgQR3sBos`
 
   try {
     const response = await fetch(`http://localhost:8080/api/v1/${url}`, {
@@ -44,10 +43,11 @@ const fetchInstance = async (url, options) => {
       return response;
     }
 
-    if (response.headers.get('Content-Type')?.includes('application/json')) {
+    if (response.headers.get('content-type')?.includes('application/json')) {
       return await response.json();
     } else {
-      return await response.text();
+      console.log('response', response)
+      // return await response;
     }
   } catch (error) {
     console.error('Fetch Error:', error);
