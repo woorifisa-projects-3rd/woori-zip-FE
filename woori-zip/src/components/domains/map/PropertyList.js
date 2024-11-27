@@ -67,12 +67,12 @@ const PropertyList = ({ data, onPropertyClick }) => {
           </div>
           {/* 상세 정보 */}
           <div className={styles.propertyDetails}>
-            <h2 className={styles.title}>
-              {property.housingExpenses}{" "}
-              {`${(property.deposit / 10000).toLocaleString()}`}
-              {property.housingExpenses === "월세" &&
-                `/${(property.monthlyRentFee / 10000).toLocaleString()}`}
-            </h2>
+          <h2 className={styles.title}>
+            {property.housingExpenses === "JEONSE" ? "전세" : property.housingExpenses}{" "}
+            {`${(property.deposit / 10000).toLocaleString()}`}
+            {property.housingExpenses === "월세" &&
+              `/${(property.monthlyRentFee / 10000).toLocaleString()}`}
+          </h2>
             <p className={styles.location}>
               {property.gu} {property.dong}
             </p>

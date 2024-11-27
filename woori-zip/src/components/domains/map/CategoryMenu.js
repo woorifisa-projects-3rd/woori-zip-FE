@@ -1,6 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import styles from "../map/CategoryMenu.module.css";
-import { fetchHouseList } from "@/app/api/map/houseApi";
 import RangeSlider from "./RangeSlider";
 
 export default function CategoryMenu({

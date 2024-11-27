@@ -53,6 +53,7 @@ export default function Home() {
     const loadInitialData = async () => {
       try {
         const data = await fetchHouseList(defaultFilters);
+        console.log("data:   ", data);
         updateHouseData(data);
       } catch (error) {
         console.error("Failed to load initial data:", error);
