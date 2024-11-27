@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import styles from "@/components/domains/map/Sidebar.module.css";
 
 export default function Sidebar({ houseType, onSelectCategory }) {
@@ -17,6 +18,11 @@ export default function Sidebar({ houseType, onSelectCategory }) {
 
   return (
     <div className={styles.sidebar}>
+      <Link href="/" passHref>
+        <div className={styles.logotext}>
+          woorizip
+        </div>
+      </Link>
       {categories.map((category) => (
         <div
           key={category.key}
