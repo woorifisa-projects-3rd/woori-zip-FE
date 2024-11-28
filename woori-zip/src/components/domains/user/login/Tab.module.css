@@ -9,7 +9,7 @@
     height: 40px;
     /* margin: 0 auto; */
     background-color: var(--color-blue-dark);
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    /*box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);*/
   }
   .tabList ul {
     display: flex;
@@ -40,7 +40,7 @@
   
   .tabList ul li a.active span {
     background-color: white;
-    color: #4285f4;
+    color: var(--color-blue);
     border: 1px solid var(--color-border-light);
     border-radius: 6px;
     /* margin: 8px; */

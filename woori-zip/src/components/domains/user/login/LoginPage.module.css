@@ -2,12 +2,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: var(--background);
 }
 
 .formContainer {
   width: 220px;
-  background-color: white;
+  background-color: var(--background);
   border-radius: 8px;
   text-align: center;
 }
@@ -16,7 +16,7 @@
   margin-bottom: 50px;
   margin-top: 30px;
   font-size: 16px;
-  color: #0070f3;
+  color: var(--color-blue);
   line-height: 1.5;
   font-weight: bold;
 }
@@ -27,7 +27,7 @@
   margin: 10px 0;
   font-size: 12px;
   color: white;
-  background-color: #0070f3;
+  background-color: var(--color-blue);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -42,9 +42,9 @@
   width: 100%;
   padding: 5px;
   border-radius: 5px;
-  border: 1px solid #0070f3;
+  border: 1px solid var(--color-blue);
   margin-bottom: 10px;
-  background-color: white;
+  background-color: var(--background);
   font-size: 12px;
 }
 
@@ -62,14 +62,14 @@
 
 .link {
   font-size: 14px;
-  color:#0070f3;
+  color: var(--color-blue);
   font: bold;
   display: inline;
   margin-left: 20px;
 }
 
 .link:hover {
-  color: #0065C4;
+  color: var(--color-blue-dark);
   font: bold;
   text-decoration: underline;
 }
@@ -80,14 +80,14 @@
 }
 
 .sectionKeyword {
-  font-size: 12px;
-  margin-bottom: 5px;
+  font-size: 16px;
+  margin-bottom: 10px;
   text-align: left;
-  color: #0070f3;
+  color: var(--color-blue);
 }
 
 .pText {
   font-size: 12px;
   font-weight: lighter;
-  color: #888888;
+  color: var(--color-light-gray);
 }
