@@ -3,11 +3,13 @@
 import React, { useEffect } from "react";
 import styles from "./Tab.module.css";
 import Link from "next/link";
+
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 export default function Tab({ tabs }) {
   const searchParams = useSearchParams();
   const router = useRouter();
+
   const pathname = usePathname(); // 현재 경로 가져오기
 
   // 현재 URL에서 `role` 값을 가져오되, 없으면 기본값 0으로 설정
