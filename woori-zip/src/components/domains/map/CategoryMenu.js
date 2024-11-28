@@ -1,6 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import styles from "../map/CategoryMenu.module.css";
-import { fetchHouseList } from "@/app/api/map/houseApi";
 import RangeSlider from "./RangeSlider";
 
 export default function CategoryMenu({
@@ -174,7 +173,7 @@ export default function CategoryMenu({
 
           <div className={styles.options}>
             <label className={styles.categoryLabel}>카테고리</label>
-            {["선택하지 않음", "자동차정비/유지", "문화/취미", "서적/문구", "의류", "요식업", "식당/카페"].map(
+            {["선택하지 않음", "서적/문구", "자동차정비/유지", "문화/취미", "식당/카페", "음식료품"].map(
               (category) => (
                 <button
                   key={category}
@@ -231,7 +230,7 @@ export default function CategoryMenu({
             <span className={styles.menuDescription}>카테고리는 1가지만 선택 가능합니다.</span>
           </div>
           <div className={styles.options}>
-            {['선택하지 않음', '자동차정비/유지', '문화/취미', '서적/문구', '의류', '요식업', '식당/카페'].map((category) => (
+            {["선택하지 않음", "서적/문구", "자동차정비/유지", "문화/취미", "식당/카페", "음식료품"].map((category) => (
               <button
                 key={category}
                 className={`${styles.optionButton} ${selectedCategory === category ? styles.selected : ''}`}
