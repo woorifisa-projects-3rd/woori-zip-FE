@@ -136,7 +136,7 @@ const checkUsernameAvailability = async () => {
     <div className={styles.wrapper}>
       <div className={styles.scrollContainer}>
         <div className={styles.container}>
-          <h1 className={styles.title}>회원정보 입력</h1>
+          <p className={styles.title}>회원정보 입력</p>
           <form className={styles.form} onSubmit={handleSubmit}>
             {/* 아이디 입력 */}
             <div className={styles.inputGroup}>
@@ -174,7 +174,6 @@ const checkUsernameAvailability = async () => {
             </div>
   
             <div className={styles.inputGroup}>
-              <label className={styles.label}>비밀번호 확인</label>
               <input
                 type="password"
                 placeholder="비밀번호 확인"

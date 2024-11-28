@@ -2,59 +2,21 @@
 import React from 'react';
 import { useState } from 'react';
 import styles from './AgreementPage.module.css';
+import { useRouter } from 'next/navigation';
 
 
 export default function Agreement() {
-    const [checkboxes, setCheckboxes] = useState({
-        all: false,
-        required1: false,
-        required2: false,
-    });
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const router = useRouter();
 
-    const handleCheckboxChange = (event) => {
-        const { username, checked } = event.target;
-        setCheckboxes((prevCheckboxes) => ({
-            ...prevCheckboxes,
-            [username]: checked,
-        }));
-    };
-
-    const isAllChecked = Object.values(checkboxes).every(Boolean);
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        if (!isAllChecked) return;
-
-        setIsSubmitting(true);
-
-        try {
-            const response = await fetch('/api/submit-agreement', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ agreement: 'all_checked' }),
-            });
-
-            if (response.ok) {
-                alert('약관동의 제출 완료');
-            } else {
-                alert('약관동의 제출 실패');
-            }
-        } catch (error) {
-            console.error('Error submitting agreement:', error);
-            alert('An error occurred while submitting agreement.');
-        } finally {
-            setIsSubmitting(false);
-        }
+    const handleSignupClick = (e) => {
+      e.preventDefault();
+      router.push('/user/signup');
     };
 
     return (
         <div className={styles.pageContainer}>
             <div className={styles.container}>
                 <div className={styles.agreementBox}>
-                    <p className={styles.title}>약관 동의</p>
                     <div className={styles.agreementItem}>
                         <label className={styles.checkboxLabel}>
                             <input type="checkbox" className={styles.checkbox} />
@@ -84,7 +46,6 @@ export default function Agreement() {
                                 </p>
                             </div>
                         </div>
-                        <button className={styles.detailButton}>자세히</button>
                     </div>
                     <div className={styles.agreementItemSub}>
                         <label className={styles.checkboxLabel}>
@@ -105,10 +66,9 @@ export default function Agreement() {
                                 </p>
                             </div>
                         </div>
-                        <button className={styles.detailButton}>자세히</button>
                     </div>
 
-                    <button className={styles.submitButton}>
+                    <button className={styles.submitButton} onClick={handleSignupClick}>
                         약관 동의하기
                     </button>
                 </div>

@@ -44,3 +44,10 @@ export const validateDateOfBirth = (birthday) => {
     ? ''
     : '생년월일은 2000-01-01 형식이어야 합니다.';
 };
+
+export const validateEmail = (email) => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email)
+  ? ''
+  : '이메일은 형식이어야 합니다.  ex)woorizip@woorizip.com';
+}
