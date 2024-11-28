@@ -1,0 +1,306 @@
+.container {
+    padding: 20px 20px 100px;
+    max-width: 1000px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 24px;
+    color: #333;
+    font-weight: 600;
+}
+
+.chartSection {
+    display: flex;
+    justify-content: center;
+    gap: 130px;
+    margin-top: 41px;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+.chartBox {
+    width: 300px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.chartTitle {
+    font-size: 16px;
+    color: #333;
+    margin-top: 20px;
+    width: 300px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.analysisResult {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: -110px;
+    text-align: center;
+}
+
+.resultTitle {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.highlightCategory {
+    color: #5778A3;
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.categorySection {
+    margin-top: 48px;
+    padding: 24px;
+    background: #f5f5f5;
+    border-radius: 12px;
+}
+
+.categoryTitle {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.categoryGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.categoryButton {
+    padding: 16px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.categoryButton:hover {
+    border-color: #5778A3;
+}
+
+.categoryButton.selected {
+    border-color: #5778A3;
+    background: #5778A3;
+    color: white;
+}
+
+.infoSection {
+    display: flex;
+    justify-content: space-around;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 24px;
+}
+
+.infoItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #5778A3;
+}
+
+.distanceInput {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.numberInput {
+    width: 80px;
+    padding: 8px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.numberInput:focus {
+    outline: none;
+    border-color: #5778A3;
+}
+
+.unit {
+    font-size: 1rem;
+    color: #333;
+}
+
+/* 지역 선택 관련 스타일 */
+.locationSection {
+    background-color: #f5f5f5;
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 24px;
+}
+
+.locationTitle {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.locationGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.districtSelect {
+    width: 200px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: white;
+}
+
+.dongButtons {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+}
+
+.dongButton {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.dongButton:hover {
+    border-color: #5778A3;
+    background-color: #f8f9fa;
+}
+
+.dongButton.selected {
+    background-color: #5778A3;
+    color: white;
+    border-color: #5778A3;
+}
+
+/* 하단 버튼 스타일 */
+.buttonGroup {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 40px;
+}
+
+.primaryButton, .secondaryButton {
+    padding: 14px 40px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.primaryButton {
+    background-color: #5778A3;
+    color: white;
+}
+
+.primaryButton:hover {
+    background-color: #4a6a9d;
+}
+
+.secondaryButton {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.secondaryButton:hover {
+    background-color: #d0d0d0;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px 20px 60px;
+    }
+    
+    .chartSection {
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .chartBox {
+        width: 100%;
+        max-width: 260px;
+    }
+    
+    .title {
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .chartTitle {
+        width: 260px;
+        font-size: 14px;
+    }
+
+    .categoryGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .categoryButton {
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+
+    .infoSection {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .categoryTitle {
+        font-size: 18px;
+    }
+
+    .numberInput {
+        width: 60px;
+        padding: 6px;
+        font-size: 0.9rem;
+    }
+
+    .unit {
+        font-size: 0.9rem;
+    }
+
+    .dongButtons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .buttonGroup {
+        flex-direction: column;
+        padding: 0 20px;
+    }
+
+    .primaryButton, .secondaryButton {
+        width: 100%;
+    }
+}
