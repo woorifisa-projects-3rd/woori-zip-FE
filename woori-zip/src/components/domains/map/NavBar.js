@@ -4,6 +4,8 @@ import CategoryMenu from "./CategoryMenu";
 import RangeSlider from "./RangeSlider";
 import styles from "../map/NavBar.module.css";
 import Link from 'next/link';
+import { fetchHousesByMapStateApi, fetchHousesByFinalFilterApi } from "@/app/api/map/houseApi";
+
 
 export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
     const [isCategoryVisible, setCategoryVisible] = useState(false);
@@ -50,94 +52,49 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
     // 지도 상태가 변경될 때 데이터 요청
     useEffect(() => {
         if (!mapState || JSON.stringify(mapState) === JSON.stringify(prevMapState)) {
-            return; // 이전 상태와 동일하면 요청하지 않음
+            return;
         }
-
-        const fetchHousesByMapState = async () => {
-            const params = new URLSearchParams();
-            params.append("level", mapState.zoomLevel || 7);
-            params.append("southWestLatitude", mapState.southWestLatitude || 0);
-            params.append("southWestLongitude", mapState.southWestLongitude || 0);
-            params.append("northEastLatitude", mapState.northEastLatitude || 0);
-            params.append("northEastLongitude", mapState.northEastLongitude || 0);
-
-            // 동일
-            if (houseType) params.append("houseType", houseType);
-            if (rentType !== "모두") params.append("housingExpenses", rentType);
-            params.append("minDeposit", depositRange[0]);
-            params.append("maxDeposit", depositRange[1]);
-            params.append("minMonthlyRentFee", priceRange[0]);
-            params.append("maxMonthlyRentFee", priceRange[1]);
-            params.append("minMaintenanceFee", maintenanceRange[0]);
-            params.append("maxMaintenanceFee", maintenanceRange[1]);
-            if (categoryState.category !== "선택하지 않음") {
-                params.append("category", categoryState.category);
-            }
-            if (categoryState.walkingDistance > 0) params.append("walking", categoryState.walkingDistance);
-            if (categoryState.facilityCount > 0) params.append("facilityCount", categoryState.facilityCount);
-
-            const apiUrl = `http://localhost:8080/api/v1/houses?${params.toString()}`;
-            console.log(`지도가 움직였을 때 요청 URL: ${apiUrl}`);
-
-            try {
-                const response = await fetch(apiUrl);
-                if (!response.ok) throw new Error("지도 이동 시 데이터 로드 실패");
-
-                const data = await response.json();
+    
+        fetchHousesByMapStateApi({
+            mapState,
+            houseType,
+            rentType,
+            depositRange,
+            priceRange,
+            maintenanceRange,
+            categoryState,
+        })
+            .then((data) => {
                 console.log("지도 상태에 맞는 데이터:", data);
-                onHouseInfoUpdate(data); // 부모 컴포넌트로 데이터 전달
-                setPrevMapState(mapState); // 이전 상태 갱신
-            } catch (error) {
-                console.error("지도 이동 API 호출 오류:", error);
-            }
-        };
-
-        fetchHousesByMapState();
+                
+                // 기존 북마크 상태와 병합
+                const updatedData = data.houseContents.map((house) => ({
+                    ...house,
+                    bookmark: house.bookmark ?? false, // 북마크 상태 유지
+                }));
+                
+                // 상태 업데이트
+                onHouseInfoUpdate({
+                    ...data,
+                    houseContents: updatedData,
+                });
+    
+                setPrevMapState(mapState);
+            });
     }, [mapState, onHouseInfoUpdate, prevMapState]);
+    
 
     // 최종 적용 버튼 클릭 시 동작
     const handleFinalApply = () => {
-        const params = new URLSearchParams();
-
-        // 조건부로 파라미터 추가
-        params.append("level", mapState.zoomLevel || 7);
-        params.append("southWestLatitude", mapState.southWestLatitude || 0);
-        params.append("southWestLongitude", mapState.southWestLongitude || 0);
-        params.append("northEastLatitude", mapState.northEastLatitude || 0);
-        params.append("northEastLongitude", mapState.northEastLongitude || 0);
-        if (houseType) params.append("houseType", houseType);
-        if (rentType !== "모두") params.append("housingExpenses", rentType);
-        params.append("minDeposit", depositRange[0]);
-        params.append("maxDeposit", depositRange[1]);
-        params.append("minMonthlyRentFee", priceRange[0]);
-        params.append("maxMonthlyRentFee", priceRange[1]);
-        params.append("minMaintenanceFee", maintenanceRange[0]);
-        params.append("maxMaintenanceFee", maintenanceRange[1]);
-        if (
-            categoryState.category &&
-            categoryState.category !== "선택하지 않음" &&
-            categoryState.category !== undefined &&
-            categoryState.category !== "undefined"
-        ) {
-            params.append("category", categoryState.category);
-
-            // category가 유효한 경우에만 walkingDistance와 facilityCount 추가
-            if (categoryState.walkingDistance > 0) {
-                params.append("walking", categoryState.walkingDistance);
-            }
-            if (categoryState.facilityCount > 0) {
-                params.append("facilityCount", categoryState.facilityCount);
-            }
-        }
-
-        const apiUrl = `http://localhost:8080/api/v1/houses?${params.toString()}`;
-        console.log(`최종 요청 URL: ${apiUrl}`);
-
-        fetch(apiUrl)
-            .then((response) => {
-                if (!response.ok) throw new Error("최종 데이터 로드 실패");
-                return response.json();
-            })
+        fetchHousesByFinalFilterApi({
+            mapState,
+            houseType,
+            rentType,
+            depositRange,
+            priceRange,
+            maintenanceRange,
+            categoryState,
+        })
             .then((data) => {
                 console.log("최종 필터 데이터:", data);
                 onHouseInfoUpdate(data);
