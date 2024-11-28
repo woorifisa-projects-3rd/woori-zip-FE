@@ -16,7 +16,7 @@
   margin-bottom: 50px;
   margin-top: 30px;
   font-size: 16px;
-  color: var(--color-text-dark);
+  color: #0070f3;
   line-height: 1.5;
   font-weight: bold;
 }
@@ -25,9 +25,9 @@
   width: 100%;
   padding: 10px;
   margin: 10px 0;
-  font-size: 14px;
+  font-size: 12px;
   color: white;
-  background-color: var(--color-blue);
+  background-color: #0070f3;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -40,9 +40,9 @@
 
 .inputField {
   width: 100%;
-  padding: 8px;
+  padding: 5px;
   border-radius: 5px;
-  border: 1px solid var(--color-blue);
+  border: 1px solid #0070f3;
   margin-bottom: 10px;
   background-color: white;
   font-size: 12px;
@@ -54,19 +54,22 @@
   margin-bottom: 15px;
 }
 
-.links.p {
-  font-size: 10px;
+.links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .link {
-  font-size: 10px;
-  color: var(--color-blue);
+  font-size: 14px;
+  color:#0070f3;
   font: bold;
   display: inline;
+  margin-left: 20px;
 }
 
 .link:hover {
-  color: var(--color-blue-dark);
+  color: #0065C4;
   font: bold;
   text-decoration: underline;
 }
@@ -74,4 +77,17 @@
 .logo {
   margin-bottom: 20px;
 
+}
+
+.sectionKeyword {
+  font-size: 12px;
+  margin-bottom: 5px;
+  text-align: left;
+  color: #0070f3;
+}
+
+.pText {
+  font-size: 12px;
+  font-weight: lighter;
+  color: #888888;
 }

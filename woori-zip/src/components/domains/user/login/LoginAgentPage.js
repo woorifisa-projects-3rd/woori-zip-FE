@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './LoginPage.module.css';
 import SubmitButton from './SubmitButton';
-import { validateUsername, validatePassword } from './validation';
+import { validateUsername, validatePassword, validateEmail } from './validation';
 
-function Login({onLogin}) {
-  const [username, setUsername] = useState('');
+function Login({ onLogin }) {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({ username: '', password: '' });
   const [loginError, setLoginError] = useState('');
@@ -20,10 +20,10 @@ function Login({onLogin}) {
   };
 
   const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+    setEmail(e.target.value);
     setErrors((prevErrors) => ({
       ...prevErrors,
-      username: validateUsername(e.target.value),
+      email: validateEmail(e.target.value),
     }));
   };
 
@@ -37,13 +37,13 @@ function Login({onLogin}) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const usernameError = validateUsername(username);
+    const emailError = validateEmail(email);
     const passwordError = validatePassword(password);
 
-    if (!usernameError && !passwordError) {
+    if (!emailError && !passwordError) {
       try {
         const result = await onLogin(
-          username,
+          email,
           password,
         );
         if (result?.error) {
@@ -56,7 +56,7 @@ function Login({onLogin}) {
         setLoginError(error.message);
       }
     } else {
-      setErrors({ username: usernameError, password: passwordError });
+      setErrors({ email: emailError, password: passwordError });
     }
   };
 
@@ -65,21 +65,21 @@ function Login({onLogin}) {
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit}>
           <div>
-          <p className={styles.sectionKeyword} style={{ fontSize: '14px', marginBottom: '5px', textAlign: 'left'}}>아이디</p>
+            <p className={styles.sectionKeyword}>이메일</p>
             <input
               type="text"
-              placeholder="아이디를 입력하세요"
-              value={username}
+              placeholder="이메일을 입력하세요"
+              value={email}
               onChange={handleUsernameChange}
               className={styles.inputField}
             />
-            {errors.username && (
-              <div className={styles.errorMessage}>{errors.username}</div>
+            {errors.email && (
+              <div className={styles.errorMessage}>{errors.email}</div>
             )}
           </div>
 
           <div>
-            <p className={styles.sectionKeyword} style={{ fontSize: '14px', marginBottom: '5px', textAlign: 'left'}}>비밀번호</p>
+            <p className={styles.sectionKeyword}>비밀번호</p>
             <input
               type="password"
               placeholder="비밀번호를 입력하세요"
@@ -100,6 +100,7 @@ function Login({onLogin}) {
         </form>
 
         <div className={styles.links}>
+          <p className={styles.pText}>아직 관리자 아니신가요?</p>
           <a href="#" className={styles.link} onClick={handleSignupClick}>가입하기</a>
         </div>
       </div>

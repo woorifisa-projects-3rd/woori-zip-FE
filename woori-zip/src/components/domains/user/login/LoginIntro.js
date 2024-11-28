@@ -3,22 +3,27 @@
 import React, { useState } from "react";
 import Tab from "./Tab";
 import styles from "./LoginIntro.module.css";
-import LoginPage from "./LoginPage.js";
+import LoginAdminPage from "./LoginAdminPage";
+import LoginAgentPage from "./LoginAgentPage";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginIntro() {
-  const [activeTab, setActiveTab] = useState(0); // 활성 탭 상태 관리
+  // const [activeTab, setActiveTab] = useState(0); // 활성 탭 상태 관리
 
   // 탭 데이터
-  const tabs = [
-    { label: "회원", id: 0 },
-    { label: "중개자", id: 1 },
-    { label: "관리자", id: 2 },
-  ];
+  // const tabs = [
+  //   { label: "회원", id: 0 },
+  //   { label: "중개자", id: 1 },
+  //   { label: "관리자", id: 2 },
+  // ];
+
+  const searchParams = useSearchParams();
+  // console.log(typeof searchParams.get('role'));
 
   // 탭 클릭에 따라 렌더링할 UI
   const renderContent = () => {
-    switch (activeTab) {
-      case 0: // 회원
+    switch (searchParams.get('role')) {
+      case '0': // 회원
         return (
           <div className={styles.loginContent}>
             <img
@@ -36,16 +41,16 @@ export default function LoginIntro() {
             <button className={styles.loginButton}>우리은행으로 로그인</button>
           </div>
         );
-      case 1: // 중개자
+      case '1': // 중개자
         return (
           <div className={styles.loginContent}>
-            <LoginPage />
+            <LoginAdminPage />
           </div>
         );
-      case 2: // 관리자
+      case '2': // 관리자
         return (
           <div className={styles.loginContent}>
-            <LoginPage />
+            <LoginAgentPage />
           </div>
         );
       default:
@@ -55,14 +60,13 @@ export default function LoginIntro() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.tabBox}>
-        {/* 탭 컴포넌트 */}
+      {/* <div className={styles.tabBox}>
         <Tab
           tabs={tabs}
           activeTab={activeTab}
-          onTabClick={(id) => setActiveTab(id)} // 클릭한 탭 ID로 상태 변경
+          onTabClick={(id) => setActiveTab(id)}
         />
-      </div>
+      </div> */}
       <div className={styles.componentBox}>
         {/* 선택된 탭에 따른 콘텐츠 */}
         <div className={styles.disignSpace}></div>

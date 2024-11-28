@@ -1,0 +1,34 @@
+.mainBox {
+    width: 80%;
+    height: 80%;
+    background-color: #FFFFFF;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.mainBoxLine {
+    width: 330px;
+    height: 350px;
+}
+
+.tabBox {
+    width: 100%;
+    height: 40px;
+    background-color: blue;
+    
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.content {
+    width: 100%;
+    height: 300px;
+    background-color: chartreuse;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
