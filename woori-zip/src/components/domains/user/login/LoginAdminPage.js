@@ -9,14 +9,14 @@ import { validateUsername, validatePassword, validateEmail } from './validation'
 function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({ username: '', password: '' });
+  const [errors, setErrors] = useState({ email: '', password: '' });
   const [loginError, setLoginError] = useState('');
 
   const router = useRouter();
 
   const handleSignupClick = (e) => {
     e.preventDefault();
-    router.push('/user/register');
+    router.push('/user/register?role=1');
   };
 
   const handleUsernameChange = (e) => {
