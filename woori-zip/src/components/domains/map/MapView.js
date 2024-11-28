@@ -8,12 +8,12 @@ const MapView = ({ filters, locations = [], facilities = [],mapViewData, onMapCh
   const overlays = useRef([]);
   const markers = useRef([]);
   const facilityMarkers = useRef([]);
-  useEffect(() => {
-    if (mapViewData) {
-      console.log("MapView에서 받은 데이터:", mapViewData);
-      // 필요한 데이터 처리 로직 추가
-    }
-  }, [mapViewData]);
+  // useEffect(() => {
+  //   if (mapViewData) {
+  //     console.log("MapView에서 받은 데이터:", mapViewData);
+  //     // 필요한 데이터 처리 로직 추가
+  //   }
+  // }, [mapViewData]);
 
   useEffect(() => {
     if (!isMapLoaded.current) {
@@ -79,11 +79,6 @@ const MapView = ({ filters, locations = [], facilities = [],mapViewData, onMapCh
         console.log("Updated Facility Markers:", facilityMarkers.current);
       }
     }
-
-    if (onMapChange) {
-      onMapChange(mapState);
-    }
-
     // 줌 레벨에 따라 다른 데이터 업데이트
     if (zoomLevel >= 1 && zoomLevel <= 5) {
       displayMarkers(locations); // 마커 표시

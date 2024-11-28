@@ -16,8 +16,8 @@ const defaultFilters = {
   southWestLongitude: 126.8952,
   northEastLatitude: 37.6157,
   northEastLongitude: 127.0601,
-  houseType: "아파트",
   minDeposit: 0,
+  housetype: "아파트",
   maxDeposit: 1000000000,
   minMonthlyRentFee: 0,
   maxMonthlyRentFee: 2000000000,
@@ -32,7 +32,7 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [mapState, setMapState] = useState({ ...defaultFilters });
-  const [houseType, setHouseType] = useState("아파트");
+  const [houseType, setHouseType] = useState(defaultFilters.houseType);
   const [houseInfo, setHouseInfo] = useState({ houseContents: [], counts: [] });
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [houseData, setHouseData] = useState([]);
@@ -41,6 +41,15 @@ export default function Home() {
     lat: 37.5189,
     lng: 126.8952,
   });
+
+  useEffect(() => {
+    // 세션 스토리지에서 houseType 가져오기
+    const savedHouseType = sessionStorage.getItem("selectedHouseType");
+    console.log(savedHouseType);
+    if (savedHouseType) {
+      setHouseType(savedHouseType); // 초기값 설정
+    }
+  }, []);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 393);
