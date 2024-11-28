@@ -7,6 +7,7 @@ import Image from "next/image";
 
 export default function PropertyGrid() {
   const [isMobile, setIsMobile] = useState(false);
+  const [selectedHouseType, setSelectedHouseType] = useState("아파트");
 
   useEffect(() => {
     const handleResize = () => {
@@ -16,6 +17,14 @@ export default function PropertyGrid() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const handleCardClick = (houseType) => {
+    if (houseType !== selectedHouseType) {
+      sessionStorage.setItem("selectedHouseType", houseType); // 세션 저장
+      setSelectedHouseType(houseType); // 상태 업데이트
+    }
+  };
+  
 
   return (
     <div className={styles.container}>
@@ -29,7 +38,7 @@ export default function PropertyGrid() {
       <div className={styles.property_grid}>
         <div className={styles.property_section}>
           {/* 카드 1 */}
-          <Link href="/map" className={styles.property_card}>
+          <Link href="/map" className={styles.property_card} onClick={() => handleCardClick("원/투룸")}>
             <div>
               <h2>원/투룸</h2>
               <p>
@@ -45,7 +54,7 @@ export default function PropertyGrid() {
           </Link>
 
           {/* 카드 2 */}
-          <Link href="/map" className={styles.property_card}>
+          <Link href="/map" className={styles.property_card} onClick={() => handleCardClick("오피스텔")}>
             <div>
               <h2>오피스텔</h2>
               <p>
@@ -62,7 +71,7 @@ export default function PropertyGrid() {
           </Link>
 
           {/* 카드 3 */}
-          <Link href="/map" className={styles.property_card}>
+          <Link href="/map" className={styles.property_card} onClick={() => handleCardClick("주택/빌라")}>
             <div>
               <h2>주택/빌라</h2>
               <p>
@@ -78,7 +87,7 @@ export default function PropertyGrid() {
           </Link>
 
           {/* 카드 4 */}
-          <Link href="/map" className={styles.property_card}>
+          <Link href="/map" className={styles.property_card} onClick={() => handleCardClick("아파트")}>
             <div>
               <h2>아파트</h2>
               <p>

@@ -13,14 +13,13 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
     const [isRentTypeVisible, setRentTypeVisible] = useState(false);
     const [isPriceVisible, setPriceVisible] = useState(false);
 
-    const [depositRange, setDepositRange] = useState([0, 1000000000]); // 보증금 범위
-    const [priceRange, setPriceRange] = useState([0, 2000000000]); // 월세 범위
-    const [maintenanceRange, setMaintenanceRange] = useState([0, 5000000]); // 관리비 범위
+    const [depositRange, setDepositRange] = useState([0, 1000000000]); 
+    const [priceRange, setPriceRange] = useState([0, 2000000000]); 
+    const [maintenanceRange, setMaintenanceRange] = useState([0, 5000000]); 
     const [rentType, setRentType] = useState("모두");
-    const [prevMapState, setPrevMapState] = useState(null); // 이전 지도 상태 저장
-
+    const [prevMapState, setPrevMapState] = useState(null); 
     const [categoryState, setCategoryState] = useState({
-        category: "선택하지 않음", // 다른 분류를 관리
+        category: "선택하지 않음", 
         walkingDistance: 0,
         facilityCount: 0,
     });
@@ -30,7 +29,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
     const rentTypeButtonRef = useRef(null);
     const priceButtonRef = useRef(null);
 
-    const navRef = useRef(null); // NavBar 전체를 감싸는 ref
+    const navRef = useRef(null); 
 
     // 외부 클릭 이벤트 처리
     useEffect(() => {
@@ -65,12 +64,9 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
             categoryState,
         })
             .then((data) => {
-                console.log("지도 상태에 맞는 데이터:", data);
-                
-                // 기존 북마크 상태와 병합
                 const updatedData = data.houseContents.map((house) => ({
                     ...house,
-                    bookmark: house.bookmark ?? false, // 북마크 상태 유지
+                    bookmark: house.bookmark ?? false, 
                 }));
                 
                 // 상태 업데이트
