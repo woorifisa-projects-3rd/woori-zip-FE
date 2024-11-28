@@ -12,10 +12,12 @@ export default function Tab({ tabs }) {
   // 현재 URL에서 `role` 값을 가져오되, 없으면 기본값 1로 설정
   const currentRole = searchParams.get('role') || "0";
 
+  const pathname = router.pathname;
+
   // 기본값을 적용하기 위해 URL을 강제로 변경
   useEffect(() => {
-    if (!searchParams.get('role')) {
-      router.replace(`/user/login?role=0`);
+    if (pathname === "/user/login" && !searchParams.get('role')) {
+      router.replace(`/user/login?role=0`);      
     }
   }, [searchParams, router]);
 
