@@ -8,11 +8,26 @@ import AnalysisController from './analysis.controller';
 export default function Analysis({ similarChartData, memberChartData, bestCategory }) {
     const [userName, setUserName] = useState('회원');
     const [activeCategory, setActiveCategory] = useState('');
-    const [walkingDistance, setWalkingDistance] = useState('');
-    const [facilitiesCount, setFacilitiesCount] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
     const [selectedDong, setSelectedDong] = useState('');
-    const bestCategoryKorean = AnalysisController.getBestCategoryName(bestCategory);
+    const [selectedData, setSelectedData] = useState({
+        district: '',
+        dong: '',
+        category: ''
+    });
+
+    const categories = [
+        { id: 'CLOTH', label: '의류' },
+        { id: 'BOOK', label: '서적/문구' },
+        { id: 'GROCERY', label: '음식료품' },
+        { id: 'CULTURE', label: '문화/취미' },
+        { id: 'FOOD', label: '식당/카페' },
+        { id: 'CAR', label: '자동차정비/유지' },
+    ];
+
+    const bestCategoryKorean = bestCategory ? 
+        AnalysisController.getBestCategoryName(bestCategory) : 
+        '서적/문구';
 
     useEffect(() => {
         const storedUserName = window.localStorage.getItem('userName');
@@ -26,7 +41,67 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
     };
 
     const handleCategoryChange = (category) => {
-        setActiveCategory(category); // 선택된 카테고리 업데이트
+        if (!category) return;
+        
+        setActiveCategory(category);
+        setSelectedData(prev => ({
+            ...prev,
+            category: category
+        }));
+    };
+
+    const handleDistrictChange = (e) => {
+        const district = e.target.value;
+        setSelectedDistrict(district);
+        setSelectedDong('');
+        setSelectedData(prev => ({
+            ...prev,
+            district,
+            dong: ''
+        }));
+    };
+
+    const handleDongSelect = (dong) => {
+        setSelectedDong(dong);
+        setSelectedData(prev => ({
+            ...prev,
+            dong
+        }));
+    };
+
+    const handleSearch = () => {
+        const searchData = {
+            selectedCategory: {
+                id: activeCategory,
+                name: categories.find(cat => cat.id === activeCategory)?.label || ''
+            },
+            location: {
+                district: selectedDistrict,
+                dong: selectedDong
+            },
+            analysisResults: {
+                bestCategory: {
+                    id: bestCategory,
+                    name: bestCategoryKorean
+                },
+                similarChartData: similarChartData,
+                memberChartData: memberChartData
+            },
+            userInfo: {
+                name: userName
+            },
+            timestamp: new Date().toISOString()
+        };
+
+        console.group('🏠 집 검색 데이터');
+        console.log('📊 선택된 카테고리:', searchData.selectedCategory);
+        console.log('📍 선택된 지역:', searchData.location);
+        console.log('📈 분석 결과:', searchData.analysisResults);
+        console.log('👤 사용자 정보:', searchData.userInfo);
+        console.log('⏰ 검색 시간:', searchData.timestamp);
+        console.groupEnd();
+
+        localStorage.setItem('searchData', JSON.stringify(searchData));
     };
 
     return (
@@ -36,7 +111,7 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
             <div className={styles.chartSection}>
                 <div className={styles.chartBox}>
                     <Chart
-                        data={similarChartData}
+                        data={similarChartData || { items: [] }}
                         activeCategory={activeCategory}
                         onCategoryChange={handleCategoryChange}
                     />
@@ -47,7 +122,7 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
 
                 <div className={styles.chartBox}>
                     <Chart
-                        data={memberChartData}
+                        data={memberChartData || { items: [] }}
                         activeCategory={activeCategory}
                         onCategoryChange={handleCategoryChange}
                     />
@@ -67,14 +142,7 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
             <div className={styles.categorySection}>
                 <h3 className={styles.categoryTitle}>원하시는 인프라 카테고리를 선택하세요!</h3>
                 <div className={styles.categoryGrid}>
-                    {[
-                        { id: 'CLOTH', label: '의류' },
-                        { id: 'BOOK', label: '서적/문구' },
-                        { id: 'GROCERY', label: '음식료품' },
-                        { id: 'CULTURE', label: '문화/취미' },
-                        { id: 'FOOD', label: '식당/카페' },
-                        { id: 'CAR', label: '자동차정비/유지' },
-                    ].map((category) => (
+                    {categories.map((category) => (
                         <button
                             key={category.id}
                             className={`${styles.categoryButton} ${
@@ -94,7 +162,7 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
                     <div className={styles.districtWrapper}>
                         <select
                             value={selectedDistrict}
-                            onChange={(e) => setSelectedDistrict(e.target.value)}
+                            onChange={handleDistrictChange}
                             className={styles.districtSelect}
                         >
                             <option value="">구 선택</option>
@@ -111,7 +179,7 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
                         {generateDummyDongs().map((dong, index) => (
                             <button
                                 key={index}
-                                onClick={() => setSelectedDong(dong)}
+                                onClick={() => handleDongSelect(dong)}
                                 className={`${styles.dongButton} ${
                                     selectedDong === dong ? styles.selected : ''
                                 }`}
@@ -124,10 +192,17 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
             </div>
 
             <div className={styles.buttonGroup}>
-                <button className={styles.primaryButton} onClick={() => console.log('집 검색하기')}>
+                <button 
+                    className={styles.primaryButton} 
+                    onClick={handleSearch}
+                    disabled={!selectedDistrict || !selectedDong || !activeCategory}
+                >
                     집 검색하기
                 </button>
-                <button className={styles.secondaryButton} onClick={() => console.log('메인으로')}>
+                <button 
+                    className={styles.secondaryButton} 
+                    onClick={() => window.location.href = '/'}
+                >
                     메인으로
                 </button>
             </div>
