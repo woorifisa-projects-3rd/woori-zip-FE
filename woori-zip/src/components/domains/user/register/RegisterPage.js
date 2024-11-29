@@ -229,7 +229,7 @@ const checkUsernameAvailability = async () => {
               className={styles.submitButton} 
               disabled={!isAvailable}
             >
-              정보 불러오기
+              가입하기
             </button>
           </form>
         </div>
