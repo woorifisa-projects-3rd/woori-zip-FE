@@ -1,10 +1,3 @@
-export const validateUsername = (name) => {
-  const usernameRegex = /^[a-zA-Z0-9]{5,}$/;
-  return usernameRegex.test(name)
-    ? ''
-    : '아이디는 5자 이상이며, 영문 또는 숫자만 포함해야 합니다.';
-};
-
 export const validatePassword = (pass) => {
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]|.*\d|.*\W)|(?=.*[A-Z])(?=.*\d|.*\W)|(?=.*\d)(?=.*\W|.*[a-z]).{8,}$/;
   return passwordRegex.test(pass) && pass.length >= 8
@@ -50,4 +43,11 @@ export const validateEmail = (email) => {
   return emailRegex.test(email)
   ? ''
   : '이메일은 형식이어야 합니다.  ex)woorizip@woorizip.com';
+}
+
+export const validatAdminNum = (adminNum) => {
+  const adminNumRegx = /^[0-9가-힣\s]+$/;
+  return adminNumRegx.test(adminNum)
+  ? ''
+  : '중개업자 번호 형식이어야 합니다.'
 }
