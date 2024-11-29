@@ -2,6 +2,40 @@
 
 import { instance } from "./instance";
 
+export const test = async () => {
+  // console.log('test api 요청 시작', code);
+  const response = await instance(`test`, {
+    credentials: 'include',
+    method: 'GET',
+  });
+
+  if (response.error) {
+    console.error('SignIn error:', response.error);
+    throw new Error('Failed to SignIn');
+  }
+  // const refreshToken = cookie.split(';')[0].split('=')[1];
+
+};
+
+export const wooriSignIn = async (code) => {
+  console.log('sever code', code);
+  const response = await instance(`oauth?code=${code}`, {
+    credentials: 'include',
+    method: 'GET',
+  });
+
+  if (response.error) {
+    console.error('SignIn error:', response.error);
+    throw new Error('Failed to SignIn');
+  }
+
+  const { accessToken, name } = response;
+  // const refreshToken = cookie.split(';')[0].split('=')[1];
+
+  const refreshToken = 'refreshToken';
+  return { accessToken, name };
+};
+
 export const signIn = async ({ username, password }) => {
     const response = await instance('sign-in', {
       body: JSON.stringify({ username, password }),
