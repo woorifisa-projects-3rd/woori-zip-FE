@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import styles from './BottomCard.module.css'; 
 import Link from "next/link"; 
 
-
 const BottomCard = ({loanRecommendations}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
@@ -12,7 +11,8 @@ const BottomCard = ({loanRecommendations}) => {
   if (!loanRecommendations || !Array.isArray(loanRecommendations)) {
     return <p>아이템이 비어있습니다</p>;
   }
-  loanRecommendations = loanRecommendations.slice(1);
+
+
   // 터치 이벤트 핸들러들
   const onTouchStart = (e) => {
     setTouchEnd(null);
@@ -41,19 +41,19 @@ const BottomCard = ({loanRecommendations}) => {
   // 다음/이전 슬라이드 핸들러
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
-      Math.min(loanRecommendations.length - 2, prevIndex + 2)
+      Math.min(loanRecommendations.length - 1, prevIndex + 1)
     );
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prevIndex) => Math.max(0, prevIndex - 2));
+    setCurrentIndex((prevIndex) => Math.max(0, prevIndex - 1));
   };
 
   // 총 슬라이드 수 계산
-  const totalSlides = Math.ceil(loanRecommendations.length / 2);
+  const totalSlides = loanRecommendations.length;
 
-  // 현재 보여줄 카드들만 선택
-  const visibleCards = loanRecommendations.slice(currentIndex, currentIndex + 2);
+  // 현재 보여줄 카드만 선택
+  const visibleCard = loanRecommendations[currentIndex];
 
   return (
     <div className={styles.fullBottomCard}>
@@ -66,22 +66,45 @@ const BottomCard = ({loanRecommendations}) => {
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
           >
-            {visibleCards.map((item) => (
-              <div key={item.id} className={styles.cardItem}>
-                <Link href = {`/loan/loanDetail/${item.id}`}>
-                  <div className={styles.imageContainer}>
-                    <img
-                      className={styles.cardImage}
-                      src={item.image}
-                      alt={`Item ${item.id}`}
-                    />
+        <div key={visibleCard.id} className={styles.cardItem}>
+          <Link href={`/loan/loanDetail/${visibleCard.id}`}>
+          <div className={styles.cardTopContent}>
+            <div className={styles.cardContent}>
+              <div className={styles.loanType}>전세자금대출</div>
+              <div className={styles.loanName}>우리 청년 맞춤형 월세대출</div>
+              <div className={styles.loanSummary}>
+                <div className={styles.loanTextBox1}>
+                  <span className={styles.loanTarget}>대출대상</span>
+                  <div className={styles.loanTargetText} title="보증신청일 기준 민법상 성년으로 만 34세 이하인 무주택 세대주 또는 예비세대주 (월세보증금액이 1억원 이하, 월세금 70만원 이하)">
+                    보증신청일 기준 민법상 성년으로 만 34세 이하인 무주택 세대주 또는 예비세대주 (월세보증금액이 1억원 이하, 월세금 70만원 이하)
                   </div>
-                  <div className={styles.cardContent}>
-                    <button className={styles.detailButton}>상세보기</button>
+                </div>
+                <p></p>
+                <div className={styles.loanTextBox2}>
+                  <span className={styles.loanDate}>대출기간</span>
+                  <div className={styles.loanDateText} title="최대 13년(거치기간 : 최대 8년, 분할상환기간 : 3년 또는 5년)">
+                    최대 13년(거치기간 : 최대 8년, 분할상환기간 : 3년 또는 5년)
                   </div>
-                </Link>
+                </div>
+                <p></p>
+                <div className={styles.loanTextBox3}>
+                  <span className={styles.loanLimit}>대출한도</span>
+                  <div className={styles.loanLimitText} title="최대 12백만원(월 최대 50만원 이내 월세금 지급 예정금액 및 대환대출 금액 이내)">
+                    최대 12백만원(월 최대 50만원 이내 월세금 지급 예정금액 및 대환대출 금액 이내)
+                  </div >
+                </div>
               </div>
-            ))}
+            </div>
+            <div className={styles.imageContainer}>
+              <img
+                className={styles.cardImage}
+                src={visibleCard.image}
+                alt={`Item ${visibleCard.id}`}
+              />
+            </div>
+            </div>
+          </Link>
+        </div>
           </div>
 
           {currentIndex > 0 && (
@@ -94,7 +117,7 @@ const BottomCard = ({loanRecommendations}) => {
             </button>
           )}
 
-          {currentIndex < loanRecommendations.length - 2 && (
+          {currentIndex < loanRecommendations.length - 1 && (
             <button
               onClick={handleNext}
               className={`${styles.navButton} ${styles.next}`}
@@ -108,16 +131,15 @@ const BottomCard = ({loanRecommendations}) => {
             {Array.from({ length: totalSlides }).map((_, index) => (
               <button
                 key={index}
-                onClick={() => setCurrentIndex(index * 2)}
+                onClick={() => setCurrentIndex(index)}
                 className={`${styles.dotButton} ${
-                  currentIndex / 2 === index ? styles.active : ""
+                  currentIndex === index ? styles.active : ""
                 }`}
                 aria-label={`슬라이드 ${index + 1}로 이동`}
               />
             ))}
           </div>
         </div>
-
       </div>
     </div>
   );
