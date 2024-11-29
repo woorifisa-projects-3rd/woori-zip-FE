@@ -26,7 +26,7 @@ const fetchInstance = async (url, options) => {
   }
 
   // if (accessToken) {
-    headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MTEsIm1lbWJlclJvbGUiOiJNRU1CRVIiLCJpc3MiOiJ3b29yaXppcCIsImlhdCI6MTczMjcxMjQyNiwiZXhwIjoxNzMzMDcyNDI2fQ.KvUux5H3R4j-Kw0BDhtEyZnwswmu-VLgo7IlKjymhzs`
+    headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwibWVtYmVyUm9sZSI6Ik1FTUJFUiIsImlzcyI6Indvb3JpemlwIiwiaWF0IjoxNzMyODM3ODA3LCJleHAiOjE3MzY0Mzc4MDd9.fSR0HFmSL2qCZIeY3BoGn7o1XHYMYlDd4r8w98iU5Ig`
 
   try {
     const response = await fetch(`http://localhost:8080/api/v1/${url}`, {
