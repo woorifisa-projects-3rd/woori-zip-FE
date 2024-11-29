@@ -6,7 +6,7 @@
   background-color: white;
   overflow-x: hidden;
   overflow-y: hidden;
-  height: 500px;
+  height: 45vh;
 }
 
 .form {
@@ -233,7 +233,7 @@
   justify-content: center; /* 세로 방향 가운데 정렬 */
   align-items: center; /* 가로 방향 가운데 정렬 */
   width: 100%; /* 부모 요소 너비에 맞춤 */
-  margin-top: 30%;
+  margin-top: 10vh;
 }
 
 .text {
