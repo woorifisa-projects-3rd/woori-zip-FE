@@ -3,18 +3,20 @@
 import React, { useState } from 'react';
 import { useSearchParams } from "next/navigation";
 import styles from './Register.module.css';
-import { validatePassword, confirmPassword, validatAdminNum, validateName, validateEmail, validateDateOfBirth } from '../login/validation';
+import { validatePassword, confirmPassword, validateName, validateEmail, validateDateOfBirth, validatLicenseId } from '../login/validation';
+import { signUp } from "@/app/api/member/memberApi";
 
-function RegisterForm() {
+export default function RegisterForm() {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [isAvailable, setIsAvailable] = useState(false);
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
   const [birthday, setBirthday] = useState('');
-  const [adminNum, setAdminNum] = useState('');
-  const [gender, setGender] = useState("");
-  const [errors, setErrors] = useState({});
+  const [licenseId, setLicenseId] = useState('');
+  const [gender, setGender] = useState('MALE');
+  const [errors, setErrors] = useState({ email: ' ', name: ' ', password: ' ', rePassword: ' ', birthday: ' ', licenseId: ' ' });
+  const [roleName, setRoleName] = useState('');
 
   const searchParams = useSearchParams();
   const role = searchParams.get('role') || "0";
@@ -45,11 +47,11 @@ function RegisterForm() {
     }));
   };
 
-  const handleAdminNum = (e) => {
-    setAdminNum(e.target.value);
+  const handleLicenseId = (e) => {
+    setLicenseId(e.target.value);
     setErrors((prevErrors) => ({
       ...prevErrors,
-      adminNum: validatAdminNum(e.target.value),
+      licenseId: validatLicenseId(e.target.value),
     }));
   };
 
@@ -69,74 +71,56 @@ function RegisterForm() {
     }));
   };
 
-  const handleGenderClick = (gender) => {
-    setGender(gender);
+  const handleGenderChange = (e) => {
+    setGender(e.target.value);
   };
+
+  const setRole = () => {
+    if(role === '0') setRoleName('MEMBER');
+    if(role === '1') setRoleName('AGENT');
+    if(role === '2') setRoleName('ADMIN');
+  }
 
 
   // 이메일 중복 확인 요청 함수
-  const checkEmailAvailability = async () => {
-    try {
-      alert(email);
-      const response = await fetch(`http://localhost:8080/api/v1/member?username=${email}`);
-      const data = await response.json();
-      setIsAvailable(data.isSuccess);
-      if (data.isSuccess) {
-        alert("사용 가능한 이메일입니다.");
-      } else {
-        alert("이미 사용 중인 이메일입니다.");
-      }
-    } catch (error) {
-      console.error("이메일 중복 확인 중 오류 발생:", error);
-    }
+  const checkEmailAvailability = async (e) => {
+    
   };
 
   //제출 핸들러
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    // 유효성 검사
-    const validationErrors = {
-      email: validateEmail(email),
-      password: validatePassword(password),
-      name: validateName(name),
-      adminNum: validatAdminNum(adminNum),
-      birthday: validateDateOfBirth(birthday),
-    };
-
-    // 유효성 검사 오류가 없으면 제출
-    if (Object.values(validationErrors).every((error) => !error)) {
-      console.log("모든 항목 에러 없이 작성 완료");
-
-      try {
-        const response = await fetch('/api/member', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email,
-            password,
-            name,
-            adminNum,
-            birthday,
-            selectedGender
-          }),
-        });
-
-        if (response.ok) {
-          router.push('/user/login');
-        } else {
-          const errorData = await response.json();
-          console.error('Registration failed:', errorData);
-        }
-      } catch (error) {
-        console.error('An error occurred:', error); //질문 하기) 처리 해줘야 하나??
+    if(role === '1') {
+      if(errors?.email || errors?.name || errors?.password || errors?.rePassword || errors?.birthday || errors?.licenseId) {
+        alert('모든 정보를 입력해주세요');
+        return;
       }
-    } else {
-      setErrors(validationErrors);
-      //alert("모든 항목을 입력해주세요");
+    } else if(role === '2') {
+      if(errors?.email || errors?.name || errors?.password || errors?.rePassword || errors?.birthday) {
+        alert('모든 정보를 입력해주세요');
+        return;
+      }
     }
+
+    setRole();
+
+    signUp({
+      email,
+      name,
+      password,
+      birthday,
+      licenseId,
+      gender,
+      roleName
+  })
+      .then((data) => {
+          if(data.success) {
+            window.location.href = `/user/login?role=${role}`
+          } else {
+            alert("회원가입에 실패하였습니다. 정보를 다시 확인해주세요.");
+          }
+      });
   };
 
 
@@ -213,11 +197,11 @@ function RegisterForm() {
             <input
               type="text"
               placeholder="중개업자 번호"
-              value={adminNum}
-              onChange={handleAdminNum}
+              value={licenseId}
+              onChange={handleLicenseId}
               className={styles.input}
             />
-            {errors.adminNum && <p className={styles.error}>{errors.adminNum}</p>}
+            {errors.licenseId && <p className={styles.error}>{errors.licenseId}</p>}
           </div>}
 
           {/* 이름 입력 */}
@@ -250,7 +234,7 @@ function RegisterForm() {
           {/* 성별 입력 */}
           <div className={styles.inputGroup}>
           <label className={styles.label}>성별</label>
-                <select className={styles.selectGender}>
+                <select className={styles.selectGender} onChange={handleGenderChange}>
                   <option value={'MALE'}>남성</option>
                   <option value={'FEMALE'}>여성</option>
                 </select>
@@ -258,8 +242,9 @@ function RegisterForm() {
 
           {/* 제출 버튼 */}
           <button
-            className={styles.submitButton}
-            disabled={!isAvailable}
+            type='submit'
+            className={styles.signUpButton}
+            // disabled={!isAvailable}
           >
             가입하기
           </button>
@@ -269,5 +254,3 @@ function RegisterForm() {
     </div>
   );
 }
-
-export default RegisterForm;
