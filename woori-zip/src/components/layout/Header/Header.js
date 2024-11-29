@@ -19,7 +19,7 @@ export default function Header() {
         </Link>
       </div>
       <div>
-        <Link href="/user/register" className={styles.signup_link}>
+        <Link href="/user/register?role=1" className={styles.signup_link}>
           회원가입
         </Link>
         <button className={styles.login_button} onClick={handleLogin}>
