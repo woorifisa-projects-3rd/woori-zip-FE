@@ -1,19 +1,33 @@
-// components/domains/analysis/analysis/Analysis.js
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Analysis.module.css';
 import Chart from '../chat/Chat';
 import AnalysisController from './analysis.controller';
 
 export default function Analysis({ similarChartData, memberChartData, bestCategory }) {
-    const userName = localStorage.getItem('userName') || '회원';
-    const bestCategoryKorean = AnalysisController.getBestCategoryName(bestCategory);
+    const [userName, setUserName] = useState('회원');
     const [activeCategory, setActiveCategory] = useState('');
     const [walkingDistance, setWalkingDistance] = useState('');
     const [facilitiesCount, setFacilitiesCount] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
     const [selectedDong, setSelectedDong] = useState('');
+    const bestCategoryKorean = AnalysisController.getBestCategoryName(bestCategory);
+
+    useEffect(() => {
+        const storedUserName = window.localStorage.getItem('userName');
+        if (storedUserName) {
+            setUserName(storedUserName);
+        }
+    }, []);
+
+    const generateDummyDongs = () => {
+        return Array.from({ length: 12 }, (_, i) => `노량진${i + 1}동`);
+    };
+
+    const handleCategoryChange = (category) => {
+        setActiveCategory(category); // 선택된 카테고리 업데이트
+    };
 
     return (
         <div className={styles.container}>
@@ -21,11 +35,10 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
 
             <div className={styles.chartSection}>
                 <div className={styles.chartBox}>
-                    <Chart 
-                        type="similar" 
+                    <Chart
                         data={similarChartData}
                         activeCategory={activeCategory}
-                        onCategoryChange={setActiveCategory}
+                        onCategoryChange={handleCategoryChange}
                     />
                     <h2 className={styles.chartTitle}>
                         {userName}님과 비슷한 유형의 카테고리 별 평균 소비량
@@ -33,11 +46,10 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
                 </div>
 
                 <div className={styles.chartBox}>
-                    <Chart 
-                        type="member" 
+                    <Chart
                         data={memberChartData}
                         activeCategory={activeCategory}
-                        onCategoryChange={setActiveCategory}
+                        onCategoryChange={handleCategoryChange}
                     />
                     <h2 className={styles.chartTitle}>
                         {userName}님의 카테고리 별 평균 소비량
@@ -61,14 +73,14 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
                         { id: 'GROCERY', label: '음식료품' },
                         { id: 'CULTURE', label: '문화/취미' },
                         { id: 'FOOD', label: '식당/카페' },
-                        { id: 'CAR', label: '자동차정비/유지' }
+                        { id: 'CAR', label: '자동차정비/유지' },
                     ].map((category) => (
                         <button
                             key={category.id}
                             className={`${styles.categoryButton} ${
                                 activeCategory === category.id ? styles.selected : ''
                             }`}
-                            onClick={() => setActiveCategory(category.id)}
+                            onClick={() => handleCategoryChange(category.id)}
                         >
                             {category.label}
                         </button>
@@ -76,77 +88,39 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
                 </div>
             </div>
 
-            <div className={styles.infoSection}>
-                <div className={styles.infoRow}>
-                    <div className={styles.infoItem}>
-                        <div className={styles.distanceInput}>
-                            <label>집에서부터 도보 거리</label>
-                            <input 
-                                type="number"
-                                value={walkingDistance}
-                                onChange={(e) => setWalkingDistance(e.target.value)}
-                                className={styles.numberInput}
-                            />
-                            <span className={styles.unit}>분</span>
-                        </div>
-                    </div>
-                    <div className={styles.infoItem}>
-                        <div className={styles.distanceInput}>
-                            <label>카테고리 시설 개수</label>
-                            <input 
-                                type="number"
-                                value={facilitiesCount}
-                                onChange={(e) => setFacilitiesCount(e.target.value)}
-                                className={styles.numberInput}
-                            />
-                            <span className={styles.unit}>개</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div className={styles.locationSection}>
-                <h4 className={styles.locationTitle}>지역 선택</h4>
-                <div className={styles.locationGrid}>
-                    <select
-                        value={selectedDistrict}
-                        onChange={(e) => setSelectedDistrict(e.target.value)}
-                        className={styles.districtSelect}
-                    >
-                        <option value="">구 선택</option>
-                        <option value="강서구">강서구</option>
-                        <option value="강동구">강동구</option>
-                        <option value="강남구">강남구</option>
-                        <option value="마포구">마포구</option>
-                    </select>
-
-                    {selectedDistrict && (
-                        <div className={styles.dongButtons}>
-                            {selectedDistrict === "강서구" && (
-                                <>
-                                    <button 
-                                        onClick={() => setSelectedDong('화곡동')}
-                                        className={`${styles.dongButton} ${selectedDong === '화곡동' ? styles.selected : ''}`}
-                                    >
-                                        화곡동
-                                    </button>
-                                    <button 
-                                        onClick={() => setSelectedDong('발산동')}
-                                        className={`${styles.dongButton} ${selectedDong === '발산동' ? styles.selected : ''}`}
-                                    >
-                                        발산동
-                                    </button>
-                                    <button 
-                                        onClick={() => setSelectedDong('우장산동')}
-                                        className={`${styles.dongButton} ${selectedDong === '우장산동' ? styles.selected : ''}`}
-                                    >
-                                        우장산동
-                                    </button>
-                                </>
-                            )}
-                        </div>
-                    )}
+                <div className={styles.locationHeader}>
+                    <h4 className={styles.locationTitle}>지역 선택</h4>
+                    <div className={styles.districtWrapper}>
+                        <select
+                            value={selectedDistrict}
+                            onChange={(e) => setSelectedDistrict(e.target.value)}
+                            className={styles.districtSelect}
+                        >
+                            <option value="">구 선택</option>
+                            <option value="강남구">강남구</option>
+                            <option value="강동구">강동구</option>
+                            <option value="강서구">강서구</option>
+                            <option value="마포구">마포구</option>
+                        </select>
+                    </div>
                 </div>
+
+                {selectedDistrict && (
+                    <div className={styles.dongGrid}>
+                        {generateDummyDongs().map((dong, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setSelectedDong(dong)}
+                                className={`${styles.dongButton} ${
+                                    selectedDong === dong ? styles.selected : ''
+                                }`}
+                            >
+                                {dong}
+                            </button>
+                        ))}
+                    </div>
+                )}
             </div>
 
             <div className={styles.buttonGroup}>

@@ -12,7 +12,6 @@ export default function Search({ onChartClick, chartItems }) {
     const [selectedDong, setSelectedDong] = useState('');
     const controller = new SearchController();
 
-    // 차트 클릭 이벤트와 카테고리 버튼 연동
     useEffect(() => {
         if (onChartClick) {
             setSelectedCategory(onChartClick);
@@ -21,7 +20,6 @@ export default function Search({ onChartClick, chartItems }) {
 
     const handleCategoryClick = (categoryId) => {
         setSelectedCategory(categoryId);
-        // 차트의 해당 항목도 하이라이트 처리
         if (chartItems) {
             const chartItem = chartItems.find(item => item.key === categoryId);
             if (chartItem) {
@@ -38,11 +36,7 @@ export default function Search({ onChartClick, chartItems }) {
             district: selectedDistrict,
             dong: selectedDong
         });
-
-        // 검색 데이터를 로컬 스토리지에 저장
         localStorage.setItem('searchData', JSON.stringify(searchData));
-        
-        // 검색 실행 (실제 검색 로직은 여기에 구현)
         window.location.href = '/search/result';
     };
 
@@ -52,8 +46,8 @@ export default function Search({ onChartClick, chartItems }) {
                 원하시는 인프라 카테고리를 선택하세요!
             </h3>
             
-            <div className={styles.searchContainer}>
-                <div className={styles.leftSection}>
+            <div className={styles.mainContent}>
+                <div className={styles.categoryGrid}>
                     {controller.getCategories().map((category) => (
                         <button
                             key={category.id}
@@ -67,10 +61,10 @@ export default function Search({ onChartClick, chartItems }) {
                     ))}
                 </div>
 
-                <div className={styles.rightSection}>
+                <div className={styles.inputSection}>
                     <div className={styles.inputGroup}>
                         <label>집에서부터 도보 거리</label>
-                        <div className={styles.inputWrapper}>
+                        <div className={styles.inputContainer}>
                             <input
                                 type="number"
                                 value={walkingDistance}
@@ -83,7 +77,7 @@ export default function Search({ onChartClick, chartItems }) {
 
                     <div className={styles.inputGroup}>
                         <label>카테고리 시설 개수</label>
-                        <div className={styles.inputWrapper}>
+                        <div className={styles.inputContainer}>
                             <input
                                 type="number"
                                 value={facilitiesCount}

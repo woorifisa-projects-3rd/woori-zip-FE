@@ -1,168 +1,84 @@
-.searchWrapper {
-    background-color: #f5f5f5;
-    border-radius: 12px;
-    padding: 24px;
-    margin-top: 40px;
-}
-
-.searchTitle {
-    text-align: center;
-    color: #333;
-    font-size: 18px;
-    margin-bottom: 24px;
-    font-weight: 500;
-}
-
-.searchContainer {
-    display: flex;
-    gap: 48px;
-    margin-bottom: 32px;
-}
-
-.leftSection {
+.categorySection {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    flex: 1;
+    margin-top: 48px;
+    padding: 24px;
+    background: #f5f5f5;
+    border-radius: 12px;
 }
 
-.rightSection {
-    flex: 1;
+.categoryTitle {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.categoryContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.categoryGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 16px;
+    flex: 2;
 }
 
 .categoryButton {
-    padding: 12px 16px;
-    border: 1px solid #ddd;
+    padding: 16px;
+    border: 2px solid #ddd;
     border-radius: 8px;
     background: white;
-    color: #333;
     cursor: pointer;
-    text-align: left;
-    transition: all 0.2s ease;
-}
-
-.categoryButton:hover {
-    border-color: #5778A3;
-    background-color: #f8f9fa;
-}
-
-.categoryButton.selected {
-    background-color: #5778A3;
-    color: white;
-    border-color: #5778A3;
-}
-
-.inputGroup {
-    margin-bottom: 20px;
-}
-
-.inputGroup label {
-    display: block;
-    margin-bottom: 8px;
-    color: #333;
-    font-size: 14px;
-}
-
-.inputWrapper {
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    height: 56px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+}
+
+.infoSection {
+    flex: 1;
+    margin-top: 0;
+}
+
+.infoRow {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.infoItem {
+    width: 100%;
+}
+
+.distanceInput {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.distanceInput label {
+    flex-shrink: 0;
 }
 
 .numberInput {
     width: 80px;
     padding: 8px;
-    border: 1px solid #ddd;
+    border: 2px solid #ddd;
     border-radius: 4px;
+    font-size: 1rem;
     text-align: center;
 }
 
 .unit {
-    color: #666;
-    font-size: 14px;
-}
-
-.locationSection {
-    margin-top: 32px;
-}
-
-.locationSection h4 {
-    margin-bottom: 16px;
-    color: #333;
-}
-
-.locationSelector {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.districtSelect {
-    width: 200px;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.dongButtons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.dongButton {
-    padding: 8px 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: white;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.dongButton:hover {
-    border-color: #5778A3;
-    background-color: #f8f9fa;
-}
-
-.dongButton.selected {
-    background-color: #5778A3;
-    color: white;
-    border-color: #5778A3;
-}
-
-.actionButtons {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    margin-top: 32px;
-}
-
-.searchButton {
-    padding: 12px 32px;
-    border: none;
-    border-radius: 8px;
-    background-color: #5778A3;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.2s ease;
-}
-
-.searchButton:hover {
-    background-color: #4a6a9d;
-}
-
-.mainButton {
-    padding: 12px 32px;
-    border: none;
-    border-radius: 8px;
-    background-color: #e0e0e0;
-    color: #333;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.2s ease;
-}
-
-.mainButton:hover {
-    background-color: #d0d0d0;
+    min-width: 24px;
 }

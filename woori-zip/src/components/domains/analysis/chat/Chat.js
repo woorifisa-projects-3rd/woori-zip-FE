@@ -6,17 +6,15 @@ import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function Chart({ type = 'similar', data, activeCategory, onCategoryChange }) {
-    if (!data?.items) return null;
+export default function Chart({ data, activeCategory, onCategoryChange }) {
+    if (!data?.items?.length) return null;
 
     const chartData = {
         labels: data.labels,
         datasets: [{
             data: data.data,
             backgroundColor: data.colors,
-            borderWidth: data.items.map(item => 
-                item.key === activeCategory ? 2 : 0
-            ),
+            borderWidth: data.items.map(item => item.key === activeCategory ? 2 : 0),
             borderColor: '#000',
             hoverBorderWidth: 2,
             hoverBorderColor: '#000',
@@ -25,11 +23,17 @@ export default function Chart({ type = 'similar', data, activeCategory, onCatego
 
     const chartOptions = {
         plugins: {
-            legend: {
-                display: false,
-            },
             tooltip: {
                 enabled: true,
+                callbacks: {
+                    label: function(context) {
+                        const value = context.raw;
+                        return `${context.label}: ${value.toLocaleString()}`;
+                    }
+                }
+            },
+            legend: {
+                display: false
             },
         },
         responsive: true,
@@ -37,30 +41,59 @@ export default function Chart({ type = 'similar', data, activeCategory, onCatego
         onClick: (_, elements) => {
             if (elements[0]) {
                 const clickedItem = data.items[elements[0].index];
-                onCategoryChange?.(clickedItem.key);
+                onCategoryChange?.(clickedItem.key); // 클릭된 항목의 key 전달
             }
         },
     };
+
+    const midIndex = Math.ceil(data.items.length / 2);
+    const firstGroup = data.items.slice(0, midIndex);
+    const secondGroup = data.items.slice(midIndex);
 
     return (
         <div className={styles.chartWrapper}>
             <div className={styles.chartContainer}>
                 <Pie data={chartData} options={chartOptions} />
             </div>
-            <div className={styles.customLegend}>
-                {data.items.map((item, index) => (
-                    <div 
-                        key={index} 
-                        className={styles.legendItem}
-                        onClick={() => onCategoryChange?.(item.key)}
-                    >
-                        <span
-                            className={styles.legendBox}
-                            style={{ backgroundColor: item.color }}
-                        />
-                        <span className={styles.legendText}>{item.label}</span>
-                    </div>
-                ))}
+            <div className={styles.customLegendWrapper}>
+                <div className={styles.customLegend}>
+                    {firstGroup.map((item, index) => (
+                        <div
+                            key={index}
+                            className={`${styles.legendItem} ${
+                                item.key === activeCategory ? styles.active : ''
+                            }`}
+                            onClick={() => onCategoryChange?.(item.key)}
+                        >
+                            <span
+                                className={styles.legendBox}
+                                style={{ backgroundColor: item.color }}
+                            />
+                            <span className={styles.legendText}>
+                                {item.label} ({item.value.toLocaleString()})
+                            </span>
+                        </div>
+                    ))}
+                </div>
+                <div className={styles.customLegend}>
+                    {secondGroup.map((item, index) => (
+                        <div
+                            key={index}
+                            className={`${styles.legendItem} ${
+                                item.key === activeCategory ? styles.active : ''
+                            }`}
+                            onClick={() => onCategoryChange?.(item.key)}
+                        >
+                            <span
+                                className={styles.legendBox}
+                                style={{ backgroundColor: item.color }}
+                            />
+                            <span className={styles.legendText}>
+                                {item.label} ({item.value.toLocaleString()})
+                            </span>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
