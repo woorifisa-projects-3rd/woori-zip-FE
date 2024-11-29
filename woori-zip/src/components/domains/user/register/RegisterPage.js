@@ -246,8 +246,7 @@ function RegisterForm() {
           </div>
 
           <div className={styles.inputGroup}>
-            <div className={styles.genderSelectContainer}>
-              <label className={styles.label}>성별</label>
+          <label className={styles.label}>성별</label>
               <div className={styles.buttonContainer}>
                 <button
                   className={`${styles.genderButton} ${selectedGender === "남자" ? styles.active : ""
@@ -262,7 +261,6 @@ function RegisterForm() {
                   여자
                 </button>
               </div>
-            </div>
           </div>
 
           {/* 제출 버튼 */}
