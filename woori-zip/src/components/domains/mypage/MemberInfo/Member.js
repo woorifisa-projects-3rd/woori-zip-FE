@@ -18,14 +18,8 @@ const Member = () => {
       try {
         setIsLoading(true);
         const response = await fetchMemberInfo();
-        console.log(response);
-        console.log(response.data);
-        
-        
-
+  
         const memberData = response.data;
-
-        console.log(memberData);
         
         //데이터를 JSON으로 변환 가능한 형태로 변환
         const safeData = {
