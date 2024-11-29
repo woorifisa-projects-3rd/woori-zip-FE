@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useSearchParams } from "next/navigation";
 import styles from './Register.module.css';
 import { validatePassword, confirmPassword, validatAdminNum, validateName, validateEmail, validateDateOfBirth } from '../login/validation';
 
@@ -15,17 +16,8 @@ function RegisterForm() {
   const [selectedGender, setSelectedGender] = useState("");
   const [errors, setErrors] = useState({});
 
-
-
-  // 작성한 유효성 로직 검사 핸들러
-  // const handleUsernameChange = (e) => {
-  //   setUsername(e.target.value);
-  //   setIsAvailable(null); 
-  //   setErrors((prevErrors) => ({
-  //     ...prevErrors,
-  //     username: validateUsername(e.target.value),
-  //   }));
-  // };
+  const searchParams = useSearchParams();
+  const role = searchParams.get('role') || "0";
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -151,122 +143,137 @@ function RegisterForm() {
     <div className={styles.wrapper}>
       <div className={styles.scrollContainer}>
         <div className={styles.container}>
+          {role === '0' ? <div className={styles.loginContent}>
+            <img
+              className={styles.image}
+              src="https://fisa-woorizip.s3.ap-northeast-2.amazonaws.com/images/user/bankLogo.png"
+              alt="Logo"
+              width={110}
+              height={30}
+            />
+            <p className={styles.text}>
+              금융 데이터 분석을 위해
+              <br />
+              우리은행 데이터와 간편 연결하기
+            </p>
+            <button className={styles.loginButton}>우리은행으로 로그인</button>
+          </div>:
           <form className={styles.form} onSubmit={handleSubmit}>
-            {/* 아이디 입력 */}
-            <div className={styles.inputGroup}>
-              <label className={styles.label}>이메일</label>
-              <div className={styles.flexRow}>
-                <input
-                  type="text"
-                  placeholder="이메일 입력"
-                  value={email}
-                  onChange={handleEmailChange}
-                  className={styles.input}
-                />
+          {/* 아이디 입력 */}
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>이메일</label>
+            <div className={styles.flexRow}>
+              <input
+                type="text"
+                placeholder="이메일 입력"
+                value={email}
+                onChange={handleEmailChange}
+                className={styles.input}
+              />
+              <button
+                type="button"
+                className={styles.checkButton}
+                onClick={checkEmailAvailability}
+              >
+                중복 확인
+              </button>
+            </div>
+            {errors.email && <p className={styles.error}>{errors.email}</p>}
+          </div>
+
+          {/* 비밀번호 입력 */}
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>비밀번호</label>
+            <input
+              type="password"
+              placeholder="8자리 이상 대소문자, 숫자, 기호 포함"
+              value={password}
+              onChange={handlePasswordChange}
+              className={styles.input}
+            />
+            {errors.password && <p className={styles.error}>{errors.password}</p>}
+          </div>
+
+          <div className={styles.inputGroup}>
+            <input
+              type="password"
+              placeholder="비밀번호 확인"
+              value={rePassword}
+              onChange={handleRePasswordChange}
+              className={styles.input}
+            />
+            {errors.rePassword && <p className={styles.error}>{errors.rePassword}</p>}
+          </div>
+
+          {/* 중개업자 입력 */}
+          {role === '1' && <div className={styles.inputGroup}>
+            <label className={styles.label}>중개업자 번호</label>
+            <input
+              type="text"
+              placeholder="중개업자 번호"
+              value={adminNum}
+              onChange={handleAdminNum}
+              className={styles.input}
+            />
+            {errors.adminNum && <p className={styles.error}>{errors.adminNum}</p>}
+          </div>}
+
+          {/* 이름 입력 */}
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>이름</label>
+            <input
+              type="text"
+              placeholder="이름 입력 (ex. 홍길동)"
+              value={name}
+              onChange={handleNameChange}
+              className={styles.input}
+            />
+            {errors.name && <p className={styles.error}>{errors.name}</p>}
+          </div>
+
+
+          {/* 생년월일 입력 */}
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>생년월일</label>
+            <input
+              type="date"
+              placeholder="생년월일 입력 (ex. YYYY-MM-DD)"
+              value={birthday}
+              onChange={handleDateOfBirthChange}
+              className={styles.input}
+            />
+            {errors.birthday && <p className={styles.error}>{errors.birthday}</p>}
+          </div>
+
+          <div className={styles.inputGroup}>
+            <div className={styles.genderSelectContainer}>
+              <label className={styles.label}>성별</label>
+              <div className={styles.buttonContainer}>
                 <button
-                  type="button"
-                  className={styles.checkButton}
-                  onClick={checkEmailAvailability}
+                  className={`${styles.genderButton} ${selectedGender === "남자" ? styles.active : ""
+                    }`}
                 >
-                  중복 확인
+                  남자
+                </button>
+                <button
+                  className={`${styles.genderButton} ${selectedGender === "여자" ? styles.active : ""
+                    }`}
+                >
+                  여자
                 </button>
               </div>
-              {errors.email && <p className={styles.error}>{errors.email}</p>}
             </div>
+          </div>
 
-            {/* 비밀번호 입력 */}
-            <div className={styles.inputGroup}>
-              <label className={styles.label}>비밀번호</label>
-              <input
-                type="password"
-                placeholder="8자리 이상 대소문자, 숫자, 기호 포함"
-                value={password}
-                onChange={handlePasswordChange}
-                className={styles.input}
-              />
-              {errors.password && <p className={styles.error}>{errors.password}</p>}
-            </div>
-
-            <div className={styles.inputGroup}>
-              <input
-                type="password"
-                placeholder="비밀번호 확인"
-                value={rePassword}
-                onChange={handleRePasswordChange}
-                className={styles.input}
-              />
-              {errors.rePassword && <p className={styles.error}>{errors.rePassword}</p>}
-            </div>
-
-            {/* 중개업자 입력 */}
-            <div className={styles.inputGroup}>
-              <label className={styles.label}>중개업자 번호</label>
-              <input
-                type="text"
-                placeholder="중개업자 번호"
-                value={adminNum}
-                onChange={handleAdminNum}
-                className={styles.input}
-              />
-              {errors.adminNum && <p className={styles.error}>{errors.adminNum}</p>}
-            </div>
-
-            {/* 이름 입력 */}
-            <div className={styles.inputGroup}>
-              <label className={styles.label}>이름</label>
-              <input
-                type="text"
-                placeholder="이름 입력 (ex. 홍길동)"
-                value={name}
-                onChange={handleNameChange}
-                className={styles.input}
-              />
-              {errors.name && <p className={styles.error}>{errors.name}</p>}
-            </div>
-
-
-            {/* 생년월일 입력 */}
-            <div className={styles.inputGroup}>
-              <label className={styles.label}>생년월일</label>
-              <input
-                type="date"
-                placeholder="생년월일 입력 (ex. YYYY-MM-DD)"
-                value={birthday}
-                onChange={handleDateOfBirthChange}
-                className={styles.input}
-              />
-              {errors.birthday && <p className={styles.error}>{errors.birthday}</p>}
-            </div>
-
-            <div className={styles.inputGroup}>
-              <div className={styles.genderSelectContainer}>
-                <label className={styles.label}>성별</label>
-                <div className={styles.buttonContainer}>
-                  <button
-                    className={`${styles.genderButton} ${selectedGender === "남자" ? styles.active : ""
-                      }`}
-                  >
-                    남자
-                  </button>
-                  <button
-                    className={`${styles.genderButton} ${selectedGender === "여자" ? styles.active : ""
-                      }`}
-                  >
-                    여자
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* 제출 버튼 */}
-            <button
-              type="submit"
-              className={styles.submitButton}
-              disabled={!isAvailable}
-            >
-              가입하기
-            </button>
-          </form>
+          {/* 제출 버튼 */}
+          <button
+            type="submit"
+            className={styles.submitButton}
+            disabled={!isAvailable}
+          >
+            가입하기
+          </button>
+        </form>}
         </div>
       </div>
     </div>
