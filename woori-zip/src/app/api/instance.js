@@ -25,7 +25,6 @@ const fetchInstance = async (url, options) => {
     headers['Content-Type'] = 'application/json';
   }
 
-  // if (accessToken) {
     headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MTEsIm1lbWJlclJvbGUiOiJNRU1CRVIiLCJpc3MiOiJ3b29yaXppcCIsImlhdCI6MTczMjcxMjQyNiwiZXhwIjoxNzMzMDcyNDI2fQ.KvUux5H3R4j-Kw0BDhtEyZnwswmu-VLgo7IlKjymhzs`
 
   try {
