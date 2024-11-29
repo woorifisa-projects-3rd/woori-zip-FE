@@ -41,40 +41,40 @@ const Member = () => {
     getMemberInfo();
   }, []);
 
-  if (isLoading) {
-    return <div className={styles.loading}>Loading...</div>;
-  }
-
-  if (error) {
-    return <div className={styles.error}>{error}</div>;
-  }
-
   return (
     <div className={styles.container}>
-      <div className={styles.messageBox}>
-        <div className={styles.textGroup}>
-          <p className={styles.titleText}>이름</p>
-          <p className={styles.contentText}>{memberInfo.name}</p>
-        </div>
+      {isLoading ? ( // 로딩 중일 때
+        <div className={styles.loading}>정보를 불러오는 중입니다...</div>
+      ) : error ? ( // 에러 발생 시
+        <div className={styles.error}>{error}</div>
+      ) : ( // 로딩이 완료되었을 때
+        <>
+          <div className={styles.messageBox}>
+            <div className={styles.textGroup}>
+              <p className={styles.titleText}>이름</p>
+              <p className={styles.contentText}>{memberInfo.name}</p>
+            </div>
 
-        <div className={styles.textGroup}>
-          <p className={styles.titleText}>생년월일</p>
-          <p className={styles.contentText}>{memberInfo.birthDate}</p>
-        </div>
+            <div className={styles.textGroup}>
+              <p className={styles.titleText}>생년월일</p>
+              <p className={styles.contentText}>{memberInfo.birthDate}</p>
+            </div>
 
-        <div className={styles.textGroup}>
-          <p className={styles.titleText}>성별</p>
-          <p className={styles.contentText}>{memberInfo.gender}</p>
-        </div>
+            <div className={styles.textGroup}>
+              <p className={styles.titleText}>성별</p>
+              <p className={styles.contentText}>{memberInfo.gender}</p>
+            </div>
 
-        <div className={styles.textGroup}>
-          <p className={styles.titleText}>회원등급</p>
-          <p className={styles.contentText}>{memberInfo.membership}</p>
-        </div>
-      </div>
-      <div className={styles.imgBox}>
-        <div className={styles.img}></div>
-      </div>
+            <div className={styles.textGroup}>
+              <p className={styles.titleText}>회원등급</p>
+              <p className={styles.contentText}>{memberInfo.membership}</p>
+            </div>
+          </div>
+          <div className={styles.imgBox}>
+            <div className={styles.img}></div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

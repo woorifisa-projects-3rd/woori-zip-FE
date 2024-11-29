@@ -45,3 +45,9 @@
   border-radius: 50%;
   margin: 50px;
 }
+
+.loading {
+  padding-left: 20px;
+  font-family: var(--font-pretendard-regular);
+  color: var(--color-border-light);
+}
