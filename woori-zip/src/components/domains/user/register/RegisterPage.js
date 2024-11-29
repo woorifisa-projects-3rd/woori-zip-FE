@@ -2,27 +2,28 @@
 
 import React, { useState } from 'react';
 import styles from './Register.module.css';
-import { validateUsername, validatePassword, confirmPassword, validateName, validatePhoneNum, validateDateOfBirth } from '../login/validation';
+import { validatePassword, confirmPassword, validatAdminNum, validateName, validatePhoneNum, validateDateOfBirth, validateEmail } from '../login/validation';
 
 function RegisterForm() {
   const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [isAvailable, setIsAvailable] = useState(false);
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
   const [phoneNum, setPhoneNum] = useState('');
   const [birthday, setBirthday] = useState('');
+  const [adminNum, setAdminNum] = useState('');
   const [errors, setErrors] = useState({});
   
 
 
   // 작성한 유효성 로직 검사 핸들러
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
     setIsAvailable(null); 
     setErrors((prevErrors) => ({
       ...prevErrors,
-      username: validateUsername(e.target.value),
+      email: validateEmail(e.target.value),
     }));
   };
 
@@ -67,20 +68,27 @@ function RegisterForm() {
     }));
   };
 
+  const handleAdminNum = (e) => {
+    setAdminNum(e.target.value);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      adminNum: validatAdminNum(e.target.value),
+    }));
+  };
 
-// 아이디 중복 확인 요청 함수
-const checkUsernameAvailability = async () => {
+// 이메일 중복 확인 요청 함수
+const checkEmailAvailability = async () => {
   try {
     const response = await fetch(`http://localhost:8080/api/v1/member?username=${username}`);
     const data = await response.json();
     setIsAvailable(data.isSuccess); 
     if (data.isSuccess) {
-      alert("사용 가능한 아이디입니다.");
+      alert("사용 가능한 이메일입니다.");
     } else {
-      alert("이미 사용 중인 아이디입니다.");
+      alert("이미 사용 중인 이메일입니다.");
     }
   } catch (error) {
-    console.error("아이디 중복 확인 중 오류 발생:", error);
+    console.error("이메일 중복 확인 중 오류 발생:", error);
   }
 };
 
@@ -90,7 +98,7 @@ const checkUsernameAvailability = async () => {
     
     // 유효성 검사
     const validationErrors = {
-      username: validateUsername(username),
+      email: validateEmail(email),
       password: validatePassword(password),
       name: validateName(name),
       phoneNum: validatePhoneNum(phoneNum),
@@ -108,7 +116,7 @@ const checkUsernameAvailability = async () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            username,
+            email,
             password,
             name,
             phoneNum,
@@ -136,28 +144,26 @@ const checkUsernameAvailability = async () => {
     <div className={styles.wrapper}>
       <div className={styles.scrollContainer}>
         <div className={styles.container}>
-          <p className={styles.title}>회원정보 입력</p>
           <form className={styles.form} onSubmit={handleSubmit}>
-            {/* 아이디 입력 */}
             <div className={styles.inputGroup}>
-              <label className={styles.label}>아이디</label>
+              <label className={styles.label}>이메일</label>
               <div className={styles.flexRow}>
                 <input
                   type="text"
-                  placeholder="아이디 입력"
-                  value={username}
-                  onChange={handleUsernameChange}
+                  placeholder="이메일 입력"
+                  value={email}
+                  onChange={handleEmailChange}
                   className={styles.input}
                 />
                 <button
                   type="button"
                   className={styles.checkButton}
-                  onClick={checkUsernameAvailability}
+                  onClick={checkEmailAvailability}
                 >
                   중복 확인
                 </button>
               </div>
-              {errors.username && <p className={styles.error}>{errors.username}</p>}
+              {errors.email && <p className={styles.error}>{errors.email}</p>}
             </div>
   
             {/* 비밀번호 입력 */}
@@ -183,7 +189,20 @@ const checkUsernameAvailability = async () => {
               />
               {errors.rePassword && <p className={styles.error}>{errors.rePassword}</p>}
             </div>
-  
+
+            {/* 중개업자 입력 */}
+            <div className={styles.inputGroup}>
+              <label className={styles.label}>중개업자 번호</label>
+              <input
+                type="text"
+                placeholder="중개업자 번호"
+                value={adminNum}
+                onChange={handleAdminNum}
+                className={styles.input}
+              />
+              {errors.adminNum && <p className={styles.error}>{errors.adminNum}</p>}
+            </div>
+
             {/* 이름 입력 */}
             <div className={styles.inputGroup}>
               <label className={styles.label}>이름</label>

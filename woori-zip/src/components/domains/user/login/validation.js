@@ -51,3 +51,10 @@ export const validateEmail = (email) => {
   ? ''
   : '이메일은 형식이어야 합니다.  ex)woorizip@woorizip.com';
 }
+
+export const validatAdminNum = (adminNum) => {
+  const adminNumRegx = /^[0-9가-힣\s]+$/;
+  return adminNumRegx.test(adminNum)
+  ? ''
+  : '중개업자 번호 형식이어야 합니다.'
+}
