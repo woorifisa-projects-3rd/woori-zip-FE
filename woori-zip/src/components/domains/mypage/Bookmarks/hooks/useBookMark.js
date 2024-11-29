@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { fetchBookmarks, removeBookmark as removeBookmarkAPI } from '../api/BookMarkAPI';
+import { fetchBookmarks, removeBookmark as removeBookmarkAPI } from '../../../../../app/api/mypage/BookMarkAPI';
 
 export const useBookmarks = () => {
   const [bookmarkData, setBookmarkData] = useState({
