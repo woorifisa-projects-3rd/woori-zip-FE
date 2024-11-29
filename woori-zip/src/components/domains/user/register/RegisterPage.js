@@ -2,29 +2,30 @@
 
 import React, { useState } from 'react';
 import styles from './Register.module.css';
-import { validateUsername, validatePassword, confirmPassword, validateName, validatePhoneNum, validateDateOfBirth } from '../login/validation';
+import { validatePassword, confirmPassword, validatAdminNum, validateName, validateEmail, validateDateOfBirth } from '../login/validation';
 
 function RegisterForm() {
+  const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
   const [isAvailable, setIsAvailable] = useState(false);
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
-  const [phoneNum, setPhoneNum] = useState('');
   const [birthday, setBirthday] = useState('');
+  const [adminNum, setAdminNum] = useState('');
+  const [selectedGender, setSelectedGender] = useState("");
   const [errors, setErrors] = useState({});
-  
+
 
 
   // 작성한 유효성 로직 검사 핸들러
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
-    setIsAvailable(null); 
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      username: validateUsername(e.target.value),
-    }));
-  };
+  // const handleUsernameChange = (e) => {
+  //   setUsername(e.target.value);
+  //   setIsAvailable(null); 
+  //   setErrors((prevErrors) => ({
+  //     ...prevErrors,
+  //     username: validateUsername(e.target.value),
+  //   }));
+  // };
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -39,7 +40,24 @@ function RegisterForm() {
     setRePassword(newRePassword);
     setErrors((prevErrors) => ({
       ...prevErrors,
-      rePassword: confirmPassword(password,newRePassword),
+      rePassword: confirmPassword(password, newRePassword),
+    }));
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setIsAvailable(null);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      email: validateEmail(e.target.value),
+    }));
+  };
+
+  const handleAdminNum = (e) => {
+    setAdminNum(e.target.value);
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      adminNum: validatAdminNum(e.target.value),
     }));
   };
 
@@ -51,14 +69,6 @@ function RegisterForm() {
     }));
   };
 
-  const handlePhoneNumChange = (e) => {
-    setPhoneNum(e.target.value);
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      phoneNum: validatePhoneNum(e.target.value),
-    }));
-  };
-
   const handleDateOfBirthChange = (e) => {
     setBirthday(e.target.value);
     setErrors((prevErrors) => ({
@@ -67,35 +77,39 @@ function RegisterForm() {
     }));
   };
 
+  const handleGenderClick = (gender) => {
+    setSelectedGender(gender);
+  };
 
-// 아이디 중복 확인 요청 함수
-const checkUsernameAvailability = async () => {
-  try {
-    const response = await fetch(`http://localhost:8080/api/v1/member?username=${username}`);
-    const data = await response.json();
-    setIsAvailable(data.isSuccess); 
-    if (data.isSuccess) {
-      alert("사용 가능한 아이디입니다.");
-    } else {
-      alert("이미 사용 중인 아이디입니다.");
+
+  // 이메일 중복 확인 요청 함수
+  const checkEmailAvailability = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/v1/member?username=${username}`);
+      const data = await response.json();
+      setIsAvailable(data.isSuccess);
+      if (data.isSuccess) {
+        alert("사용 가능한 이메일입니다.");
+      } else {
+        alert("이미 사용 중인 이메일입니다.");
+      }
+    } catch (error) {
+      console.error("이메일 중복 확인 중 오류 발생:", error);
     }
-  } catch (error) {
-    console.error("아이디 중복 확인 중 오류 발생:", error);
-  }
-};
+  };
 
   //제출 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // 유효성 검사
     const validationErrors = {
-      username: validateUsername(username),
+      email: validateEmail(email),
       password: validatePassword(password),
       name: validateName(name),
-      phoneNum: validatePhoneNum(phoneNum),
+      adminNum: validatAdminNum(adminNum),
       birthday: validateDateOfBirth(birthday),
-    };  
+    };
 
     // 유효성 검사 오류가 없으면 제출
     if (Object.values(validationErrors).every((error) => !error)) {
@@ -108,16 +122,17 @@ const checkUsernameAvailability = async () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            username,
+            email,
             password,
             name,
-            phoneNum,
+            adminNum,
             birthday,
+            selectedGender
           }),
         });
 
         if (response.ok) {
-          router.push('/user/login'); 
+          router.push('/user/login');
         } else {
           const errorData = await response.json();
           console.error('Registration failed:', errorData);
@@ -127,7 +142,7 @@ const checkUsernameAvailability = async () => {
       }
     } else {
       setErrors(validationErrors);
-      alert("모든 항목을 입력해주세요");
+      //alert("모든 항목을 입력해주세요");
     }
   };
 
@@ -136,30 +151,29 @@ const checkUsernameAvailability = async () => {
     <div className={styles.wrapper}>
       <div className={styles.scrollContainer}>
         <div className={styles.container}>
-          <p className={styles.title}>회원정보 입력</p>
           <form className={styles.form} onSubmit={handleSubmit}>
             {/* 아이디 입력 */}
             <div className={styles.inputGroup}>
-              <label className={styles.label}>아이디</label>
+              <label className={styles.label}>이메일</label>
               <div className={styles.flexRow}>
                 <input
                   type="text"
-                  placeholder="아이디 입력"
-                  value={username}
-                  onChange={handleUsernameChange}
+                  placeholder="이메일 입력"
+                  value={email}
+                  onChange={handleEmailChange}
                   className={styles.input}
                 />
                 <button
                   type="button"
                   className={styles.checkButton}
-                  onClick={checkUsernameAvailability}
+                  onClick={checkEmailAvailability}
                 >
                   중복 확인
                 </button>
               </div>
-              {errors.username && <p className={styles.error}>{errors.username}</p>}
+              {errors.email && <p className={styles.error}>{errors.email}</p>}
             </div>
-  
+
             {/* 비밀번호 입력 */}
             <div className={styles.inputGroup}>
               <label className={styles.label}>비밀번호</label>
@@ -172,7 +186,7 @@ const checkUsernameAvailability = async () => {
               />
               {errors.password && <p className={styles.error}>{errors.password}</p>}
             </div>
-  
+
             <div className={styles.inputGroup}>
               <input
                 type="password"
@@ -183,7 +197,20 @@ const checkUsernameAvailability = async () => {
               />
               {errors.rePassword && <p className={styles.error}>{errors.rePassword}</p>}
             </div>
-  
+
+            {/* 중개업자 입력 */}
+            <div className={styles.inputGroup}>
+              <label className={styles.label}>중개업자 번호</label>
+              <input
+                type="text"
+                placeholder="중개업자 번호"
+                value={adminNum}
+                onChange={handleAdminNum}
+                className={styles.input}
+              />
+              {errors.adminNum && <p className={styles.error}>{errors.adminNum}</p>}
+            </div>
+
             {/* 이름 입력 */}
             <div className={styles.inputGroup}>
               <label className={styles.label}>이름</label>
@@ -196,25 +223,13 @@ const checkUsernameAvailability = async () => {
               />
               {errors.name && <p className={styles.error}>{errors.name}</p>}
             </div>
-  
-            {/* 연락처 입력 */}
-            <div className={styles.inputGroup}>
-              <label className={styles.label}>연락처</label>
-              <input
-                type="text"
-                placeholder="연락처 입력 (ex. 010-1234-5678)"
-                value={phoneNum}
-                onChange={handlePhoneNumChange}
-                className={styles.input}
-              />
-              {errors.phoneNum && <p className={styles.error}>{errors.phoneNum}</p>}
-            </div>
-  
+
+
             {/* 생년월일 입력 */}
             <div className={styles.inputGroup}>
               <label className={styles.label}>생년월일</label>
               <input
-                type="text"
+                type="date"
                 placeholder="생년월일 입력 (ex. YYYY-MM-DD)"
                 value={birthday}
                 onChange={handleDateOfBirthChange}
@@ -222,11 +237,31 @@ const checkUsernameAvailability = async () => {
               />
               {errors.birthday && <p className={styles.error}>{errors.birthday}</p>}
             </div>
-  
+
+            <div className={styles.inputGroup}>
+              <div className={styles.genderSelectContainer}>
+                <label className={styles.label}>성별</label>
+                <div className={styles.buttonContainer}>
+                  <button
+                    className={`${styles.genderButton} ${selectedGender === "남자" ? styles.active : ""
+                      }`}
+                  >
+                    남자
+                  </button>
+                  <button
+                    className={`${styles.genderButton} ${selectedGender === "여자" ? styles.active : ""
+                      }`}
+                  >
+                    여자
+                  </button>
+                </div>
+              </div>
+            </div>
+
             {/* 제출 버튼 */}
-            <button 
-              type="submit" 
-              className={styles.submitButton} 
+            <button
+              type="submit"
+              className={styles.submitButton}
               disabled={!isAvailable}
             >
               가입하기
