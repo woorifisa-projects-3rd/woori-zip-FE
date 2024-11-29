@@ -13,7 +13,7 @@ function RegisterForm() {
   const [rePassword, setRePassword] = useState('');
   const [birthday, setBirthday] = useState('');
   const [adminNum, setAdminNum] = useState('');
-  const [selectedGender, setSelectedGender] = useState("");
+  const [gender, setGender] = useState("");
   const [errors, setErrors] = useState({});
 
   const searchParams = useSearchParams();
@@ -70,14 +70,15 @@ function RegisterForm() {
   };
 
   const handleGenderClick = (gender) => {
-    setSelectedGender(gender);
+    setGender(gender);
   };
 
 
   // 이메일 중복 확인 요청 함수
   const checkEmailAvailability = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/member?username=${username}`);
+      alert(email);
+      const response = await fetch(`http://localhost:8080/api/v1/member?username=${email}`);
       const data = await response.json();
       setIsAvailable(data.isSuccess);
       if (data.isSuccess) {
@@ -159,6 +160,7 @@ function RegisterForm() {
             <button className={styles.loginButton}>우리은행으로 로그인</button>
           </div>:
           <form className={styles.form} onSubmit={handleSubmit}>
+
           {/* 아이디 입력 */}
           <div className={styles.inputGroup}>
             <label className={styles.label}>이메일</label>
@@ -245,27 +247,17 @@ function RegisterForm() {
             {errors.birthday && <p className={styles.error}>{errors.birthday}</p>}
           </div>
 
+          {/* 성별 입력 */}
           <div className={styles.inputGroup}>
           <label className={styles.label}>성별</label>
-              <div className={styles.buttonContainer}>
-                <button
-                  className={`${styles.genderButton} ${selectedGender === "남자" ? styles.active : ""
-                    }`}
-                >
-                  남자
-                </button>
-                <button
-                  className={`${styles.genderButton} ${selectedGender === "여자" ? styles.active : ""
-                    }`}
-                >
-                  여자
-                </button>
-              </div>
+                <select className={styles.selectGender}>
+                  <option value={'MALE'}>남성</option>
+                  <option value={'FEMALE'}>여성</option>
+                </select>
           </div>
 
           {/* 제출 버튼 */}
           <button
-            type="submit"
             className={styles.submitButton}
             disabled={!isAvailable}
           >

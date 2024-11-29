@@ -13,6 +13,8 @@
   width: 100%;
   margin-top: 30px;
   margin-bottom: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
 
   .wrapper {
     display: flex;
@@ -57,6 +59,7 @@
 
   .input {
     width: 100%;
+    height: 40px;
     padding: 5px;
     border: 1px solid var(--color-border-light);
     border-radius: 4px;
@@ -84,6 +87,8 @@
     border-radius: 4px;
     cursor: pointer;
     white-space: nowrap;
+    font-family: var(--font-pretendard-extra-bold);
+    font-size: 13px;
   }
 
   .submitButton {
@@ -96,11 +101,41 @@
     cursor: pointer;
     font-size: 16px;
     margin-top: 20px;
+    font-family: var(--font-pretendard-extra-bold);
   }
 
-  .checkButton:hover,
-  .submitButton:hover {
+  .checkButton:hover {
+    padding: 8px 16px;
     background-color: var(--color-blue-dark);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .submitButton:hover {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--color-blue-dark);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+
+  .selectGender {
+    all: unset;
+    font-family: var(--font-pretendard-regular);
+    cursor: pointer;
+    width: 200px;
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid var(--color-border-light);
   }
 
   overflow-y: auto;
@@ -139,43 +174,6 @@
   background-color: white;
 }
 
-.error {
-  color: red;
-  font-size: 12px;
-  margin-top: 5px;
-}
-
-.checkButton {
-  padding: 10px 20px;
-  font-size: 14px;
-  background-color: var(--color-text-dark);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.checkButton:hover {
-  background-color: white;
-  color: var(--color-blue-dark);
-  border: 1px solid var(--color-text-dark);
-}
-
-.submitButton {
-  width: 100%;
-  padding: 15px;
-  font-size: 16px;
-  background-color: var(--color-text-dark);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.submitButton:disabled {
-  background-color: var(--color-blue-dark);
-}
 
 .flexRow {
   display: flex;
@@ -193,22 +191,6 @@
   font-weight: bold;
   margin-bottom: 8px;
   display: block;
-}
-
-.buttonContainer {
-  display: flex;
-  gap: 10px;
-}
-
-.genderButton {
-  padding: 10px 20px;
-  border: 1px solid var(--color-light-gray);
-  background-color: white;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  color: var(--color-light-gray);
-  transition: all 0.3s;
 }
 
 .genderButton:hover {
