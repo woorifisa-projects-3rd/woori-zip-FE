@@ -64,7 +64,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
         if (!mapState || JSON.stringify(mapState) === JSON.stringify(prevMapState)) {
             return;
         }
-    
+        console.log("data 정보",analysisData)
         fetchHousesByMapStateApi({
             mapState,
             houseType,

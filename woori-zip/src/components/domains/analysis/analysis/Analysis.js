@@ -11,10 +11,15 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
     const [activeCategory, setActiveCategory] = useState('');
     const [selectedDistrict, setSelectedDistrict] = useState('');
     const [selectedDong, setSelectedDong] = useState('');
+    const [districtData, setDistrictData] = useState({});
     const [selectedData, setSelectedData] = useState({
         district: '',
         dong: '',
-        category: ''
+        category: '',
+        southWestLatitude: '',
+        southWestLongitude: '',
+        northEastLatitude: '',
+        northEastLongitude: ''
     });
 
     const categories = [
@@ -31,15 +36,17 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
         : '서적/문구';
 
     useEffect(() => {
+        // JSON 데이터 로드
+        fetch('/data/seoul_districts_dong_data.json')
+            .then((response) => response.json())
+            .then((data) => setDistrictData(data))
+            .catch((error) => console.error('Error loading data:', error));
+
         const storedUserName = window.localStorage.getItem('userName');
         if (storedUserName) {
             setUserName(storedUserName);
         }
     }, []);
-
-    const generateDummyDongs = () => {
-        return Array.from({ length: 12 }, (_, i) => `노량진${i + 1}동`);
-    };
 
     const handleCategoryChange = (category) => {
         if (!category) return;
@@ -57,15 +64,24 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
         setSelectedData((prev) => ({
             ...prev,
             district,
-            dong: '' // Reset dong
+            dong: '', // Reset dong
+            southWestLatitude: '',
+            southWestLongitude: '',
+            northEastLatitude: '',
+            northEastLongitude: ''
         }));
     };
 
     const handleDongSelect = (dong) => {
+        const selectedDongData = districtData[selectedDistrict]?.find((item) => item.읍면동명 === dong) || {};
         setSelectedDong(dong);
         setSelectedData((prev) => ({
             ...prev,
-            dong
+            dong,
+            southWestLatitude: selectedDongData.southWestLatitude || '',
+            southWestLongitude: selectedDongData.southWestLongitude || '',
+            northEastLatitude: selectedDongData.northEastLatitude || '',
+            northEastLongitude: selectedDongData.northEastLongitude || ''
         }));
     };
 
@@ -101,13 +117,6 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
                         {userName}님의 카테고리 별 평균 소비량
                     </h2>
                 </div>
-
-                <div className={styles.analysisResult}>
-                    <h2 className={styles.resultTitle}>
-                        최종 분석 결과, {userName}님과 가장 잘 어울리는 소비 카테고리는{' '}
-                        <span className={styles.highlightCategory}>{bestCategoryKorean}</span> 입니다.
-                    </h2>
-                </div>
             </div>
 
             <div className={styles.categorySection}>
@@ -137,25 +146,26 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
                             className={styles.districtSelect}
                         >
                             <option value="">구 선택</option>
-                            <option value="강남구">강남구</option>
-                            <option value="강동구">강동구</option>
-                            <option value="강서구">강서구</option>
-                            <option value="마포구">마포구</option>
+                            {Object.keys(districtData).map((district) => (
+                                <option key={district} value={district}>
+                                    {district}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 </div>
 
                 {selectedDistrict && (
                     <div className={styles.dongGrid}>
-                        {generateDummyDongs().map((dong, index) => (
+                        {districtData[selectedDistrict]?.map((dong) => (
                             <button
-                                key={index}
-                                onClick={() => handleDongSelect(dong)}
+                                key={dong.읍면동명}
+                                onClick={() => handleDongSelect(dong.읍면동명)}
                                 className={`${styles.dongButton} ${
-                                    selectedDong === dong ? styles.selected : ''
+                                    selectedDong === dong.읍면동명 ? styles.selected : ''
                                 }`}
                             >
-                                {dong}
+                                {dong.읍면동명}
                             </button>
                         ))}
                     </div>
@@ -170,14 +180,8 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
                     }}
                     className={styles.primaryButton}
                 >
-                    집 검색하기
+                    지도 보기
                 </Link>
-                <button
-                    className={styles.secondaryButton}
-                    onClick={() => (window.location.href = '/')}
-                >
-                    메인으로
-                </button>
             </div>
         </div>
     );

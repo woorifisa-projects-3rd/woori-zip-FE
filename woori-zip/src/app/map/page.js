@@ -38,8 +38,14 @@ export default function MapPage() {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [houseData, setHouseData] = useState([]);
   const [mapLocations, setMapLocations] = useState([]);
+
+  //파라미터에서 값 가지고 오기
   const searchParams = useSearchParams();
   const analysisData = searchParams.get("category");
+  const southWestLatitudeData = searchParams.get("category");
+  const southWestLongitudeData = searchParams.get("southWestLongitude");
+  const northEastLatitudeData = searchParams.get("northEastLatitude");
+  const northEastLongitudeData = searchParams.get("northEastLongitude");
 
   // 처음 처리 여부 관리
   const [isCategoryProcessed, setIsCategoryProcessed] = useState(false);
@@ -50,7 +56,32 @@ export default function MapPage() {
   });
 
   useEffect(() => {
-    // 세션 스토리지에서 houseType 가져오기
+    console.log("Current mapState:", mapState);
+  }, [mapState]);
+
+  useEffect(() => {
+    if (
+      southWestLatitudeData &&
+      southWestLongitudeData &&
+      northEastLatitudeData &&
+      northEastLongitudeData
+    ) {
+      setMapState((prevState) => ({
+        ...prevState,
+        southWestLatitude: parseFloat(southWestLatitudeData),
+        southWestLongitude: parseFloat(southWestLongitudeData),
+        northEastLatitude: parseFloat(northEastLatitudeData),
+        northEastLongitude: parseFloat(northEastLongitudeData),
+      }));
+    }
+  }, [
+    southWestLatitudeData,
+    southWestLongitudeData,
+    northEastLatitudeData,
+    northEastLongitudeData,
+  ]);
+
+  useEffect(() => {
     const savedHouseType = sessionStorage.getItem("selectedHouseType");
     console.log(savedHouseType);
     if (savedHouseType) {
