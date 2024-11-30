@@ -9,6 +9,7 @@ import NavBar from "../../components/domains/map/NavBar";
 import CategoryMenu from "../../components/domains/map/CategoryMenu";
 import MobileHeader from "../../components/domains/map/MobileHeader";
 import { fetchHouseList, fetchHouseDetails } from "@/app/api/map/houseApi";
+import { useSearchParams } from "next/navigation";
 
 const defaultFilters = {
   level: 7,
@@ -25,7 +26,7 @@ const defaultFilters = {
   maxMaintenanceFee: 5000000,
 };
 
-export default function Home() {
+export default function MapPage() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isCategoryMenuVisible, setCategoryMenuVisible] = useState(false);
   const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -37,6 +38,12 @@ export default function Home() {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [houseData, setHouseData] = useState([]);
   const [mapLocations, setMapLocations] = useState([]);
+  const searchParams = useSearchParams();
+  const analysisData = searchParams.get("category");
+
+  // 처음 처리 여부 관리
+  const [isCategoryProcessed, setIsCategoryProcessed] = useState(false);
+
   const [selectedLocation, setSelectedLocation] = useState({
     lat: 37.5189,
     lng: 126.8952,
@@ -58,10 +65,18 @@ export default function Home() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // 처음에만 category 처리
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        const data = await fetchHouseList(defaultFilters);
+        let filters = { ...defaultFilters };
+
+        if (analysisData && !isCategoryProcessed) {
+          filters = { ...filters, category: analysisData }; // category 추가
+          setIsCategoryProcessed(true); // 처리 완료
+        }
+
+        const data = await fetchHouseList(filters);
         console.log("data:   ", data);
         updateHouseData(data);
       } catch (error) {
@@ -69,7 +84,7 @@ export default function Home() {
       }
     };
     loadInitialData();
-  }, []);
+  }, [analysisData, isCategoryProcessed]);
 
   const updateHouseData = (data) => {
     if (data?.houseContents) {
@@ -106,6 +121,7 @@ export default function Home() {
         <NavBar
           houseType={houseType}
           mapState={mapState}
+          analysisData={isCategoryProcessed ? null : analysisData}
           onHouseInfoUpdate={updateHouseData}
         />
         <div className={styles.contentArea}>
@@ -128,7 +144,7 @@ export default function Home() {
             locations={mapLocations}
             selectedLocation={selectedLocation}
             onMapChange={setMapState}
-            mapViewData={houseInfo} // houseInfo를 전달
+            mapViewData={houseInfo}
           />
           {selectedProperty && (
             <PropertyDetails
@@ -143,9 +159,10 @@ export default function Home() {
           isVisible={isCategoryMenuVisible}
           onClose={toggleCategoryMenu}
           selectedCategory={selectedCategory}
-          onCategorySelect={setSelectedCategory} 
+          onCategorySelect={setSelectedCategory}
           houseType={houseType}
           mapState={mapState}
+          analysysData={analysisData}
           onApply={(filterData) => {
             console.log("Applied Filter Data:", filterData);
           }}

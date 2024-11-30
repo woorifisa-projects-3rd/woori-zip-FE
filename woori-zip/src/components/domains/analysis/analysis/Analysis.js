@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import styles from './Analysis.module.css';
 import Chart from '../chat/Chat';
 import AnalysisController from './analysis.controller';
+import Link from 'next/link';
 
 export default function Analysis({ similarChartData, memberChartData, bestCategory }) {
     const [userName, setUserName] = useState('회원');
@@ -17,17 +18,17 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
     });
 
     const categories = [
-        { id: 'CLOTH', label: '의류' },
-        { id: 'BOOK', label: '서적/문구' },
-        { id: 'GROCERY', label: '음식료품' },
-        { id: 'CULTURE', label: '문화/취미' },
-        { id: 'FOOD', label: '식당/카페' },
-        { id: 'CAR', label: '자동차정비/유지' },
+        { id: '의류', label: '의류' },
+        { id: '서적/문구', label: '서적/문구' },
+        { id: '음식료품', label: '음식료품' },
+        { id: '문화/취미', label: '문화/취미' },
+        { id: '식당/카페', label: '식당/카페' },
+        { id: '자동차정비/유지', label: '자동차정비/유지' },
     ];
 
-    const bestCategoryKorean = bestCategory ? 
-        AnalysisController.getBestCategoryName(bestCategory) : 
-        '서적/문구';
+    const bestCategoryKorean = bestCategory
+        ? AnalysisController.getBestCategoryName(bestCategory)
+        : '서적/문구';
 
     useEffect(() => {
         const storedUserName = window.localStorage.getItem('userName');
@@ -42,11 +43,10 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
 
     const handleCategoryChange = (category) => {
         if (!category) return;
-        
         setActiveCategory(category);
-        setSelectedData(prev => ({
+        setSelectedData((prev) => ({
             ...prev,
-            category: category
+            category
         }));
     };
 
@@ -54,54 +54,25 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
         const district = e.target.value;
         setSelectedDistrict(district);
         setSelectedDong('');
-        setSelectedData(prev => ({
+        setSelectedData((prev) => ({
             ...prev,
             district,
-            dong: ''
+            dong: '' // Reset dong
         }));
     };
 
     const handleDongSelect = (dong) => {
         setSelectedDong(dong);
-        setSelectedData(prev => ({
+        setSelectedData((prev) => ({
             ...prev,
             dong
         }));
     };
 
-    const handleSearch = () => {
-        const searchData = {
-            selectedCategory: {
-                id: activeCategory,
-                name: categories.find(cat => cat.id === activeCategory)?.label || ''
-            },
-            location: {
-                district: selectedDistrict,
-                dong: selectedDong
-            },
-            analysisResults: {
-                bestCategory: {
-                    id: bestCategory,
-                    name: bestCategoryKorean
-                },
-                similarChartData: similarChartData,
-                memberChartData: memberChartData
-            },
-            userInfo: {
-                name: userName
-            },
-            timestamp: new Date().toISOString()
-        };
-
-        console.group('🏠 집 검색 데이터');
-        console.log('📊 선택된 카테고리:', searchData.selectedCategory);
-        console.log('📍 선택된 지역:', searchData.location);
-        console.log('📈 분석 결과:', searchData.analysisResults);
-        console.log('👤 사용자 정보:', searchData.userInfo);
-        console.log('⏰ 검색 시간:', searchData.timestamp);
-        console.groupEnd();
-
-        localStorage.setItem('searchData', JSON.stringify(searchData));
+    const filterRequestParams = (data) => {
+        return Object.fromEntries(
+            Object.entries(data).filter(([_, value]) => value !== null && value !== undefined && value !== '')
+        );
     };
 
     return (
@@ -192,16 +163,18 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
             </div>
 
             <div className={styles.buttonGroup}>
-                <button 
-                    className={styles.primaryButton} 
-                    onClick={handleSearch}
-                    disabled={!selectedDistrict || !selectedDong || !activeCategory}
+                <Link
+                    href={{
+                        pathname: '/map',
+                        query: filterRequestParams(selectedData)
+                    }}
+                    className={styles.primaryButton}
                 >
                     집 검색하기
-                </button>
-                <button 
-                    className={styles.secondaryButton} 
-                    onClick={() => window.location.href = '/'}
+                </Link>
+                <button
+                    className={styles.secondaryButton}
+                    onClick={() => (window.location.href = '/')}
                 >
                     메인으로
                 </button>

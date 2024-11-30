@@ -6,8 +6,7 @@ import styles from "../map/NavBar.module.css";
 import Link from 'next/link';
 import { fetchHousesByMapStateApi, fetchHousesByFinalFilterApi } from "@/app/api/map/houseApi";
 
-
-export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
+export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysisData }) {
     const [isCategoryVisible, setCategoryVisible] = useState(false);
     const [isMaintenanceVisible, setMaintenanceVisible] = useState(false);
     const [isRentTypeVisible, setRentTypeVisible] = useState(false);
@@ -23,6 +22,18 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
         walkingDistance: 0,
         facilityCount: 0,
     });
+
+    // analysisData 변경 시 categoryState 업데이트
+    useEffect(() => {
+        if (analysisData) {
+            setCategoryState((prevState) => ({
+                ...prevState,
+                category: analysisData,
+                walkingDistance: 10,
+                facilityCount: 3,
+            }));
+        }
+    }, [analysisData]);
 
     const categoryButtonRef = useRef(null);
     const maintenanceButtonRef = useRef(null);
@@ -61,7 +72,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
             depositRange,
             priceRange,
             maintenanceRange,
-            categoryState,
+            categoryState
         })
             .then((data) => {
                 const updatedData = data.houseContents.map((house) => ({
@@ -74,11 +85,9 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState }) {
                     ...data,
                     houseContents: updatedData,
                 });
-    
                 setPrevMapState(mapState);
             });
-    }, [mapState, onHouseInfoUpdate, prevMapState]);
-    
+    }, [mapState, onHouseInfoUpdate, prevMapState, houseType, rentType, depositRange, priceRange, maintenanceRange, categoryState]);
 
     // 최종 적용 버튼 클릭 시 동작
     const handleFinalApply = () => {
