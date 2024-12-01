@@ -11,22 +11,30 @@ import MobileHeader from "../../components/domains/map/MobileHeader";
 import { fetchHouseList, fetchHouseDetails } from "@/app/api/map/houseApi";
 import { useSearchParams } from "next/navigation";
 
-const defaultFilters = {
-  level: 7,
-  southWestLatitude: 37.5189,
-  southWestLongitude: 126.8952,
-  northEastLatitude: 37.6157,
-  northEastLongitude: 127.0601,
-  minDeposit: 0,
-  housetype: "아파트",
-  maxDeposit: 1000000000,
-  minMonthlyRentFee: 0,
-  maxMonthlyRentFee: 2000000000,
-  minMaintenanceFee: 0,
-  maxMaintenanceFee: 5000000,
-};
-
 export default function MapPage() {
+  //파라미터에서 값 가지고 오기
+  const searchParams = useSearchParams();
+  const analysisData = searchParams.get("category");
+  const southWestLatitudeData = searchParams.get("southWestLatitude");
+  const southWestLongitudeData = searchParams.get("southWestLongitude");
+  const northEastLatitudeData = searchParams.get("northEastLatitude");
+  const northEastLongitudeData = searchParams.get("northEastLongitude");
+
+  const defaultFilters = {
+    level: 7,
+    southWestLatitude: southWestLatitudeData || 37.5189,
+    southWestLongitude: southWestLongitudeData || 126.8952,
+    northEastLatitude: northEastLatitudeData || 37.6157,
+    northEastLongitude: northEastLongitudeData || 127.0601,
+    minDeposit: 0,
+    housetype: "아파트",
+    maxDeposit: 1000000000,
+    minMonthlyRentFee: 0,
+    maxMonthlyRentFee: 2000000000,
+    minMaintenanceFee: 0,
+    maxMaintenanceFee: 5000000,
+  };
+
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isCategoryMenuVisible, setCategoryMenuVisible] = useState(false);
   const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -39,14 +47,6 @@ export default function MapPage() {
   const [houseData, setHouseData] = useState([]);
   const [mapLocations, setMapLocations] = useState([]);
 
-  //파라미터에서 값 가지고 오기
-  const searchParams = useSearchParams();
-  const analysisData = searchParams.get("category");
-  const southWestLatitudeData = searchParams.get("category");
-  const southWestLongitudeData = searchParams.get("southWestLongitude");
-  const northEastLatitudeData = searchParams.get("northEastLatitude");
-  const northEastLongitudeData = searchParams.get("northEastLongitude");
-
   // 처음 처리 여부 관리
   const [isCategoryProcessed, setIsCategoryProcessed] = useState(false);
 
@@ -54,11 +54,7 @@ export default function MapPage() {
     lat: 37.5189,
     lng: 126.8952,
   });
-
-  useEffect(() => {
-    console.log("Current mapState:", mapState);
-  }, [mapState]);
-
+  
   useEffect(() => {
     if (
       southWestLatitudeData &&
@@ -101,21 +97,28 @@ export default function MapPage() {
     const loadInitialData = async () => {
       try {
         let filters = { ...defaultFilters };
-
+  
         if (analysisData && !isCategoryProcessed) {
-          filters = { ...filters, category: analysisData }; // category 추가
-          setIsCategoryProcessed(true); // 처리 완료
+          filters = {
+            ...filters,
+            category: analysisData,
+            walking: 10, // 기본값
+            facilityCount: 3, // 기본값
+          };
+          setIsCategoryProcessed(true);
         }
-
+  
         const data = await fetchHouseList(filters);
-        console.log("data:   ", data);
+        console.log("리스트 데이터:   ", data);
         updateHouseData(data);
       } catch (error) {
-        console.error("Failed to load initial data:", error);
+        console.error("데이터가 없음:", error);
       }
     };
+  
     loadInitialData();
   }, [analysisData, isCategoryProcessed]);
+  
 
   const updateHouseData = (data) => {
     if (data?.houseContents) {

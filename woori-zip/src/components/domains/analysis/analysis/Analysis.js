@@ -35,11 +35,15 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
         ? AnalysisController.getBestCategoryName(bestCategory)
         : '서적/문구';
 
+    const normalizeString = (str) => str.trim().toLowerCase();
+
     useEffect(() => {
-        // JSON 데이터 로드
         fetch('/data/seoul_districts_dong_data.json')
             .then((response) => response.json())
-            .then((data) => setDistrictData(data))
+            .then((data) => {
+                console.log("Loaded district data:", data);
+                setDistrictData(data);
+            })
             .catch((error) => console.error('Error loading data:', error));
 
         const storedUserName = window.localStorage.getItem('userName');
@@ -73,16 +77,33 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
     };
 
     const handleDongSelect = (dong) => {
-        const selectedDongData = districtData[selectedDistrict]?.find((item) => item.읍면동명 === dong) || {};
+        const normalizedDistrict = normalizeString(selectedDistrict);
+        const normalizedDong = normalizeString(dong);
+
+        console.log("Selected district:", selectedDistrict); // 디버깅 로그
+        console.log("Selected dong:", dong); // 디버깅 로그
+
+        const selectedDongData = districtData[normalizedDistrict]?.find(
+            (item) => normalizeString(item.읍면동명) === normalizedDong
+        );
+
+        if (!selectedDongData) {
+            console.error("No data found for selected district and dong");
+            return;
+        }
+
         setSelectedDong(dong);
-        setSelectedData((prev) => ({
-            ...prev,
+        const updatedData = {
+            ...selectedData,
             dong,
-            southWestLatitude: selectedDongData.southWestLatitude || '',
-            southWestLongitude: selectedDongData.southWestLongitude || '',
-            northEastLatitude: selectedDongData.northEastLatitude || '',
-            northEastLongitude: selectedDongData.northEastLongitude || ''
-        }));
+            southWestLatitude: selectedDongData.southWestLatitude,
+            southWestLongitude: selectedDongData.southWestLongitude,
+            northEastLatitude: selectedDongData.northEastLatitude,
+            northEastLongitude: selectedDongData.northEastLongitude
+        };
+        setSelectedData(updatedData);
+
+        console.log("Updated selected data:", updatedData);
     };
 
     const filterRequestParams = (data) => {
@@ -157,7 +178,7 @@ export default function Analysis({ similarChartData, memberChartData, bestCatego
 
                 {selectedDistrict && (
                     <div className={styles.dongGrid}>
-                        {districtData[selectedDistrict]?.map((dong) => (
+                        {districtData[normalizeString(selectedDistrict)]?.map((dong) => (
                             <button
                                 key={dong.읍면동명}
                                 onClick={() => handleDongSelect(dong.읍면동명)}
