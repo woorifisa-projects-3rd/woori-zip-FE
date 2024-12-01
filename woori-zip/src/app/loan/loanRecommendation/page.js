@@ -55,7 +55,7 @@ export default function LoanRecommendation() {
         <WebViewLoanRecommendation loanRecommendations={loanRecommendations} />
       ) : (
         <>
-          <WideCard loanRecommendations={loanRecommendations} />
+          <WideCard/>
           <BottomCard loanRecommendations={loanRecommendations} />
         </>
       )}
