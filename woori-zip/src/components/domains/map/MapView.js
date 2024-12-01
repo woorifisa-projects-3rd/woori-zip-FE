@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import styles from '../map/mapView.module.css';
+import { useSearchParams } from 'next/navigation';
 
 const MapView = ({ filters, locations = [], facilities = [],mapViewData, onMapChange = () => {} }) => {
   const mapRef = useRef(null);
@@ -8,6 +9,7 @@ const MapView = ({ filters, locations = [], facilities = [],mapViewData, onMapCh
   const overlays = useRef([]);
   const markers = useRef([]);
   const facilityMarkers = useRef([]);
+  const searchParams = useSearchParams();
   // useEffect(() => {
   //   if (mapViewData) {
   //     console.log("MapView에서 받은 데이터:", mapViewData);
@@ -26,10 +28,32 @@ const MapView = ({ filters, locations = [], facilities = [],mapViewData, onMapCh
         if (window.kakao && window.kakao.maps) {
           window.kakao.maps.load(() => {
             const container = document.getElementById('map');
+
+            // URL 파라미터에서 좌표 값 가져오기
+            const southWestLatitude = parseFloat(searchParams.get('southWestLatitude'));
+            const southWestLongitude = parseFloat(searchParams.get('southWestLongitude'));
+            const northEastLatitude = parseFloat(searchParams.get('northEastLatitude'));
+            const northEastLongitude = parseFloat(searchParams.get('northEastLongitude'));
+
+            // 중심 좌표 계산 (URL 파라미터가 없는 경우 기본값 사용)
+            let initialLat = 37.5665; // 기본값: 서울
+            let initialLng = 126.9780; // 기본값: 서울
+
+            if (
+              southWestLatitude &&
+              southWestLongitude &&
+              northEastLatitude &&
+              northEastLongitude
+            ) {
+              initialLat = (southWestLatitude + northEastLatitude) / 2;
+              initialLng = (southWestLongitude + northEastLongitude) / 2;
+            }
+
             const options = {
-              center: new window.kakao.maps.LatLng(37.5665, 126.9780),
+              center: new window.kakao.maps.LatLng(initialLat, initialLng),
               level: 7,
             };
+
             mapRef.current = new window.kakao.maps.Map(container, options);
 
             geocoder.current = new window.kakao.maps.services.Geocoder();
