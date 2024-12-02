@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useSearchParams } from "next/navigation";
 import styles from './Register.module.css';
 import { validatePassword, confirmPassword, validateName, validateEmail, validateDateOfBirth, validatLicenseId } from '../login/validation';
-import { signUp } from "@/app/api/member/memberApi";
+import { validEmail, signUp } from "@/app/api/member/memberApi";
 
 export default function RegisterForm() {
   const [email, setEmail] = useState('');
@@ -39,7 +39,7 @@ export default function RegisterForm() {
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-    setIsAvailable(null);
+    setIsAvailable(false);
     setErrors((prevErrors) => ({
       ...prevErrors,
       email: validateEmail(e.target.value),
@@ -76,28 +76,39 @@ export default function RegisterForm() {
 
   // 이메일 중복 확인 요청 함수
   const checkEmailAvailability = async (e) => {
-    
+    e.preventDefault();
+
+    if(email === '') alert('이메일을 입력해주세요.');
+
+    const response = await validEmail(email);
+    if(response.success) {
+      setIsAvailable(true);
+      alert("사용할 수 있는 이메일입니다.");
+    } else alert("이미 존재하는 이메일입니다.");
   };
 
   //제출 핸들러
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if(!isAvailable) {
+      alert('이메일 중복 확인을 진행해주세요.');
+      return;
+    }
+
     if(role === '1') {
       if(errors?.email || errors?.name || errors?.password || errors?.rePassword || errors?.birthday || errors?.licenseId) {
-        alert('모든 정보를 입력해주세요');
+        alert('모든 정보를 입력해주세요.');
         return;
       }
     } else if(role === '2') {
       if(errors?.email || errors?.name || errors?.password || errors?.rePassword || errors?.birthday) {
-        alert('모든 정보를 입력해주세요');
+        alert('모든 정보를 입력해주세요.');
         return;
       }
     }
 
     const roleName = role === '0' ? 'MEMBER' : role === '1' ? 'AGENT' : 'ADMIN';
-
-    alert('data: '+email+' '+name+' '+password+' '+rePassword+' '+gender+' '+birthday+' '+licenseId+' '+roleName);
 
     signUp({
       email,
@@ -108,8 +119,8 @@ export default function RegisterForm() {
       gender,
       roleName
   })
-      .then((data) => {
-          if(data.success) {
+      .then((response) => {
+          if(response.success) {
             window.location.href = `/user/login?role=${role}`
           } else {
             alert("회원가입에 실패하였습니다. 정보를 다시 확인해주세요.");
@@ -238,7 +249,6 @@ export default function RegisterForm() {
           <button
             type='submit'
             className={styles.signUpButton}
-            // disabled={!isAvailable}
           >
             가입하기
           </button>
