@@ -32,10 +32,14 @@ export const validatePhoneNum = (phoneNum) => {
 };
 
 export const validateDateOfBirth = (birthday) => {
-  const birthdayRegex = /^(19[0-9]{2}|20[0-2][0-5])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
-  return birthdayRegex.test(birthday)
-    ? ''
-    : '생년월일은 2000-01-01 형식이어야 합니다.';
+  const inputDate = new Date(birthday);
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  return inputDate <= yesterday
+  ? ''
+  : '생년월일은 오늘보다 이전이어야 합니다.';
 };
 
 export const validateEmail = (email) => {
