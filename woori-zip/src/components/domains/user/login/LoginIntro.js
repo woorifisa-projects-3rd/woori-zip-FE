@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Tab from "./Tab";
 import styles from "./LoginIntro.module.css";
 import LoginAdminPage from "./LoginAdminPage";
 import LoginAgentPage from "./LoginAgentPage";
 import { useSearchParams } from "next/navigation";
 
-export default function LoginIntro() {
+export default function LoginIntro({handleWooriBankLogin, handleWoorizipLogin}) {
   // const [activeTab, setActiveTab] = useState(0); // 활성 탭 상태 관리
 
   // 탭 데이터
@@ -20,7 +20,6 @@ export default function LoginIntro() {
   const searchParams = useSearchParams();
   // console.log(typeof searchParams.get('role'));
 
-  // 탭 클릭에 따라 렌더링할 UI
   const renderContent = () => {
     switch (searchParams.get('role')) {
       case '0': // 회원
@@ -38,19 +37,19 @@ export default function LoginIntro() {
               <br />
               우리은행 데이터와 간편 연결하기
             </p>
-            <button className={styles.loginButton}>우리은행으로 로그인</button>
+            <button className={styles.loginButton} onClick={handleWooriBankLogin}>우리은행으로 로그인</button>
           </div>
         );
       case '1': // 중개자
         return (
           <div className={styles.loginContent}>
-            <LoginAdminPage />
+            <LoginAdminPage onLogin={handleWoorizipLogin}/>
           </div>
         );
       case '2': // 관리자
         return (
           <div className={styles.loginContent}>
-            <LoginAgentPage />
+            <LoginAdminPage onLogin={handleWoorizipLogin} />
           </div>
         );
       default:
@@ -75,3 +74,4 @@ export default function LoginIntro() {
     </div>
   );
 }
+
