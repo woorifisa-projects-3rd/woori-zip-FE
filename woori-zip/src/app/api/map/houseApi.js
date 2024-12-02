@@ -16,9 +16,9 @@ export const fetchHouseList = async (filters) => {
     });
 
     console.log("Request headers:", response.headers); // 응답 헤더 확인
-    console.log("House list response:", response); // 응답 데이터 로그
+    console.log("House list response:", response.data); // 응답 데이터 로그
 
-    return response;
+    return response.data; // 변경된 부분
   } catch (error) {
     console.error("Error fetching house list:", error);
     throw error;
@@ -27,26 +27,44 @@ export const fetchHouseList = async (filters) => {
 
 // 특정 주택 상세정보 요청
 export const fetchHouseDetails = async (propertyId) => {
-  return await instance(`houses/${propertyId}`, {
-    method: 'GET',
-    credentials: 'include',
-  });
+  try {
+    const response = await instance(`houses/${propertyId}`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+    return response.data; // 변경된 부분
+  } catch (error) {
+    console.error("Error fetching house details:", error);
+    throw error;
+  }
 };
 
 // 북마크 추가 요청
 export const addBookmark = async (propertyId) => {
-  return await instance(`houses/${propertyId}/bookmark`, {
-    method: 'POST',
-    credentials: 'include',
-  });
+  try {
+    const response = await instance(`houses/${propertyId}/bookmark`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+    return response.data; // 변경된 부분
+  } catch (error) {
+    console.error("Error adding bookmark:", error);
+    throw error;
+  }
 };
 
 // 북마크 삭제 요청
 export const deleteBookmark = async (propertyId) => {
-  return await instance(`houses/${propertyId}/bookmark`, {
-    method: 'DELETE',
-    credentials: 'include',
-  });
+  try {
+    const response = await instance(`houses/${propertyId}/bookmark`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+    return response.data; // 변경된 부분
+  } catch (error) {
+    console.error("Error deleting bookmark:", error);
+    throw error;
+  }
 };
 
 // 지도 상태로 주택 목록 요청
@@ -90,10 +108,11 @@ export const fetchHousesByMapStateApi = async ({
   console.log(`지도 이동 시 요청 URL: ${url}`);
 
   try {
-    return await instance(url, {
+    const response = await instance(url, {
       method: 'GET',
       credentials: 'include',
     });
+    return response.data; // 변경된 부분
   } catch (error) {
     console.error("지도 이동 API 호출 오류:", error);
     throw error;
@@ -141,10 +160,11 @@ export const fetchHousesByFinalFilterApi = async ({
   console.log(`최종 요청 URL: ${url}`);
 
   try {
-    return await instance(url, {
+    const response = await instance(url, {
       method: 'GET',
       credentials: 'include',
     });
+    return response.data; // 변경된 부분
   } catch (error) {
     console.error("최종 필터 API 호출 오류:", error);
     throw error;
