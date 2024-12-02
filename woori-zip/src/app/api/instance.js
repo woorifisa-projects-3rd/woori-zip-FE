@@ -11,8 +11,8 @@ import { cookies } from 'next/headers'; // 서버 사이드에서 쿠키를 처�
 // }
 
 const fetchInstance = async (url, options) => {
-  // const session = await auth();
-  // const accessToken = session?.user?.accessToken;
+  const session = await auth();
+  const accessToken = session?.user?.accessToken;
 
   const headers = {
     ...options.headers,
@@ -25,7 +25,9 @@ const fetchInstance = async (url, options) => {
     headers['Content-Type'] = 'application/json';
   }
 
-    headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MTEsIm1lbWJlclJvbGUiOiJNRU1CRVIiLCJpc3MiOiJ3b29yaXppcCIsImlhdCI6MTczMjcxMjQyNiwiZXhwIjoxNzMzMDcyNDI2fQ.KvUux5H3R4j-Kw0BDhtEyZnwswmu-VLgo7IlKjymhzs`
+  if(accessToken) {
+    headers.Authorization = `Bearer ${accessToken}`
+  }
 
   try {
     const response = await fetch(`http://localhost:8080/api/v1/${url}`, {

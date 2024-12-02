@@ -3,12 +3,11 @@ import Footer from "../components/layout/Footer/Footer";
 import styles from "./page.module.css";
 import PropertyGrid from "@/components/domains/main/PropertyGrid/PropertyGrid.js";
 
-
 export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <PropertyGrid />
+          <PropertyGrid />
       </main>
     </div>
   );
