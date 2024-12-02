@@ -103,7 +103,7 @@ export default function RegisterForm() {
   };
 
   //제출 핸들러
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if(!isAvailable) {
@@ -113,19 +113,18 @@ export default function RegisterForm() {
 
     if(role === '1') {
       if(errors?.email || errors?.name || errors?.password || errors?.rePassword || errors?.birthday || errors?.licenseId) {
-        alert('모든 정보를 입력해주세요.');
+        alert('모든 정보를 올바르게 입력해주세요.');
         return;
       }
     } else if(role === '2') {
       if(errors?.email || errors?.name || errors?.password || errors?.rePassword || errors?.birthday) {
-        alert('모든 정보를 입력해주세요.');
+        alert('모든 정보를 올바르게 입력해주세요.');
         return;
       }
     }
 
     const roleName = role === '0' ? 'MEMBER' : role === '1' ? 'AGENT' : 'ADMIN';
-
-    signUp({
+    const response = await signUp({
       email,
       name,
       password,
@@ -133,14 +132,13 @@ export default function RegisterForm() {
       licenseId,
       gender,
       roleName
-  })
-      .then((response) => {
-          if(response.success) {
-            window.location.href = `/user/login?role=${role}`
-          } else {
-            alert("회원가입에 실패하였습니다. 정보를 다시 확인해주세요.");
-          }
-      });
+    });
+
+    if(response.success) {
+      alert('회원가입이 완료되었습니다.');
+      window.location.href = `/user/login?role=${role}`
+    } else alert("정보를 다시 확인해주세요.");
+
   };
 
 
