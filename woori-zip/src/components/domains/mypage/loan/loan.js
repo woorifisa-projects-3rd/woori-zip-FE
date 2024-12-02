@@ -1,6 +1,4 @@
-'use client';
-
-import { useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './Loan.module.css';
 import { useLoan } from './hooks/useLoan';
 import LoanCard from './LoanCard';
@@ -10,10 +8,31 @@ const Loan = () => {
     loanData,
     isLoading,
     error,
+    loadMore
   } = useLoan();
 
-  console.log("Loan.js -> isLoading:", isLoading);
-  console.log("Loan.js -> loanData:", loanData);
+  const observerRef = useRef(null);
+
+  const lastItemRef = useCallback(
+    (node) => {
+      if (isLoading) return;
+
+      if (observerRef.current) observerRef.current.disconnect();
+
+      observerRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && loanData.hasNext) {
+          loadMore();
+        }
+      });
+
+      if (node) observerRef.current.observe(node);
+    },
+    [isLoading, loanData.hasNext, loadMore]
+  );
+
+  console.log("Loan.js 데이터 확인 -> loanData:", loanData);
+
+  console.log("데이터 확인: ", loanData.hasNext);
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -35,10 +54,23 @@ const Loan = () => {
 
   return (
     <div className={styles.container}>
-      <div>
-        <LoanCard property={loanData.recentlyLoanGoods} />
-        </div>
+      <ul className={styles.cardList}>
+        {loanData.recentlyLoanGoods.map((data, index) => (
+          <li
+            key={data.id || index} 
+            ref={
+              index === loanData.recentlyLoanGoods.length - 1
+                ? lastItemRef
+                : null 
+            }
+          >
+            <LoanCard property={[data]} hasNext={loanData.hasNext} />
+          </li>
+        ))}
+      </ul>
+      {isLoading && <div className="loader">Loading...</div>}
     </div>
+
   );
 };
 

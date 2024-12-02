@@ -3,8 +3,10 @@
 import React from 'react';
 import styles from './LoanCard.module.css'; // 스타일 파일 추가
 
-const LoanCard = ({ property }) => {
+const LoanCard = ({property, hasNext}) => {
+    
     console.log("property: ", property);
+    console.log("hasNexthoohoh: ", hasNext);
 
     return (
         <ul className={styles.cardList}>
