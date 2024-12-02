@@ -104,7 +104,7 @@ export default function PropertyGrid() {
         </div>
 
         <div className={styles.info_banner}>
-          <Link href="/loan/loanDetail">
+          <Link href="/analysis">
             <div>
               <h2>
                 <span className={styles.blue_text}>소비 패턴 분석</span>
