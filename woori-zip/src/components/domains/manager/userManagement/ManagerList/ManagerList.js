@@ -1,22 +1,31 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getAgentList, updateBulkPermissions } from '../../../../../app/api/manager/managerAPI';
 import styles from './ManagerList.module.css';
 
 export default function ManagerList() {
-  const [managerList, setManagerList] = useState([
-    { id: 1, userId: 'Agent01', name: '중개사01', status: '권한 승인' },
-    { id: 2, userId: 'Agent02', name: '중개사02', status: '권한 승인' },
-    { id: 3, userId: 'Agent03', name: '중개사03', status: '권한 해제' },
-    { id: 4, userId: 'Agent04', name: '중개사04', status: '권한 해제' },
-    { id: 5, userId: 'Agent05', name: '중개사05', status: '권한 승인' },
-    { id: 6, userId: 'Agent06', name: '중개사06', status: '권한 해제' },
-  ]);
-
+  const [managerList, setManagerList] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const pageSize = 6;
   const totalPages = Math.ceil(managerList.length / pageSize);
+
+  useEffect(() => {
+    const fetchAgents = async () => {
+      try {
+        const data = await getManagerList();
+        setManagerList(data);
+      } catch (error) {
+        console.error('Failed to fetch agents:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchAgents();
+  }, []);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -28,21 +37,25 @@ export default function ManagerList() {
     );
   };
 
-  const handleBulkAction = (action) => {
-    setManagerList((prevList) =>
-      prevList.map((manager) =>
-        selectedIds.includes(manager.id)
-          ? { ...manager, status: action === 'approve' ? '권한 승인' : '권한 해제' }
-          : manager
-      )
-    );
-    setSelectedIds([]); // Clear selection after action
+  const handleBulkAction = async (action) => {
+    try {
+      await updateBulkPermissions(selectedIds, action, 'agent');
+      const updatedList = await getAgentList();
+      setManagerList(updatedList);
+      setSelectedIds([]); // Clear selection after action
+    } catch (error) {
+      console.error('Failed to update permissions:', error);
+    }
   };
 
   const displayedManagers = managerList.slice(
     currentPage * pageSize,
     (currentPage + 1) * pageSize
   );
+
+  if (isLoading) {
+    return <div className={styles.loading}>Loading...</div>;
+  }
 
   return (
     <div className={styles.container}>

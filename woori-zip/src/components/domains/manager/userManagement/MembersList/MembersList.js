@@ -1,22 +1,31 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getMembersList, updateBulkPermissions } from '../../../../../app/api/manager/managerAPI';
 import styles from './MembersList.module.css';
 
 export default function MembersList() {
-  const [managerList, setManagerList] = useState([
-    { id: 1, userId: 'Agent01', name: '중개사01', status: '권한 승인' },
-    { id: 2, userId: 'Agent02', name: '중개사02', status: '권한 승인' },
-    { id: 3, userId: 'Agent03', name: '중개사03', status: '권한 해제' },
-    { id: 4, userId: 'Agent04', name: '중개사04', status: '권한 해제' },
-    { id: 5, userId: 'Agent05', name: '중개사05', status: '권한 승인' },
-    { id: 6, userId: 'Agent06', name: '중개사06', status: '권한 해제' },
-  ]);
-
+  const [memberList, setMemberList] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const pageSize = 6;
-  const totalPages = Math.ceil(managerList.length / pageSize);
+  const totalPages = Math.ceil(memberList.length / pageSize);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const data = await getMembersList();
+        setMemberList(data);
+      } catch (error) {
+        console.error('Failed to fetch members:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchMembers();
+  }, []);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -28,21 +37,25 @@ export default function MembersList() {
     );
   };
 
-  const handleBulkAction = (action) => {
-    setManagerList((prevList) =>
-      prevList.map((manager) =>
-        selectedIds.includes(manager.id)
-          ? { ...manager, status: action === 'approve' ? '권한 승인' : '권한 해제' }
-          : manager
-      )
-    );
-    setSelectedIds([]); // Clear selection after action
+  const handleBulkAction = async (action) => {
+    try {
+      await updateBulkPermissions(selectedIds, action, 'members');
+      const updatedList = await getMembersList();
+      setMemberList(updatedList);
+      setSelectedIds([]); // Clear selection after action
+    } catch (error) {
+      console.error('Failed to update permissions:', error);
+    }
   };
 
-  const displayedManagers = managerList.slice(
+  const displayedMembers = memberList.slice(
     currentPage * pageSize,
     (currentPage + 1) * pageSize
   );
+
+  if (isLoading) {
+    return <div className={styles.loading}>Loading...</div>;
+  }
 
   return (
     <div className={styles.container}>
@@ -75,13 +88,13 @@ export default function MembersList() {
                   onChange={(e) =>
                     setSelectedIds(
                       e.target.checked
-                        ? managerList.map((manager) => manager.id)
+                        ? memberList.map((member) => member.id)
                         : []
                     )
                   }
                   checked={
-                    managerList.length > 0 &&
-                    managerList.every((manager) => selectedIds.includes(manager.id))
+                    memberList.length > 0 &&
+                    memberList.every((member) => selectedIds.includes(member.id))
                   }
                 />
               </th>
@@ -92,25 +105,25 @@ export default function MembersList() {
             </tr>
           </thead>
           <tbody>
-            {displayedManagers.map((manager) => (
-              <tr key={manager.id} className={styles.tableRow}>
+            {displayedMembers.map((member) => (
+              <tr key={member.id} className={styles.tableRow}>
                 <td>
                   <input
                     type="checkbox"
-                    checked={selectedIds.includes(manager.id)}
-                    onChange={() => toggleSelection(manager.id)}
+                    checked={selectedIds.includes(member.id)}
+                    onChange={() => toggleSelection(member.id)}
                   />
                 </td>
-                <td>{manager.id}</td>
-                <td>{manager.userId}</td>
-                <td>{manager.name}</td>
+                <td>{member.id}</td>
+                <td>{member.userId}</td>
+                <td>{member.name}</td>
                 <td>
                   <button
                     className={`${styles.statusButton} ${
-                      manager.status === '권한 승인' ? styles.approved : styles.rejected
+                      member.status === '권한 승인' ? styles.approved : styles.rejected
                     }`}
                   >
-                    {manager.status}
+                    {member.status}
                   </button>
                 </td>
               </tr>
