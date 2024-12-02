@@ -10,6 +10,7 @@ export default function RegisterForm() {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [isAvailable, setIsAvailable] = useState(false);
+  const [checkEmail, setCheckEmail] = useState(false);
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
   const [birthday, setBirthday] = useState('');
@@ -40,6 +41,7 @@ export default function RegisterForm() {
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
     setIsAvailable(false);
+    setCheckEmail(false);
     setErrors((prevErrors) => ({
       ...prevErrors,
       email: validateEmail(e.target.value),
@@ -78,11 +80,24 @@ export default function RegisterForm() {
   const checkEmailAvailability = async (e) => {
     e.preventDefault();
 
-    if(email === '') alert('이메일을 입력해주세요.');
+    if(email === '') {
+      alert('이메일을 입력해주세요.');
+      setIsAvailable(false);
+      setCheckEmail(false);
+      return;
+    }
+
+    if(errors.email !== '') {
+      alert('사용할 수 없는 이메일 형식입니다.');
+      setIsAvailable(false);
+      setCheckEmail(false);
+      return;
+    }
 
     const response = await validEmail(email);
     if(response.success) {
       setIsAvailable(true);
+      setCheckEmail(true);
       alert("사용할 수 있는 이메일입니다.");
     } else alert("이미 존재하는 이메일입니다.");
   };
@@ -165,6 +180,7 @@ export default function RegisterForm() {
                 type="button"
                 className={styles.checkButton}
                 onClick={checkEmailAvailability}
+                disabled = {checkEmail}
               >
                 중복 확인
               </button>
