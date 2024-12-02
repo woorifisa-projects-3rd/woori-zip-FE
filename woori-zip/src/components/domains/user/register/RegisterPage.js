@@ -16,7 +16,6 @@ export default function RegisterForm() {
   const [licenseId, setLicenseId] = useState('');
   const [gender, setGender] = useState('MALE');
   const [errors, setErrors] = useState({ email: ' ', name: ' ', password: ' ', rePassword: ' ', birthday: ' ', licenseId: ' ' });
-  const [roleName, setRoleName] = useState('');
 
   const searchParams = useSearchParams();
   const role = searchParams.get('role') || "0";
@@ -75,13 +74,6 @@ export default function RegisterForm() {
     setGender(e.target.value);
   };
 
-  const setRole = () => {
-    if(role === '0') setRoleName('MEMBER');
-    if(role === '1') setRoleName('AGENT');
-    if(role === '2') setRoleName('ADMIN');
-  }
-
-
   // 이메일 중복 확인 요청 함수
   const checkEmailAvailability = async (e) => {
     
@@ -103,7 +95,9 @@ export default function RegisterForm() {
       }
     }
 
-    setRole();
+    const roleName = role === '0' ? 'MEMBER' : role === '1' ? 'AGENT' : 'ADMIN';
+
+    alert('data: '+email+' '+name+' '+password+' '+rePassword+' '+gender+' '+birthday+' '+licenseId+' '+roleName);
 
     signUp({
       email,
