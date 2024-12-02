@@ -39,7 +39,7 @@ const fetchInstance = async (url, options) => {
         console.error('Token Expired');
       }
       console.error('Fetch Error:', errorResponse);
-      return response;
+      return errorResponse;
     }
 
     if (response.headers.get('content-type')?.includes('application/json')) {

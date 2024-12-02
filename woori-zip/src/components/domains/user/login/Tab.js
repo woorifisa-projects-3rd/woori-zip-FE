@@ -17,9 +17,7 @@ export default function Tab({ tabs }) {
 
   // 기본값을 적용하기 위해 URL을 강제로 변경
   useEffect(() => {
-    if (pathname === "/user/login" && !searchParams.get('role')) {
-      router.replace(`/user/login?role=0`);
-    }
+    if(!searchParams.get('role')) router.replace(`${pathname}?role=0`);
   }, [pathname, searchParams, router]);
 
   return (
@@ -28,7 +26,7 @@ export default function Tab({ tabs }) {
         {tabs.map((tab) => (
           <li key={`tab${tab.id}`}>
             <Link
-              href={`/user/login?role=${tab.id}`}
+              href={`${pathname}?role=${tab.id}`}
               className={currentRole === tab.id.toString() ? styles.active : ""}
             >
               <span>{tab.label}</span>

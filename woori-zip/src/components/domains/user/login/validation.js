@@ -21,33 +21,30 @@ export const validateName = (name) => {
   const usernameRegex = /^[a-zA-Z가-힣]+$/;
   return usernameRegex.test(name)
     ? ''
-    : '영문 또는 한글만 포함해야 합니다.';
-};
-
-export const validatePhoneNum = (phoneNum) => {
-  const phoneNumberRegex = /^01[0-9]-\d{4}-\d{4}$/;
-  return phoneNumberRegex.test(phoneNum)
-    ? ''
-    : '전화번호는 010-1234-5678 형식으로 입력해야 합니다.';
+    : '이름은 영문 또는 한글만 포함해야 합니다.';
 };
 
 export const validateDateOfBirth = (birthday) => {
-  const birthdayRegex = /^(19[0-9]{2}|20[0-2][0-5])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
-  return birthdayRegex.test(birthday)
-    ? ''
-    : '생년월일은 2000-01-01 형식이어야 합니다.';
+  const inputDate = new Date(birthday);
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  return inputDate <= yesterday
+  ? ''
+  : '생년월일은 오늘보다 이전이어야 합니다.';
 };
 
 export const validateEmail = (email) => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return emailRegex.test(email)
   ? ''
-  : '이메일은 형식이어야 합니다.  ex)woorizip@woorizip.com';
+  : '이메일은 예시와 같은 형식이어야 합니다. ex)woorizip@woorizip.com';
 }
 
-export const validatAdminNum = (adminNum) => {
-  const adminNumRegx = /^[0-9가-힣\s]+$/;
-  return adminNumRegx.test(adminNum)
+export const validatLicenseId = (licenseId) => {
+  const licenseIdRegx = /^[0-9-]+$/;
+  return licenseIdRegx.test(licenseId)
   ? ''
-  : '중개업자 번호 형식이어야 합니다.'
+  : '중개업자는 숫자 형식이어야 합니다.'
 }
