@@ -2,7 +2,11 @@
 
 import { handleCredentialsSignin } from '@/app/actions/authActions';
 import LoginIntro from './LoginIntro';
+<<<<<<< HEAD
+import React, { Suspense, useEffect, useState } from 'react';
+=======
 import React, { useEffect, useState } from 'react';
+>>>>>>> develop
 
 function LoginContent() {
   const [redirectUrl, setRedirectUrl] = useState("");
@@ -34,10 +38,12 @@ function LoginContent() {
   }, [redirectUrl]);
 
   return (
-    <LoginIntro
-      handleWooriBankLogin={handleWooriBankLogin}
-      handleWoorizipLogin={handleWoorizipLogin}
-    />
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <LoginIntro
+        handleWooriBankLogin={handleWooriBankLogin}
+        handleWoorizipLogin={handleWoorizipLogin}
+      />
+    </Suspense>
   );
 }
 
