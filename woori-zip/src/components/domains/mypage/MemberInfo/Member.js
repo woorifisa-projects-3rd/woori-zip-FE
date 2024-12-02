@@ -20,19 +20,18 @@ const Member = () => {
         const response = await fetchMemberInfo();
   
         const memberData = response.data;
-        
-        //데이터를 JSON으로 변환 가능한 형태로 변환
-        const safeData = {
+    
+        const data = {
           name: memberData.name || 'Unknown',
           birthDate: memberData.birthDate || 'N/A',
           gender: memberData.gender || 'N/A',
           membership: memberData.membership || 'N/A',
         };
 
-        setMemberInfo(safeData);
+        setMemberInfo(data);
       } catch (error) {
-        console.error('Failed to fetch member info:', error);
-        setError('Failed to load member info.');
+        console.error('회원를 찾을 수 없습니다', error);
+        setError('로딩 실패했습니다');
       } finally {
         setIsLoading(false);
       }
