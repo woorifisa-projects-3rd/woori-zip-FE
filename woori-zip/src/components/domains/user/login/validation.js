@@ -21,14 +21,7 @@ export const validateName = (name) => {
   const usernameRegex = /^[a-zA-Z가-힣]+$/;
   return usernameRegex.test(name)
     ? ''
-    : '영문 또는 한글만 포함해야 합니다.';
-};
-
-export const validatePhoneNum = (phoneNum) => {
-  const phoneNumberRegex = /^01[0-9]-\d{4}-\d{4}$/;
-  return phoneNumberRegex.test(phoneNum)
-    ? ''
-    : '전화번호는 010-1234-5678 형식으로 입력해야 합니다.';
+    : '이름은 영문 또는 한글만 포함해야 합니다.';
 };
 
 export const validateDateOfBirth = (birthday) => {
@@ -46,12 +39,12 @@ export const validateEmail = (email) => {
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   return emailRegex.test(email)
   ? ''
-  : '이메일은 형식이어야 합니다.  ex)woorizip@woorizip.com';
+  : '이메일은 예시와 같은 형식이어야 합니다. ex)woorizip@woorizip.com';
 }
 
 export const validatLicenseId = (licenseId) => {
   const licenseIdRegx = /^[0-9-]+$/;
   return licenseIdRegx.test(licenseId)
   ? ''
-  : '중개업자 번호 형식이어야 합니다.'
+  : '중개업자는 숫자 형식이어야 합니다.'
 }
