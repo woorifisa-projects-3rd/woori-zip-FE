@@ -7,9 +7,9 @@ import SubmitButton from './SubmitButton';
 import { validateUsername, validatePassword, validateEmail } from './validation';
 
 function Login({ onLogin }) {
-  const [email, setEmail] = useState('');
+  const [username, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({ email: '', password: '' });
+  const [errors, setErrors] = useState({ username: '', password: '' });
   const [loginError, setLoginError] = useState('');
 
   const router = useRouter();
@@ -23,7 +23,7 @@ function Login({ onLogin }) {
     setEmail(e.target.value);
     setErrors((prevErrors) => ({
       ...prevErrors,
-      email: validateEmail(e.target.value),
+      username: validateEmail(e.target.value),
     }));
   };
 
@@ -37,26 +37,15 @@ function Login({ onLogin }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const emailError = validateEmail(email);
+    const emailError = validateEmail(username);
     const passwordError = validatePassword(password);
 
     if (!emailError && !passwordError) {
-      try {
-        const result = await onLogin(
-          email,
-          password,
-        );
-        if (result?.error) {
-          setError("로그인에 실패했습니다.");
-        } else {
-          // 로그인 성공 시 리디렉션
-          router.push('/');
-        }
-      } catch (error) {
-        setLoginError(error.message);
-      }
+      const response = await onLogin(username, password);
+      if(!response.success) alert(`${response.message}`);
+      else router.push('http://localhost:3000');
     } else {
-      setErrors({ email: emailError, password: passwordError });
+      setErrors({ username: emailError, password: passwordError });
     }
   };
 
@@ -69,12 +58,12 @@ function Login({ onLogin }) {
             <input
               type="text"
               placeholder="이메일을 입력하세요"
-              value={email}
+              value={username}
               onChange={handleUsernameChange}
               className={styles.inputField}
             />
-            {errors.email && (
-              <div className={styles.errorMessage}>{errors.email}</div>
+            {errors.username && (
+              <div className={styles.errorMessage}>{errors.username}</div>
             )}
           </div>
 
