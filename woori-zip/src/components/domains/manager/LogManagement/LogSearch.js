@@ -48,7 +48,7 @@ const LogSearch = () => {
         <div className={styles.searchWrapper}>
           <input
             type="text"
-            placeholder="로그 번호/아이디 검색"
+            placeholder="아이디 검색"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={styles.searchInput}

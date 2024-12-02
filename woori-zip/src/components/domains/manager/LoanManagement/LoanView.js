@@ -6,7 +6,7 @@ import styles from './LoanView.module.css';
 const LoanView = () => {
   const [recentLoans, setRecentLoans] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const loadedLoans = JSON.parse(localStorage.getItem('recentLoans')) || [];
