@@ -4,6 +4,7 @@ import { handleCredentialsSignin } from '@/app/actions/authActions';
 import LoginIntro from './LoginIntro';
 import React, { Suspense, useEffect, useState } from 'react';
 
+
 function LoginContent() {
   const [redirectUrl, setRedirectUrl] = useState("");
 
