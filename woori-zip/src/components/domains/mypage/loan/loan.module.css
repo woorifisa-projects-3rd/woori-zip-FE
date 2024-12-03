@@ -5,3 +5,26 @@
 .cardList li {
     list-style: none;
 }
+
+.loadingMessage {
+    color: var(--color-light-gray);
+    text-align: center;
+}
+
+.containerNone {
+    width: 100%;
+    padding: 20px 16px;
+    background-color: #F4FCFF;
+    display: flex;
+  }
+  
+.emptyState {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    width: 100%;
+    color: #666;
+    font-size: 16px;
+    background-color: #fff;
+  }

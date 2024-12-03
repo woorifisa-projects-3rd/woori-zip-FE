@@ -12,6 +12,7 @@ export const useLoan = () => {
 
     const [page, setPage] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
+    const [showLoadingMessage, setShowLoadingMessage] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -32,6 +33,7 @@ export const useLoan = () => {
                 setError(err.message || "데이터를 불러오는 중 에러가 발생했습니다.");
             } finally {
                 setIsLoading(false);
+                setShowLoadingMessage(false);
             }
         };
 
@@ -71,7 +73,12 @@ export const useLoan = () => {
 
     const loadMore = () => {
         if (loanData.hasNext) {
-            setPage(prevPage => prevPage + 1);
+            console.log("Load more triggered. Waiting for timer...");
+            setShowLoadingMessage(true);
+            setTimeout(() => {
+                console.log("Timer complete. Loading more data.");
+                setPage(prevPage => prevPage + 1);
+            }, 2000); // 2초 대기 후 페이지 증가
         }
     };
     
@@ -79,6 +86,7 @@ export const useLoan = () => {
     return {
         loanData,
         isLoading,
+        showLoadingMessage,
         error,
         loadMore,
     };
