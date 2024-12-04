@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getAgentList, updateBulkPermissions } from '../../../../../app/api/manager/managerAPI';
+import { getManagerList, updateBulkPermissions } from '../../../../../app/api/manager/managerAPI';
 import styles from './ManagerList.module.css';
 
 export default function ManagerList() {
@@ -13,18 +13,18 @@ export default function ManagerList() {
   const totalPages = Math.ceil(managerList.length / pageSize);
 
   useEffect(() => {
-    const fetchAgents = async () => {
+    const fetchManagers = async () => {
       try {
-        const data = await getManagerList();
+        const data = await getManagerList(); // Changed from getAgentList to getManagerList
         setManagerList(data);
       } catch (error) {
-        console.error('Failed to fetch agents:', error);
+        console.error('Failed to fetch managers:', error);
       } finally {
         setIsLoading(false);
       }
     };
     
-    fetchAgents();
+    fetchManagers();
   }, []);
 
   const handlePageChange = (pageNumber) => {
@@ -39,8 +39,8 @@ export default function ManagerList() {
 
   const handleBulkAction = async (action) => {
     try {
-      await updateBulkPermissions(selectedIds, action, 'agent');
-      const updatedList = await getAgentList();
+      await updateBulkPermissions(selectedIds, action, 'manager'); // Changed from 'agent' to 'manager'
+      const updatedList = await getManagerList(); // Changed from getAgentList to getManagerList
       setManagerList(updatedList);
       setSelectedIds([]); // Clear selection after action
     } catch (error) {

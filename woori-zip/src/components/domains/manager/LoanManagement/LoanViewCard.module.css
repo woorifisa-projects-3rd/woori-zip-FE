@@ -1,0 +1,134 @@
+.container {
+    width: 100%;
+    padding: 20px 0;
+  }
+  
+  .cardItem {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 1300px;
+    height: 200px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: white;
+    cursor: default;
+    margin: 0 auto 20px;
+  }
+  
+  .cardItem:hover {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1),
+                0px 0px 20px rgba(200, 200, 200, 0.1);
+  }
+  
+  .cardTopContent {
+    display: flex;
+    flex-direction: row;
+    height: 200px;  /* 300px에서 200px로 수정 */
+    position: relative;  /* 추가 */
+  }
+  
+  .cardContent {
+    flex: 1;
+    padding: 20px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+  }
+  
+  .loanType {
+    text-align: left;
+    margin: 5px;
+    color: var(--color-blue);
+  }
+  
+  .loanName {
+    text-align: left;
+    margin: 5px;
+    font-size: 20px;
+  }
+  
+  .loanSummary {
+    text-align: left;
+    margin: 5px;
+  }
+  
+  .loanTarget, .loanDate, .loanLimit {
+    margin: 5px;
+    white-space: nowrap;
+    color: var(--color-text-dark);
+    font-weight: 800;
+  }
+  
+  .loanTargetText, .loanDateText, .loanLimitText {
+    flex: 9;
+    margin: 5px;
+    max-width: 600px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+  }
+  
+  .loanTextBox1, .loanTextBox2, .loanTextBox3 {
+    display: flex;
+    font-family: var(--font-pretendard-regular);
+  }
+  
+  .imageContainer {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    background-color: white;
+    order: -1;
+  }
+  
+  .cardImage {
+    width: 20vh;
+    height: 20vh;
+    align-items: center;
+    justify-content: center;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .buttonContainer {
+    position: absolute;  /* 수정 */
+    top: 20px;          /* 수정 */
+    right: 20px;        /* 수정 */
+    display: flex;
+    gap: 10px;
+  }
+  
+  .modifyButton, .removeButton {
+    width: 55px;
+    height: 35px;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+    border: none;       /* 수정 */
+    color: white;
+    border-radius: 5px;
+    z-index: 1;         /* 추가 */
+  }
+  
+  .modifyButton {
+    margin-right: 10px;
+    background-color: var(--color-blue);
+  }
+  
+  .removeButton {
+    background-color: var(--color-red);
+  }
+  
+  .modifyButton:hover {
+    background-color: var(--color-blue-dark);
+  }
+  
+  .removeButton:hover {
+    background-color: var(--color-red-dark);
+  }
