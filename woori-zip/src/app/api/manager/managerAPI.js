@@ -84,15 +84,29 @@ export async function getLoanProductDetail(loanId) {
   }
 }
 
+// 대출 상품 수정
+export const updateLoanProduct = async (loanId, loanData) => {
+  try {
+    const response = await instance(`loangoods/${loanId}`, {
+      method: 'PUT',
+      body: JSON.stringify(loanData)
+    });
+    return JSON.parse(JSON.stringify(response?.data || {}));
+  } catch (error) {
+    console.error('대출 상품 수정 실패:', error);
+    throw error;
+  }
+};
+
 // 대출 상품 삭제
-export async function deleteLoanProduct(loanId) {
+export const deleteLoanProduct = async (loanId) => {
   try {
     const response = await instance(`loangoods/${loanId}`, {
       method: 'DELETE'
     });
-    return JSON.parse(JSON.stringify(response));
+    return JSON.parse(JSON.stringify(response?.data || {}));
   } catch (error) {
     console.error('대출 상품 삭제 실패:', error);
     throw error;
   }
-}
+};

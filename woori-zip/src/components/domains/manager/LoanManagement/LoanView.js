@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import styles from './LoanView.module.css';
 import LoanViewCard from './LoanViewCard';
 import { useLoanManager } from '../hooks/useLoanManager';
-import { deleteLoanProduct } from '../../../../app/api/manager/managerAPI'; // 삭제 API 가져오기
+import { deleteLoanProduct, updateLoanProduct } from '../../../../app/api/manager/managerAPI';
 
 const LoanView = () => {
   const {
@@ -13,7 +13,7 @@ const LoanView = () => {
     showLoadingMessage,
     error,
     loadMore,
-    setLoanData, // loanData 업데이트를 위한 setter
+    setLoanData,
   } = useLoanManager();
 
   console.log('[LoanView] Current loanData:', loanData);
@@ -88,13 +88,33 @@ const LoanView = () => {
     }
   }, [loanData.loans, isLoading]);
 
+  // 수정 버튼 핸들러
+  const handleEdit = async (loanId, editedData) => {
+    try {
+      console.log(`[LoanView] Updating loan product with ID: ${loanId}`, editedData);
+      const response = await updateLoanProduct(loanId, editedData);
+
+      // 수정 후 상태 업데이트
+      setLoanData(prevData => ({
+        ...prevData,
+        loans: prevData.loans.map(loan => 
+          loan.id === loanId ? { ...loan, ...editedData } : loan
+        )
+      }));
+
+      alert('대출 상품이 성공적으로 수정되었습니다.');
+    } catch (error) {
+      console.error('[LoanView] Failed to update loan product:', error);
+      alert('대출 상품 수정에 실패했습니다.');
+    }
+  };
+
   // 삭제 버튼 핸들러
   const handleDelete = async (loanId) => {
     try {
       console.log(`[LoanView] Deleting loan product with ID: ${loanId}`);
-      await deleteLoanProduct(loanId); // 삭제 API 호출
+      await deleteLoanProduct(loanId);
 
-      // 삭제 후 상태 업데이트
       setLoanData((prevData) => {
         const updatedLoans = prevData.loans.filter((loan) => loan.id !== loanId);
         return {
@@ -130,7 +150,8 @@ const LoanView = () => {
             <div key={loan.id || index} ref={isLastItem ? lastItemRef : null}>
               <LoanViewCard
                 loanGoods={loan}
-                onDelete={() => handleDelete(loan.id)} // 삭제 핸들러 연결
+                onEdit={handleEdit}
+                onDelete={() => handleDelete(loan.id)}
               />
             </div>
           );
