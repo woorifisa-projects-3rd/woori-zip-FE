@@ -143,7 +143,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
                     onClick={() => toggleModal(setRentTypeVisible, isRentTypeVisible)}
                     className={styles.filterButton}
                 >
-                    월세, 전세 ∨
+                    {rentType} ∨ {/* 선택된 거래 유형 표시 */}
                 </button>
                 {isRentTypeVisible && (
                     <div
@@ -250,7 +250,9 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
                     onClick={() => toggleModal(setCategoryVisible, isCategoryVisible)}
                     className={styles.categoryButton}
                 >
-                    카테고리 ∨
+                    {categoryState.category === "선택하지 않음" 
+                        ? "카테고리" 
+                        : `카테고리 (${categoryState.category})`} ∨
                 </button>
                 {isCategoryVisible && (
                     <CategoryMenu
