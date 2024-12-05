@@ -1,32 +1,52 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getMembersList, getAgentList, getManagerList, updateBulkPermissions } from '@/app/api/manager/managerAPI';
+import { getMembersList, updateBulkPermissions } from '../../../../../app/api/manager/managerAPI';
 import styles from './MembersList.module.css';
 
-export default function MembersList({ type = 'members' }) {
+const getRoleType = (inputType) => {
+  const typeMap = {
+    'member': 'MEMBER',
+    'agent': 'AGENT',
+    'manager': 'ADMIN'
+  };
+  return typeMap[inputType.toLowerCase()] || 'MEMBER';
+};
+
+const getStatusText = (status) => {
+  const statusMap = {
+    'PENDING_APPROVAL': '권한 승인 대기',
+    'APPROVED': '권한 승인',
+    'REVOKED_APPROVAL': '권한 해제',
+    'NOT_ADMIN': '관리자 아님'
+  };
+  return statusMap[status] || status;
+};
+
+export default function MembersList({ type = 'MEMBER' }) {
   const [memberList, setMemberList] = useState([]);
   const [selectedIds, setSelectedIds] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  const pageSize = 6;
-  const totalPages = Math.ceil(memberList.length / pageSize);
 
-  const getListByType = {
-    members: getMembersList,
-    agent: getAgentList,
-    manager: getManagerList
-  };
+  const pageSize = 6;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
         setError(null);
-        const data = await getListByType[type]();
-        setMemberList(data);
+        const roleType = getRoleType(type);
+        const response = await getMembersList(roleType, currentPage, pageSize);
+        
+        // 페이지네이션 정보 설정
+        setTotalElements(response.totalElements || 0);
+        setTotalPages(response.totalPages || 1);
+        // content 배열에서 멤버 목록 추출
+        setMemberList(response.content || []);
       } catch (error) {
         setError('데이터를 불러오는데 실패했습니다.');
         console.error('Failed to fetch data:', error);
@@ -34,9 +54,9 @@ export default function MembersList({ type = 'members' }) {
         setIsLoading(false);
       }
     };
-    
+
     fetchData();
-  }, [type]);
+  }, [type, currentPage]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -50,20 +70,17 @@ export default function MembersList({ type = 'members' }) {
 
   const handleBulkAction = async (action) => {
     try {
-      await updateBulkPermissions(selectedIds, action, type);
-      const updatedData = await getListByType[type]();
-      setMemberList(updatedData);
+      const roleType = getRoleType(type);
+      await updateBulkPermissions(selectedIds, action, roleType);
+      // 데이터 다시 불러오기
+      const response = await getMembersList(roleType, currentPage, pageSize);
+      setMemberList(response.content || []);
       setSelectedIds([]);
     } catch (error) {
       console.error('Failed to update permissions:', error);
       alert('권한 변경에 실패했습니다.');
     }
   };
-
-  const displayedMembers = memberList.slice(
-    currentPage * pageSize,
-    (currentPage + 1) * pageSize
-  );
 
   if (isLoading) {
     return <div className={styles.loading}>로딩중...</div>;
@@ -119,7 +136,7 @@ export default function MembersList({ type = 'members' }) {
             </tr>
           </thead>
           <tbody>
-            {displayedMembers.map((member) => (
+            {memberList.map((member) => (
               <tr key={member.id} className={styles.tableRow}>
                 <td>
                   <input
@@ -129,15 +146,15 @@ export default function MembersList({ type = 'members' }) {
                   />
                 </td>
                 <td>{member.id}</td>
-                <td>{member.userId}</td>
+                <td>{member.username}</td>
                 <td>{member.name}</td>
                 <td>
                   <span
                     className={`${styles.statusBadge} ${
-                      member.status === '권한 승인' ? styles.approved : styles.rejected
+                      member.status === 'APPROVED' ? styles.approved : styles.rejected
                     }`}
                   >
-                    {member.status}
+                    {getStatusText(member.status)}
                   </span>
                 </td>
               </tr>
