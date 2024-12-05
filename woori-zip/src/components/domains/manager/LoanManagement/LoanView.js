@@ -16,39 +16,26 @@ const LoanView = () => {
     setLoanData,
   } = useLoanManager();
 
-  console.log('[LoanView] Current loanData:', loanData);
-  console.log('[LoanView] Loading state:', isLoading);
-
   const observerRef = useRef(null);
   const previousLastItemRef = useRef(null);
   const scrollPositionKey = 'loanViewScrollPosition';
 
   const lastItemRef = useCallback(
     (node) => {
-      if (isLoading) {
-        console.log('[lastItemRef] Skip observer setup - loading in progress');
-        return;
-      }
+      if (isLoading) return;
 
       if (observerRef.current) {
-        console.log('[lastItemRef] Disconnecting previous observer');
         observerRef.current.disconnect();
       }
 
-      console.log('[lastItemRef] Setting up new observer');
       observerRef.current = new IntersectionObserver((entries) => {
-        console.log('[IntersectionObserver] Entry intersecting:', entries[0]?.isIntersecting);
-        console.log('[IntersectionObserver] HasNext:', loanData.hasNext);
-
         if (entries[0].isIntersecting && loanData.hasNext) {
-          console.log('[IntersectionObserver] Triggering loadMore');
           if (node) previousLastItemRef.current = node;
           loadMore();
         }
       });
 
       if (node) {
-        console.log('[lastItemRef] Starting to observe node');
         observerRef.current.observe(node);
       }
     },
@@ -58,15 +45,11 @@ const LoanView = () => {
   useEffect(() => {
     const savedScrollPosition = localStorage.getItem(scrollPositionKey);
     if (savedScrollPosition) {
-      console.log('[ScrollRestore] Restoring scroll position:', savedScrollPosition);
       window.scrollTo(0, parseInt(savedScrollPosition, 10));
     }
-  }, []);
 
-  useEffect(() => {
     const saveScrollPosition = () => {
       const position = window.scrollY.toString();
-      console.log('[ScrollSave] Saving scroll position:', position);
       localStorage.setItem(scrollPositionKey, position);
     };
 
@@ -80,7 +63,6 @@ const LoanView = () => {
       previousLastItemRef.current &&
       document.body.contains(previousLastItemRef.current)
     ) {
-      console.log('[ScrollAdjust] Adjusting scroll to previous item');
       previousLastItemRef.current.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
@@ -88,56 +70,54 @@ const LoanView = () => {
     }
   }, [loanData.loans, isLoading]);
 
-  // 수정 버튼 핸들러
   const handleEdit = async (loanId, editedData) => {
     try {
-      console.log(`[LoanView] Updating loan product with ID: ${loanId}`, editedData);
-      const response = await updateLoanProduct(loanId, editedData);
-
-      // 수정 후 상태 업데이트
+      await updateLoanProduct(loanId, editedData);
+      
       setLoanData(prevData => ({
         ...prevData,
-        loans: prevData.loans.map(loan => 
+        loans: prevData.loans.map(loan =>
           loan.id === loanId ? { ...loan, ...editedData } : loan
         )
       }));
-
-      alert('대출 상품이 성공적으로 수정되었습니다.');
     } catch (error) {
-      console.error('[LoanView] Failed to update loan product:', error);
-      alert('대출 상품 수정에 실패했습니다.');
+      console.error('수정 중 오류:', error);
+      throw error;
     }
   };
 
-  // 삭제 버튼 핸들러
   const handleDelete = async (loanId) => {
     try {
-      console.log(`[LoanView] Deleting loan product with ID: ${loanId}`);
       await deleteLoanProduct(loanId);
-
-      setLoanData((prevData) => {
-        const updatedLoans = prevData.loans.filter((loan) => loan.id !== loanId);
-        return {
-          ...prevData,
-          loans: updatedLoans,
-          numberOfElements: updatedLoans.length,
-        };
-      });
-
-      alert('대출 상품이 성공적으로 삭제되었습니다.');
+      
+      setLoanData(prevData => ({
+        ...prevData,
+        loans: prevData.loans.filter(loan => loan.id !== loanId),
+        numberOfElements: prevData.numberOfElements - 1
+      }));
     } catch (error) {
-      console.error('[LoanView] Failed to delete loan product:', error);
-      alert('대출 상품 삭제에 실패했습니다.');
+      console.error('삭제 중 오류:', error);
+      throw error;
     }
   };
 
   if (error) {
-    console.error('[LoanView] Error state:', error);
-    return <div className={styles.emptyState}>{error}</div>;
+    return (
+      <div className={styles.errorState}>
+        <p>데이터를 불러오는 중 오류가 발생했습니다.</p>
+        <p>{error}</p>
+        <button
+          type="button"
+          onClick={() => window.location.reload()}
+          className={styles.retryButton}
+        >
+          다시 시도
+        </button>
+      </div>
+    );
   }
 
   if (!loanData.loans?.length && !isLoading) {
-    console.log('[LoanView] Empty state');
     return <div className={styles.emptyState}>대출 상품이 존재하지 않습니다.</div>;
   }
 
@@ -147,18 +127,23 @@ const LoanView = () => {
         {loanData.loans.map((loan, index) => {
           const isLastItem = index === loanData.loans.length - 1;
           return (
-            <div key={loan.id || index} ref={isLastItem ? lastItemRef : null}>
+            <div 
+              key={loan.id || index} 
+              ref={isLastItem ? lastItemRef : null}
+            >
               <LoanViewCard
                 loanGoods={loan}
                 onEdit={handleEdit}
-                onDelete={() => handleDelete(loan.id)}
+                onDelete={handleDelete}
               />
             </div>
           );
         })}
       </div>
       {(showLoadingMessage && loanData.hasNext) && (
-        <div className={styles.loadingMessage}>데이터를 불러오는 중...</div>
+        <div className={styles.loadingMessage}>
+          데이터를 불러오는 중...
+        </div>
       )}
     </div>
   );
