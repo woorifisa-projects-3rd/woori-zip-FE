@@ -21,7 +21,7 @@ export default function Header() {
   };
 
   const handleProfileClick = () => {
-    router.push('/mypage/MemberInfo');
+    router.push('/mypage');
     setIsDropdownOpen(false); // Close dropdown after navigation
   };
 
@@ -34,6 +34,7 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.header_left}>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <Link href="/" className={styles.header_title}>
           WOORI ZIP
         </Link>
