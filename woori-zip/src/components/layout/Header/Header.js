@@ -41,7 +41,7 @@ export default function Header() {
       </div>
       <div className={styles.header_right}>
         {status === 'loading' ? (
-          <div>로딩 중...</div>
+          <div></div>
         ) : data?.user ? (
           <div className={styles.profile_menu}>
             <img
