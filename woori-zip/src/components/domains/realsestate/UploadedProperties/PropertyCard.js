@@ -20,8 +20,6 @@ const PropertyCard = ({ property, hasNext }) => {
               <div className={styles.textTitle}>
                 <p>{data?.name}</p>
                 <p>{data?.address}</p>
-                <p>{data?.gu}</p>
-                <p>{data?.dong}</p>
               </div>
               <div className={styles.textInfo}>
                 <p>보증금 : {data?.deposit}원</p>
