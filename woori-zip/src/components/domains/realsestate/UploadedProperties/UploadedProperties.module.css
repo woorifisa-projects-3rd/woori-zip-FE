@@ -2,14 +2,27 @@
   width: 100%;
 }
 
-.cardList ul {
+.cardList {
+  list-style: none;
+}
+
+/* .cardList ul {
   display: flex;
   align-items: center;
   justify-content: center;
+  list-style: none;
+  width: 312px;
+} */
+
+.cardListUl {
+  display: inline;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
   width: 312px;
 }
 
-.cardList li {
+.cardListLi {
   list-style: none;
   display: inline-block;
 }
