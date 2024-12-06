@@ -19,7 +19,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
   const [priceRange, setPriceRange] = useState([0, 2000000000]);
   const [maintenanceRange, setMaintenanceRange] = useState([0, 5000000]);
   const [rentType, setRentType] = useState("모두");
-  const [prevMapState, setPrevMapState] = useState(null);
+  const [prevRequestState, setPrevRequestState] = useState(null);
   const [categoryState, setCategoryState] = useState({
     category: "선택하지 않음",
     walkingDistance: 0,
@@ -73,12 +73,12 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
 
   // 지도 상태가 변경될 때 데이터 요청
   useEffect(() => {
-    if (!mapState || (prevMapState && JSON.stringify(mapState) === JSON.stringify(prevMapState))) {
+    if (!mapState || !houseType) {
+      // mapState 또는 houseType이 없으면 요청하지 않음
       return;
     }
 
-    console.log("data 정보", analysisData);
-    fetchHousesByMapStateApi({
+    const currentRequestState = {
       mapState,
       houseType,
       rentType,
@@ -86,7 +86,17 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
       priceRange,
       maintenanceRange,
       categoryState,
-    })
+    };
+
+    // 이전 요청과 동일하면 요청하지 않음
+    if (
+      prevRequestState &&
+      JSON.stringify(currentRequestState) === JSON.stringify(prevRequestState)
+    ) {
+      return;
+    }
+
+    fetchHousesByMapStateApi(currentRequestState)
       .then((data) => {
         const updatedData = data.houseContents.map((house) => ({
           ...house,
@@ -98,15 +108,29 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
           houseContents: updatedData,
         });
 
-        setPrevMapState(mapState);
+        setPrevRequestState(currentRequestState); // 현재 요청 상태 저장
       })
       .catch((error) => {
         console.error("API 요청 중 오류 발생:", error);
       });
-  }, [mapState, onHouseInfoUpdate, houseType, rentType, depositRange, priceRange, maintenanceRange, categoryState]);
+  }, [
+    mapState,
+    houseType,
+    rentType,
+    depositRange,
+    priceRange,
+    maintenanceRange,
+    categoryState,
+    onHouseInfoUpdate,
+    prevRequestState,
+  ]);
 
   // 최종 적용 버튼 클릭 시 동작
   const handleFinalApply = () => {
+    if (!houseType) {
+      return; // houseType이 없으면 요청하지 않음
+    }
+
     fetchHousesByFinalFilterApi({
       mapState,
       houseType,
@@ -117,7 +141,6 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
       categoryState,
     })
       .then((data) => {
-        console.log("최종 필터 데이터:", data);
         onHouseInfoUpdate(data);
       })
       .catch((error) => {
@@ -320,7 +343,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
             <button
               className={styles.login_button}
               onClick={() => {
-                signIn().then(() => router.push('/')); // 로그인 후 세션 갱신 및 이동
+                signIn().then(() => router.push("/")); // 로그인 후 세션 갱신 및 이동
               }}
             >
               로그인

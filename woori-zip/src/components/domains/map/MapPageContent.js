@@ -22,10 +22,10 @@ export default function MapPageContent() {
 
   const defaultFilters = {
     level: 7,
-    southWestLatitude: southWestLatitudeData || 37.5189,
-    southWestLongitude: southWestLongitudeData || 126.8952,
-    northEastLatitude: northEastLatitudeData || 37.6157,
-    northEastLongitude: northEastLongitudeData || 127.0601,
+    southWestLatitude: southWestLatitudeData || 37.51377252451862,
+    southWestLongitude: southWestLongitudeData || 126.94733579996854,
+    northEastLatitude: northEastLatitudeData || 37.61902018831534,
+    northEastLongitude: northEastLongitudeData || 127.00978649788111,
     minDeposit: 0,
     housetype: "아파트",
     maxDeposit: 1000000000,
