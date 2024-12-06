@@ -19,12 +19,18 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
   const [priceRange, setPriceRange] = useState([0, 2000000000]);
   const [maintenanceRange, setMaintenanceRange] = useState([0, 5000000]);
   const [rentType, setRentType] = useState("모두");
-  const [prevRequestState, setPrevRequestState] = useState(null);
   const [categoryState, setCategoryState] = useState({
     category: "선택하지 않음",
     walkingDistance: 0,
     facilityCount: 0,
   });
+
+  const categoryButtonRef = useRef(null);
+  const maintenanceButtonRef = useRef(null);
+  const rentTypeButtonRef = useRef(null);
+  const priceButtonRef = useRef(null);
+  const prevRequestStateRef = useRef(null);
+  const navRef = useRef(null);
 
   const toggleProfileMenu = () => {
     setProfileMenuVisible((prev) => !prev);
@@ -35,7 +41,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
     setProfileMenuVisible(false);
   };
 
-  // analysisData 변경 시 categoryState 업데이트
+  // Update category state when analysisData changes
   useEffect(() => {
     if (analysisData) {
       setCategoryState((prevState) => ({
@@ -47,14 +53,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
     }
   }, [analysisData]);
 
-  const categoryButtonRef = useRef(null);
-  const maintenanceButtonRef = useRef(null);
-  const rentTypeButtonRef = useRef(null);
-  const priceButtonRef = useRef(null);
-
-  const navRef = useRef(null);
-
-  // 외부 클릭 이벤트 처리
+  // Handle outside clicks to close modals
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
@@ -71,11 +70,10 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
     };
   }, []);
 
-  // 지도 상태가 변경될 때 데이터 요청
+  // Fetch data when map state changes
   useEffect(() => {
     if (!mapState || !houseType) {
-      // mapState 또는 houseType이 없으면 요청하지 않음
-      return;
+      return; // Don't fetch if required states are missing
     }
 
     const currentRequestState = {
@@ -88,10 +86,10 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
       categoryState,
     };
 
-    // 이전 요청과 동일하면 요청하지 않음
+    // Avoid duplicate requests
     if (
-      prevRequestState &&
-      JSON.stringify(currentRequestState) === JSON.stringify(prevRequestState)
+      prevRequestStateRef.current &&
+      JSON.stringify(currentRequestState) === JSON.stringify(prevRequestStateRef.current)
     ) {
       return;
     }
@@ -108,7 +106,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
           houseContents: updatedData,
         });
 
-        setPrevRequestState(currentRequestState); // 현재 요청 상태 저장
+        prevRequestStateRef.current = currentRequestState; // Save current state in ref
       })
       .catch((error) => {
         console.error("API 요청 중 오류 발생:", error);
@@ -122,13 +120,12 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
     maintenanceRange,
     categoryState,
     onHouseInfoUpdate,
-    prevRequestState,
   ]);
 
-  // 최종 적용 버튼 클릭 시 동작
+  // Handle final apply button
   const handleFinalApply = () => {
     if (!houseType) {
-      return; // houseType이 없으면 요청하지 않음
+      return; // Don't fetch if houseType is missing
     }
 
     fetchHousesByFinalFilterApi({
@@ -148,6 +145,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
       });
   };
 
+  // Toggle modal visibility
   const toggleModal = (modalSetter, isVisible) => {
     setCategoryVisible(false);
     setMaintenanceVisible(false);
@@ -157,6 +155,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
     modalSetter(!isVisible);
   };
 
+  // Apply category changes
   const handleCategoryApply = (updatedState) => {
     setCategoryState((prevState) => ({
       ...prevState,
@@ -168,7 +167,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
   return (
     <div ref={navRef} className={styles.navBar}>
       <div className={styles.webNav}>
-        {/* 월세/전세 버튼 */}
+        {/* Rent Type Button */}
         <button
           ref={rentTypeButtonRef}
           onClick={() => toggleModal(setRentTypeVisible, isRentTypeVisible)}
@@ -202,7 +201,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
           </div>
         )}
 
-        {/* 거래 금액 버튼 */}
+        {/* Price Range Button */}
         <button
           ref={priceButtonRef}
           onClick={() => toggleModal(setPriceVisible, isPriceVisible)}
@@ -242,7 +241,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
           </div>
         )}
 
-        {/* 관리비 버튼 */}
+        {/* Maintenance Fee Button */}
         <button
           ref={maintenanceButtonRef}
           onClick={() => toggleModal(setMaintenanceVisible, isMaintenanceVisible)}
@@ -273,7 +272,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
           </div>
         )}
 
-        {/* 카테고리 버튼 */}
+        {/* Category Button */}
         <button
           ref={categoryButtonRef}
           onClick={() => toggleModal(setCategoryVisible, isCategoryVisible)}
@@ -292,12 +291,12 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
         )}
       </div>
 
-      {/* 최종 적용 버튼 */}
+      {/* Final Apply Button */}
       <button onClick={handleFinalApply} className={styles.applyButton}>
         검색
       </button>
 
-      {/* 로그인/회원가입 또는 프로필 */}
+      {/* Login/Signup or Profile */}
       <div className={styles.authButtons}>
         {status === "loading" ? (
           <div>로딩 중...</div>
@@ -343,7 +342,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
             <button
               className={styles.login_button}
               onClick={() => {
-                signIn().then(() => router.push("/")); // 로그인 후 세션 갱신 및 이동
+                signIn().then(() => router.push("/"));
               }}
             >
               로그인
