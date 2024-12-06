@@ -14,7 +14,7 @@ const PropertyCard = ({ property, hasNext }) => {
         <li key={`property${i}`} className={styles.cardItem}>
           <div className={styles.containBox}>
             <div className={styles.imageBox}>
-              <img src={data?.imageUrl} alt="집 이미지" />
+              <img src={data?.imageUrl} alt="집 이미지"/>
             </div>
             <div className={styles.textBox}>
               <div className={styles.textTitle}>
