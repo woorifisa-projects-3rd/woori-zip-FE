@@ -54,6 +54,21 @@ export const getLoanProductDetail = async (loanId) => {
   }
 };
 
+export const getLogs = async ({queryString}) => {
+  return await instance(`logs?${queryString}` , {
+    method: 'GET',
+    credentials: 'include',
+  });
+}
+
+export const getLog = async (logId) => {
+
+  return await instance(`logs/${logId}` , {
+    method: 'GET',
+    credentials: 'include',
+  });
+}
+
 export const updateLoanProduct = async (loanId, loanData) => {
   try {
     // 데이터 유효성 검사
