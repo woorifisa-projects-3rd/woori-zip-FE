@@ -17,10 +17,14 @@ const WideCard = ({houseId,onDataChange }) => {
     try {
       e.preventDefault();
 
-      
+      const safeBigInt = (value) => {
+        if (!value || value.trim() === '') return BigInt(0);  
+        return BigInt(value.replace(/,/g, '')); 
+      };
+
     const loanChecklistRequest = {
-      annualIncome: BigInt(annualIncome),
-      totalAssets: BigInt(totalAssets),
+      annualIncome: safeBigInt(annualIncome),
+      totalAssets: safeBigInt(totalAssets),
       marriageStatus:
         marriageStatus == "single" ? "SINGLE" : 
         marriageStatus == "married" ? "MARRIED" : 
