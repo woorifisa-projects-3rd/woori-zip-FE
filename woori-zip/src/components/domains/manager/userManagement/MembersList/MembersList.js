@@ -41,12 +41,12 @@ export default function MembersList({ type = 'MEMBER' }) {
         setError(null);
         const roleType = getRoleType(type);
         const response = await getMembersList(roleType, currentPage, pageSize);
-        
+        console.log('response', response.data);
         // 페이지네이션 정보 설정
-        setTotalElements(response.totalElements || 0);
-        setTotalPages(response.totalPages || 1);
+        // setTotalElements(response.page || 0);
+        setTotalPages(response.data.totalPages || 1);
         // content 배열에서 멤버 목록 추출
-        setMemberList(response.content || []);
+        setMemberList(response.data.members || []);
       } catch (error) {
         setError('데이터를 불러오는데 실패했습니다.');
         console.error('Failed to fetch data:', error);

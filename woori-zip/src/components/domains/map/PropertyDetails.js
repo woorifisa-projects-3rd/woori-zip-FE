@@ -33,12 +33,12 @@ const PropertyDetails = ({ property, onClose }) => {
         <br />
         주상복합: {property.totalArea}㎡ / {property.exclusiveArea}㎡
       </div>
-      <div className={styles.messageBox}>
-      지금 보고 계신 집에 입주하고 싶으신가요? <br />
-      <Link href="/loan/loanRecommendation" className={styles.link}>
-        마이데이터 기반으로 추천 대출 확인해보세요!
+      <Link href={`/loan/loanRecommendation/${property.id}`} className={styles.link}>
+        <div className={styles.messageBox}>
+          지금 보고 계신 집에 입주하고 싶으신가요? <br />
+          마이데이터 기반으로 추천 대출 확인해보세요!
+        </div>
       </Link>
-      </div>
       <div className={styles.detailsBox}>
         <p>매물번호: {property.id}</p>
         <p>입주 가능일: {property.moveInDate}</p>
@@ -47,7 +47,7 @@ const PropertyDetails = ({ property, onClose }) => {
         <p>주차 가능: {property.totalParkingSpaces}대 중 {property.householdParkingSpaces}대</p>
         <p>승인일: {property.approvalDate}</p>
       </div>
-    </div>
+    </div >
   );
 };
 
