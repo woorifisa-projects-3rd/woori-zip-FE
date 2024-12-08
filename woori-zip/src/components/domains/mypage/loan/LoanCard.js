@@ -30,11 +30,11 @@ const LoanCard = ({ property, hasNext }) => {
                         </div>
                     </div>
                     <div className={styles.buttonStack}>
-                        <button>
-                            <Link href={`/loan/loanDetail/${data?.id}`} className={styles.button}>
+                        <Link href={`/loan/loanDetail/${data?.id}`} className={styles.button}>
+                            <button>
                                 대출 상세보기
-                            </Link>
-                        </button>
+                            </button>
+                        </Link>
                     </div>
                 </li>
             ))}

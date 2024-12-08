@@ -12,7 +12,14 @@
     padding-bottom: 75%;
     background-color: #f5f5f5;
   }
+
+  .imageContainer {
+    width: 150px;
+    height: 100px;
   
+  }
+  
+
   .imagePlaceholder {
     position: absolute;
     top: 0;

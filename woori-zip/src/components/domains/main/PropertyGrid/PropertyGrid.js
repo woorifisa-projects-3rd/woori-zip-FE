@@ -24,7 +24,7 @@ export default function PropertyGrid() {
       setSelectedHouseType(houseType); // 상태 업데이트
     }
   };
-  
+
 
   return (
     <div className={styles.container}>
@@ -103,8 +103,8 @@ export default function PropertyGrid() {
           </Link>
         </div>
 
-        <div className={styles.info_banner}>
-          <Link href="/analysis">
+        <Link href="/analysis">
+          <div className={styles.info_banner}>
             <div>
               <h2>
                 <span className={styles.blue_text}>소비 패턴 분석</span>
@@ -127,8 +127,8 @@ export default function PropertyGrid() {
                 />
               </div>
             </div>
-          </Link>
-        </div>
+          </div>
+        </Link>
       </div>
     </div>
   );
