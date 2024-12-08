@@ -1,3 +1,6 @@
+.forBackButton {
+    background-color: var(--color-bg);
+}
 .backCard {
     width: 100%;
     background-color: var(--color-bg);

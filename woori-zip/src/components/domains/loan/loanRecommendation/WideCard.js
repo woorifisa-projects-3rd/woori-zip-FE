@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import styles from './WideCard.module.css';
 import WideCardButton from './WideCardButton';
 import { fetchLoanRecommendations } from '@/app/api/loan/loanAPI';
+import BackButton from '@/components/atoms/BackButton';
 
 const WideCard = ({houseId,onDataChange }) => {
   
@@ -56,6 +57,10 @@ const WideCard = ({houseId,onDataChange }) => {
   };
 
   return (
+  <div>
+    <div className={styles.forBackButton}>
+      <BackButton/>
+    </div>
     <div className={styles.backCard}>
       <div className={styles.container}>
         <div className={styles.wideCard}>
@@ -204,6 +209,7 @@ const WideCard = ({houseId,onDataChange }) => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };
