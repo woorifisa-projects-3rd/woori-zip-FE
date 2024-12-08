@@ -173,7 +173,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
           onClick={() => toggleModal(setRentTypeVisible, isRentTypeVisible)}
           className={styles.filterButton}
         >
-          {rentType} ∨
+          {rentType} <span className={styles.arrow}>▾</span>
         </button>
         {isRentTypeVisible && (
           <div
@@ -207,8 +207,10 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
           onClick={() => toggleModal(setPriceVisible, isPriceVisible)}
           className={styles.filterButton}
         >
-          거래 금액 ∨
+          거래 금액
+          <span className={styles.arrow}>▾</span>
         </button>
+
         {isPriceVisible && (
           <div
             className={styles.popupMenu}
@@ -247,7 +249,8 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
           onClick={() => toggleModal(setMaintenanceVisible, isMaintenanceVisible)}
           className={styles.filterButton}
         >
-          관리비 ∨
+          관리비
+          <span className={styles.arrow}>▾</span>
         </button>
         {isMaintenanceVisible && (
           <div
@@ -278,7 +281,7 @@ export default function NavBar({ onHouseInfoUpdate, houseType, mapState, analysi
           onClick={() => toggleModal(setCategoryVisible, isCategoryVisible)}
           className={styles.categoryButton}
         >
-          {categoryState.category === "선택하지 않음" ? "카테고리" : `카테고리 (${categoryState.category})`} ∨
+          {categoryState.category === "선택하지 않음" ? "카테고리" : `카테고리 (${categoryState.category})`} <span className={styles.arrow}>▾</span>
         </button>
         {isCategoryVisible && (
           <CategoryMenu

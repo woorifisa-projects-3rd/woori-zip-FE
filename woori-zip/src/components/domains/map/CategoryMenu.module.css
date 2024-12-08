@@ -42,7 +42,7 @@
 
 .menuDescription {
   font-size: 10px;
-  color: var(--color-border-light);
+  color: var(--color-light-gray);
 }
 
 .toggleButtons, .options {
