@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback, useState } from 'react';
 import styles from './LoanView.module.css';
 import LoanViewCard from './LoanViewCard';
 import { useLoanManager } from '../hooks/useLoanManager';
@@ -16,9 +16,12 @@ const LoanView = () => {
     setLoanData,
   } = useLoanManager();
 
+  const [isAnyModalOpen, setIsAnyModalOpen] = useState(false);
   const observerRef = useRef(null);
   const previousLastItemRef = useRef(null);
   const scrollPositionKey = 'loanViewScrollPosition';
+  const lastScrollPosition = useRef(0);
+  const isInitialMount = useRef(true);
 
   const lastItemRef = useCallback(
     (node) => {
@@ -30,7 +33,6 @@ const LoanView = () => {
 
       observerRef.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && loanData.hasNext) {
-          if (node) previousLastItemRef.current = node;
           loadMore();
         }
       });
@@ -43,32 +45,30 @@ const LoanView = () => {
   );
 
   useEffect(() => {
-    const savedScrollPosition = localStorage.getItem(scrollPositionKey);
-    if (savedScrollPosition) {
-      window.scrollTo(0, parseInt(savedScrollPosition, 10));
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      const savedScrollPosition = localStorage.getItem(scrollPositionKey);
+      if (savedScrollPosition && !isAnyModalOpen) {
+        window.scrollTo(0, parseInt(savedScrollPosition, 10));
+      }
     }
 
     const saveScrollPosition = () => {
-      const position = window.scrollY.toString();
-      localStorage.setItem(scrollPositionKey, position);
+      if (!isAnyModalOpen) {
+        lastScrollPosition.current = window.scrollY;
+        localStorage.setItem(scrollPositionKey, lastScrollPosition.current.toString());
+      }
     };
 
     window.addEventListener('scroll', saveScrollPosition);
     return () => window.removeEventListener('scroll', saveScrollPosition);
-  }, []);
+  }, [isAnyModalOpen]);
 
   useEffect(() => {
-    if (
-      !isLoading &&
-      previousLastItemRef.current &&
-      document.body.contains(previousLastItemRef.current)
-    ) {
-      previousLastItemRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
+    if (!isAnyModalOpen && lastScrollPosition.current > 0) {
+      window.scrollTo(0, lastScrollPosition.current);
     }
-  }, [loanData.loans, isLoading]);
+  }, [isAnyModalOpen]);
 
   const handleEdit = async (loanId, editedData) => {
     try {
@@ -127,14 +127,15 @@ const LoanView = () => {
         {loanData.loans.map((loan, index) => {
           const isLastItem = index === loanData.loans.length - 1;
           return (
-            <div 
-              key={loan.id || index} 
+            <div
+              key={loan.id || index}
               ref={isLastItem ? lastItemRef : null}
             >
               <LoanViewCard
                 loanGoods={loan}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                onModalStateChange={setIsAnyModalOpen}
               />
             </div>
           );
