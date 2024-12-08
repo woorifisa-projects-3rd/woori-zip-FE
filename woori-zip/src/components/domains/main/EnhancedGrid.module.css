@@ -8,6 +8,7 @@
     gap: 50px;
     background-color: var(--color-bg);
     font-family: var(--font-pretendard);
+    align-items: center;
 }
 
 /* 메인 배너 */
@@ -20,7 +21,7 @@
 
 .banner img {
     width: 100%;
-    max-width: 1200px;
+    width: 970px;
     height: 400px;
     object-fit: cover;
     border-radius: 8px;
@@ -47,6 +48,7 @@
 .banner_text p {
     font-size: 16px;
     margin-top: 10px;
+    font-family: var(--font-pretendard-regular);
 }
 
 /* 아이콘 메뉴 */
@@ -65,6 +67,7 @@
     justify-content: center;
     gap: 40px;
     flex-wrap: wrap;
+    font-family: var(--font-pretendard-regular);
 }
 
 .icon_item {
@@ -135,6 +138,7 @@
     font-size: 14px;
     color: var(--color-light-gray);
     margin-top: 10px;
+    font-family: var(--font-pretendard-regular);
 }
 
 /* 추천 매물 섹션 */
@@ -179,6 +183,7 @@
 .recommendation_card p {
     font-size: 14px;
     color: var(--color-light-gray);
+    font-family: var(--font-pretendard-regular);
 }
 
 /* 고객 리뷰 섹션 */
@@ -238,6 +243,7 @@
     white-space: normal;
     text-align: center;
     margin: 0 auto; /* 중앙 배치 */
+    font-family: var(--font-pretendard-regular);
 }
 
 /* 반응형 디자인 */

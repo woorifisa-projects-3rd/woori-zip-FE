@@ -33,10 +33,48 @@ export const fetchHouseList = async (filters) => {
     console.log("응답 헤더:", response.headers);
     console.log("주택 목록 응답 데이터:", response.data);
 
-    // 요청 조건 및 결과 저장
-    lastRequestParams = url;
     lastResponseData = response.data;
 
+    return response.data;
+  } catch (error) {
+    console.error("오류 발생: 주택 목록 요청 중 문제가 발생했습니다:", error);
+    throw error;
+  }
+};
+
+export const addBookmark = async (propertyId) => {
+  try {
+    const response = await instance(`houses/${propertyId}/bookmark`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+    return response.data; // 변경된 부분
+  } catch (error) {
+    console.error("Error adding bookmark:", error);
+    throw error;
+  }
+}
+
+// 북마크 삭제 요청
+export const deleteBookmark = async (propertyId) => {
+  try {
+    const response = await instance(`houses/${propertyId}/bookmark`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+    return response.data; // 변경된 부분
+  } catch (error) {
+    console.error("Error deleting bookmark:", error);
+    throw error;
+  }
+};
+
+export const fetchHouseDetails = async (propertyId) => {
+  try {
+    const response = await instance(`houses/${propertyId}`, {
+      method: 'GET',
+      credentials: 'include',
+    });
     return response.data;
   } catch (error) {
     console.error("오류 발생: 주택 목록 요청 중 문제가 발생했습니다:", error);
