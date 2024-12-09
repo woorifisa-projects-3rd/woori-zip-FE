@@ -71,20 +71,23 @@
     /* 다른 요소들보다 위에 보이도록 z-index 설정 */
     z-index: 10;
 }
-/* 
-.callBtn {
-    width:160px;
-    padding: 16px;
-    border-radius: 30px;
-    border: 1px solid var(--color-border-light);
-    color: var(--color-blue);
-    background-color: var(--color-border-light);
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-}
 
-.goToChecklistButton {
+.callBtn {
+    margin-top: 20px;
+    margin-left: 100px;
+    margin-bottom: 50px;
+    width: 130px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #0065C4;
+    color: #ffffff;
+    border:rgba(0, 0, 0, 0.1);
+}
+.callBtn:hover{
+    background-color: #065eb0;
+  }
+
+/* .goToChecklistButton {
     width:160px;
     padding: 16px;
     border-radius: 30px;
@@ -99,10 +102,6 @@
 
 .gotoOtherLoanBtn:hover {
     background-color: var(--color-button-dark);
-}
-
-.callBtn:hover {
-    background-color: var(--color-border-light);
 } */
 
 

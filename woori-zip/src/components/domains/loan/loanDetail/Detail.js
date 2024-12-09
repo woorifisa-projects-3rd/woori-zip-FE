@@ -20,6 +20,10 @@ const Details = ({loanDetails}) => {
     { key: 'interestMethod', label: '이자 계산방법' }
   ];
 
+  const handleClick = () => {
+    alert('버튼이 클릭되었습니다!');
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.cardItem}>
@@ -119,8 +123,7 @@ const Details = ({loanDetails}) => {
         
         
       </div>
-
-    
+        <button onClick={handleClick} className={styles.callBtn}>상담사 연결</button>
     </div>
   );
 };
