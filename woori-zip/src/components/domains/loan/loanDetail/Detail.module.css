@@ -260,3 +260,16 @@
     margin: 20px;
     margin-left: 5px;
   }
+
+  .callBtn{
+    margin-top: 40px;
+    width: 130px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #0065C4;
+    color: #ffffff;
+    border:rgba(0, 0, 0, 0.1);
+  }
+  .callBtn:hover{
+    background-color: #065eb0;
+  }

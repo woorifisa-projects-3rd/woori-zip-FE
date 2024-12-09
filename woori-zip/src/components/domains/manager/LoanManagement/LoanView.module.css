@@ -13,3 +13,41 @@
   font-size: 16px;
   background-color: white;
 }
+
+.cardList {
+  position: relative;
+  width: 100%;
+}
+
+.addButton {
+  position: absolute;
+  right: 0; 
+  top: -50px; 
+  z-index: 10; 
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  margin-right: 30px;
+  margin-top: 40px;
+  transition: background-color 0.3s, transform 0.2s; 
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+.addIcon:hover{
+  background-color: rgb(61, 139, 207);
+}
+.addIcon {
+  width: 40px; 
+  height: 40px;
+  border-radius: 50%; /* 동그라미 */
+  display: inline-block;
+  background-color: rgb(87, 165, 232); /* 동그라미 내부 색상 */
+  text-align: center;
+  line-height: 40px; /* 동그라미 높이 맞추기 */
+  font-size: 30px; /* + 기호 크기 */
+  color: #eef1f5; /* + 기호 색상 */
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}

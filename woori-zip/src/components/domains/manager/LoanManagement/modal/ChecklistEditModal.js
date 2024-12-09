@@ -28,7 +28,17 @@ const WORK_TERM = {
 
 
 const ChecklistEditModal = ({ loanGoodsId, isOpen, onClose, onSave,initialData}) => {
-  const [formData, setFormData] = useState({initialData});
+  const [formData, setFormData] = useState({
+    annualIncome: '',
+    totalAssets: '',
+    leaseDeposit: '',
+    monthlyRent: '',
+    exclusiveArea: '',
+    marriageStatus: '',
+    contract: false,
+    workStatus: '',
+    workTerm: '',
+  });
 
   const handleInputChange = (key, value) => {
     setFormData(prev => ({

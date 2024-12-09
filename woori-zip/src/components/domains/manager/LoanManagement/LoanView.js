@@ -124,6 +124,9 @@ const LoanView = () => {
   return (
     <div className={styles.container}>
       <div className={styles.cardList}>
+        <button className={`${styles.button} ${styles.addButton}`}>
+          <span className={styles.addIcon}>+</span>
+        </button>
         {loanData.loans.map((loan, index) => {
           const isLastItem = index === loanData.loans.length - 1;
           return (
@@ -131,6 +134,7 @@ const LoanView = () => {
               key={loan.id || index}
               ref={isLastItem ? lastItemRef : null}
             >
+
               <LoanViewCard
                 loanGoods={loan}
                 onEdit={handleEdit}
