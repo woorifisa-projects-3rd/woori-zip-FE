@@ -2,8 +2,10 @@
 
 import React, { useState } from 'react';
 import styles from './ChecklistEditModal.module.css';
+
 import Modal from './Modal';
 import { updateLoanChecklist } from '@/app/api/manager/managerAPI';
+
 
 const MARRIAGE_STATUS = {
   SINGLE: "미혼",
@@ -23,6 +25,7 @@ const WORK_TERM = {
   ONE_YEAR: "1년 이상",
   THREE_MONTH: "3개월 이상"
 };
+
 
 const ChecklistEditModal = ({ loanGoodsId, isOpen, onClose, onSave,initialData}) => {
   const [formData, setFormData] = useState({initialData});
