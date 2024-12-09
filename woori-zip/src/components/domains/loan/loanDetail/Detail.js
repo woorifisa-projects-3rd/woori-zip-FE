@@ -31,7 +31,7 @@ const Details = ({loanDetails}) => {
             <div className={styles.loanSummary}>
               <div className={styles.loanTextBox1}>
                 <span className={styles.loanTarget}>대출대상</span>
-                <div className={styles.loanTargetText} title={loanDetails.target}>
+                <div className={styles.loanTargetText} title={loanDetails.target}   style={{ whiteSpace: "pre-wrap" }}>
                   {loanDetails.target}
                 </div>
               </div>
@@ -67,7 +67,7 @@ const Details = ({loanDetails}) => {
           return value ? (
             <div key={field.key}>
               <div className={styles.bottomBoxLabel}>{field.label}</div>
-              <div className={styles.bottomBoxValue}>{value}</div>
+              <div className={styles.bottomBoxValue} style={{ whiteSpace: "pre-wrap" }} >{value}</div>
             </div>
           ) : null;
         })}

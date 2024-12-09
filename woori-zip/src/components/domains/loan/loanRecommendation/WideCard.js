@@ -59,7 +59,6 @@ const WideCard = ({houseId,onDataChange }) => {
   return (
   <div>
     <div className={styles.forBackButton}>
-      <BackButton/>
     </div>
     <div className={styles.backCard}>
       <div className={styles.container}>

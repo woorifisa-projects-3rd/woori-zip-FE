@@ -15,11 +15,19 @@
     background-color: white;
     padding: 20px;
     border-radius: 8px;
-    max-width: 800px;
-    width: 90%;
-    max-height: 90vh;
+    width: 600px;
+    height: 90vh;
     overflow-y: auto;
-  }
+    /* 스크롤바 숨기기 */
+    -ms-overflow-style: none;  /* IE와 Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+
+/* Chrome, Safari, Opera를 위한 설정 */
+.bottomBox::-webkit-scrollbar {
+    display: none;
+}
+  
   
   .modalHeader {
     display: flex;

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback} from 'react';
 import styles from "./LoanViewCard.module.css";
 import Modal from './modal/Modal';
 import EditModal from './modal/EditModal';
@@ -19,29 +19,30 @@ const RATE_TYPE_MAPPING = {
   COFIX_ONE_YEAR: '신잔액COFIX기준금리(1년)'
 };
 
-const LoanViewCard = ({ loanGoods, onEdit, onDelete, onModalStateChange }) => {
+const LoanViewCard = ({ loanGoods, onEdit, onDelete, onModalStateChange, setLoanData}) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isChecklistModalOpen, setIsChecklistModalOpen] = useState(false);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [editData, setEditData] = useState(null);
+  const rateList = Array.isArray(loanGoods.rates) ? loanGoods.rates : [];
 
   const initializeEditData = useCallback(() => {
     console.log('초기 대출 데이터:', loanGoods);
     return {
       ...loanGoods,
-      loan_type: loanGoods.loan_type || 'NATIONAL_HOUSING_URBAN_FUND',
+      loanType: loanGoods.loanType || 'NATIONAL_HOUSING_URBAN_FUND',
       name: loanGoods.name || '',
       target: loanGoods.target || '',
-      limit_amount: loanGoods.limit_amount || '',
+      limitAmount: loanGoods.limitAmount || '',
       term: loanGoods.term || '',
-      repay_type: loanGoods.repay_type || '',
+      repayType: loanGoods.repayType || '',
       guarantee: loanGoods.guarantee || '',
-      target_house: loanGoods.target_house || '',
-      customer_cost: loanGoods.customer_cost || '',
-      interest_method: loanGoods.interest_method || '',
-      rates: (loanGoods.rates || []).map(rate => ({
+      targetHouse: loanGoods.targetHouse || '',
+      customerCost: loanGoods.customerCost || '',
+      interestMethod: loanGoods.interestMethod || '',
+      rateRequests: rateList.map(rate => ({
         id: rate.id,
         rateType: rate.rateType || 'FIXED',
         basicRate: rate.basicRate || '0.00',
@@ -91,55 +92,57 @@ const LoanViewCard = ({ loanGoods, onEdit, onDelete, onModalStateChange }) => {
     }, 3000);
   }, []);
 
-  const handleEdit = useCallback(async () => {
-    try {
-      if (!editData?.name?.trim()) {
-        throw new Error('대출명은 필수 입력값입니다.');
-      }
+  // const handleEdit = useCallback(async (id,data) => {
 
-      const validateRate = (rate) => {
-        if (!rate) return false;
-        const fields = ['basicRate', 'addRate', 'normalRate', 'specialRate', 'minRate'];
-        return fields.every(field => {
-          const value = parseFloat(rate[field]);
-          return !isNaN(value) && value >= 0;
-        });
-      };
+ 
+  //   try {
+  //     if (!editData?.name?.trim()) {
+  //       throw new Error('대출명은 필수 입력값입니다.');
+  //     }
 
-      if (!editData.rates?.[0] || !validateRate(editData.rates[0])) {
-        throw new Error('모든 금리는 0 이상의 숫자여야 합니다.');
-      }
+  //     const validateRate = (rate) => {
+  //       if (!rate) return false;
+  //       const fields = ['basicRate', 'addRate', 'normalRate', 'specialRate', 'minRate'];
+  //       return fields.every(field => {
+  //         const value = parseFloat(rate[field]);
+  //         return !isNaN(value) && value >= 0;
+  //       });
+  //     };
 
-      const dataToSubmit = {
-        name: editData.name.trim(),
-        loan_type: editData.loan_type,
-        target: editData.target?.trim() || '',
-        limit_amount: editData.limit_amount?.trim() || '',
-        term: editData.term?.trim() || '',
-        repay_type: editData.repay_type?.trim() || '',
-        guarantee: editData.guarantee?.trim() || '',
-        target_house: editData.target_house?.trim() || '',
-        customer_cost: editData.customer_cost?.trim() || '',
-        interest_method: editData.interest_method?.trim() || '',
-        rateRequests: editData.rates.map(rate => ({
-          id: rate.id,
-          rateType: rate.rateType,
-          basicRate: rate.basicRate,
-          addRate: rate.addRate,
-          normalRate: rate.normalRate,
-          specialRate: rate.specialRate,
-          minRate: rate.minRate
-        }))
-      };
+  //     // if (!editData.rates?.[0] || !validateRate(editData.rates[0])) {
+  //     //   throw new Error('모든 금리는 0 이상의 숫자여야 합니다.');
+  //     // }
 
-      await onEdit(loanGoods.id, dataToSubmit);
-      handleEditModalClose();
-      showAlert('대출 상품이 성공적으로 수정되었습니다.');
-    } catch (error) {
-      console.error('수정 중 오류:', error);
-      alert(error.message || '수정 중 오류가 발생했습니다.');
-    }
-  }, [editData, loanGoods.id, onEdit, handleEditModalClose, showAlert]);
+  //     // const dataToSubmit = {
+  //     //   name: editData.name.trim(),
+  //     //   loanType: editData.loanType,
+  //     //   target: editData.target?.trim() || '',
+  //     //   limitAmount: editData.limitAmount?.trim() || '',
+  //     //   term: editData.term?.trim() || '',
+  //     //   repayType: editData.repayType?.trim() || '',
+  //     //   guarantee: editData.guarantee?.trim() || '',
+  //     //   targetHouse: editData.targetHouse?.trim() || '',
+  //     //   customerCost: editData.customerCost?.trim() || '',
+  //     //   interestMethod: editData.interestMethod?.trim() || '',
+  //     //   rateRequests: editData.rates.map(rate => ({
+  //     //     id: rate.id,
+  //     //     rateType: rate.rateType,
+  //     //     basicRate: `${rate.basicRate}%`,
+  //     //     addRate: `${rate.addRate}%`,
+  //     //     normalRate:`${rate.normalRate}%`,
+  //     //     specialRate: `${rate.specialRate}%`,
+  //     //     minRate:`${rate.minRate}%`
+  //     //   }))
+  //     // };
+  //     // console.log(dataToSubmit);
+  //     await onEdit(id, data);
+  //     handleEditModalClose();
+  //     showAlert('대출 상품이 성공적으로 수정되었습니다.');
+  //   } catch (error) {
+  //     console.error('수정 중 오류:', error);
+  //     alert(error.message || '수정 중 오류가 발생했습니다.');
+  //   }
+  // }, [editData, loanGoods.id, onEdit, handleEditModalClose, showAlert]);
 
   const handleDelete = useCallback(async () => {
     try {
@@ -152,13 +155,17 @@ const LoanViewCard = ({ loanGoods, onEdit, onDelete, onModalStateChange }) => {
     }
   }, [loanGoods.id, onDelete, showAlert]);
 
+
+ 
+
+
   return (
     <>
       <div className={styles.container}>
         <div className={styles.cardItem}>
           <div className={styles.cardTopContent}>
             <div className={styles.cardContent}>
-              <div className={styles.loanType}>{LOAN_TYPE_MAPPING[loanGoods.loan_type]}</div>
+              <div className={styles.loanType}>{LOAN_TYPE_MAPPING[loanGoods.loanType]}</div>
               <div className={styles.loanName}>{loanGoods.name}</div>
               <div className={styles.loanSummary}>
                 <div className={styles.loanTextBox1}>
@@ -175,8 +182,8 @@ const LoanViewCard = ({ loanGoods, onEdit, onDelete, onModalStateChange }) => {
                 </div>
                 <div className={styles.loanTextBox3}>
                   <span className={styles.loanLimit}>대출한도</span>
-                  <div className={styles.loanLimitText} title={loanGoods.limit_amount}>
-                    {loanGoods.limit_amount}
+                  <div className={styles.loanLimitText} title={loanGoods.limitAmount}>
+                    {loanGoods.limitAmount}
                   </div>
                 </div>
               </div>
@@ -211,14 +218,16 @@ const LoanViewCard = ({ loanGoods, onEdit, onDelete, onModalStateChange }) => {
       <ChecklistModal
         isOpen={isChecklistModalOpen}
         onClose={() => setIsChecklistModalOpen(false)}
+        loanGoodsId={loanGoods.id}
       />
 
       <EditModal 
         isOpen={isEditModalOpen}
         onClose={handleEditModalClose}
         editData={editData || initializeEditData()}
-        handleInputChange={handleInputChange}
-        handleEdit={handleEdit}
+       // handleInputChange={handleInputChange}
+        onEdit={onEdit}
+        setLoanData = {setLoanData}
         rateTypeMapping={RATE_TYPE_MAPPING}
       />
 
