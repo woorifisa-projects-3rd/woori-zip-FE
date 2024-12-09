@@ -91,10 +91,6 @@
   }
  */
 
-
-
-
-  
 .loanType {
     text-align: left;
     margin: 20px;
@@ -219,7 +215,6 @@
     object-fit: cover;
     border-radius: 50%;
     background-color: #a73636;
-   
 }
 .cardContent {
     padding-right: 220px;

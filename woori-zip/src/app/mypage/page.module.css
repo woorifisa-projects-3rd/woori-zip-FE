@@ -13,6 +13,10 @@
   padding: 40px 20px;
 }
 
+.content {
+  text: white;
+}
+
 .main {
   width: 100%;
 }
