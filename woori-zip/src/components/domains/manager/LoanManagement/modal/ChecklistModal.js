@@ -1,28 +1,48 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './ChecklistModal.module.css';
 import Modal from './Modal';
 import ChecklistEditModal from './ChecklistEditModal';
+import { getLoanCheckListDetails } from '@/app/api/manager/managerAPI';
 
-const ChecklistModal = ({ isOpen, onClose }) => {
+const ChecklistModal = ({ loanGoodsId, isOpen, onClose }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [checklistItems, setChecklistItems] = useState([
-    { id: 'submit', label: '제출 여부', value: '신청예정' },
-    { id: 'review', label: '제출 기간', value: '2024.01.01 ~ 2024.12.31' },
-    { id: 'process', label: '연소득', value: '6,000 만원' },
-    { id: 'complete', label: '종자산', value: '3억원' },
-    { id: 'review2', label: '계약 여부', value: '무' },
-    { id: 'result', label: '결론 상태', value: '심사중' },
-    { id: 'funds', label: '전세금', value: '3억원' },
-    { id: 'monthly', label: '월세금', value: '50만원' },
-    { id: 'area', label: '전용 면적', value: '84m²' }
-  ]);
+  const [data, setData] = useState([]);
 
-  const handleEditSave = (updatedData) => {
-    setChecklistItems(updatedData);
+  const checkListFields = [//key수정
+    { key: 'workStatus', label: '직업' },
+    { key: 'workTerm', label: '재직 기간' },
+    { key: 'annualIncome', label: '연소득' },
+    { key: 'totalAssets', label: '총자산' },
+    { key: 'contract', label: '계약 여부' },
+    { key: 'marriageStatus', label: '결혼 상태' },
+    { key: 'leaseDeposit', label: '전세금' },
+    { key: 'monthlyRent', label: '월세금' },
+    { key: 'exclusiveArea', label: '전용 면적' }];
+
+  const handleEditSave = (data) => {
+    setData(data);
     setIsEditModalOpen(false);
   };
+
+  useEffect(() => {
+    if (isOpen && loanGoodsId) {
+      const fetchData = async () => {
+        try {
+          const response = await getLoanCheckListDetails(loanGoodsId);  
+          setData(response); 
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        } 
+      };
+
+      fetchData();
+    }
+}, [isOpen, loanGoodsId]);
+
+
+
 
   return (
     <>
@@ -38,12 +58,19 @@ const ChecklistModal = ({ isOpen, onClose }) => {
             </button>
           </div>
           <div className={styles.content}>
-            {checklistItems.map(item => (
-              <div key={item.id} className={styles.checklistItem}>
-                <div className={styles.label}>{item.label}</div>
-                <div className={styles.value}>{item.value}</div>
-              </div>
-            ))}
+            {checkListFields.map((field) => {
+              const value = data[field.key];
+              return value ? (
+                <div key={field.key} className={styles.checklistItem}>
+                  <div className={styles.label}>{field.label}</div>
+                  <div className={styles.value}>{value}</div>
+                </div>
+              ) : <div key={field.key} className={styles.checklistItem}>
+                    <div className={styles.label}>{field.label}</div>
+                    <div className={styles.value}>해당 없음</div>
+                  </div>;
+          })}
+        
           </div>
         </div>
       </Modal>
@@ -52,7 +79,8 @@ const ChecklistModal = ({ isOpen, onClose }) => {
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         onSave={handleEditSave}
-        initialData={checklistItems}
+        loanGoodsId = {loanGoodsId}
+        initialData = {data}
       />
     </>
   );

@@ -69,35 +69,52 @@ export const getLog = async (logId) => {
   });
 }
 
-export const updateLoanProduct = async (loanId, loanData) => {
+export const updateLoanProduct = async (loanGoodsId, loanData) => {
+  console.log("하이22");
   try {
-    if (!loanData.name?.trim()) throw new Error('대출명은 필수 입력값입니다.');
-    if (!loanData.target?.trim()) throw new Error('대출대상은 필수 입력값입니다.');
-    if (!loanData.limit_amount?.trim()) throw new Error('대출한도는 필수 입력값입니다.'); // limitAmount -> limit_amount
-    if (!loanData.term?.trim()) throw new Error('대출기간은 필수 입력값입니다.');
+    // if (!loanData.name?.trim()) throw new Error('대출명은 필수 입력값입니다.');
+    // if (!loanData.target?.trim()) throw new Error('대출대상은 필수 입력값입니다.');
+    // if (!loanData.limitAmount?.trim()) throw new Error('대출한도는 필수 입력값입니다.'); // limitAmount -> limit_amount
+    // if (!loanData.term?.trim()) throw new Error('대출기간은 필수 입력값입니다.');
 
-    // 금리 유효성 검사
-    if (!loanData.rateRequests?.[0]) {
-      throw new Error('금리 정보는 필수입니다.');
-    }
+    // // 금리 유효성 검사
+    // if (!loanData.rateRequests?.[0]) {
+    //   throw new Error('금리 정보는 필수입니다.');
+    // }
 
-    const response = await instance(`loangoods/${loanId}`, {
+    const processedData = {
+      name: loanData.name,
+      loanType: loanData.loanType,
+      target: loanData.target,
+      limitAmount: loanData.limitAmount,
+      term: loanData.term,
+      repayType: loanData.repayType,
+      guarantee: loanData.guarantee,
+      targetHouse: loanData.targetHouse,
+      customerCost: loanData.customerCost,
+      interestMethod: loanData.interestMethod,
+      rateRequests: loanData.rateRequests
+      }
+    
+    console.log("하이2");
+    const response = await instance(`loangoods/${loanGoodsId}`,processedData, {
       method: 'PUT',
-      body: JSON.stringify({
-        name: loanData.name,
-        loan_type: loanData.loan_type,
-        target: loanData.target,
-        limit_amount: loanData.limit_amount,  // 스네이크 케이스로 통일
-        term: loanData.term,
-        repay_type: loanData.repay_type,     // repayType -> repay_type
-        guarantee: loanData.guarantee,
-        target_house: loanData.target_house,  // targetHouse -> target_house
-        customer_cost: loanData.customer_cost, // customerCost -> customer_cost
-        interest_method: loanData.interest_method, // interestMethod -> interest_method
-        rateRequests: loanData.rateRequests
+      // credentials: 'include'
+    
+        // name: loanData.name,
+        // loan_type: loanData.loan_type,
+        // target: loanData.target,
+        // limit_amount: loanData.limit_amount,  // 스네이크 케이스로 통일
+        // term: loanData.term,
+        // repay_type: loanData.repay_type,     // repayType -> repay_type
+        // guarantee: loanData.guarantee,
+        // target_house: loanData.target_house,  // targetHouse -> target_house
+        // customer_cost: loanData.customer_cost, // customerCost -> customer_cost
+        // interest_method: loanData.interest_method, // interestMethod -> interest_method
+        // rateRequests: loanData.rateRequests
       })
-    });
-
+ 
+    console.log("하이");
     return JSON.parse(JSON.stringify(response?.data || {}));
   } catch (error) {
     console.error('대출 상품 수정 실패:', error);
@@ -162,5 +179,38 @@ export const modifyLoanProduct = async (loanId, modifyData) => {
   } catch (error) {
     console.error('대출 상품 수정 실패:', error);
     throw new Error(error.response?.data?.message || '대출 상품 수정에 실패했습니다.');
+  }
+};
+
+
+export const updateLoanChecklist = async (loanChecklistId,modifyLoanChecklistRequest) => {
+  try {
+
+    await instance(`loanchecklist/${loanChecklistId}`, {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify(modifyLoanChecklistRequest, (key, value) => 
+        typeof value === 'bigint' ? value.toString() : value
+      )
+    });
+    console.log("대출 체크리스트수정 성공");
+
+  } catch (error) {
+    console.error("Error modify loanchecklist", error);
+    throw error;
+  }
+};
+
+
+export const getLoanCheckListDetails = async (loanGoodsId) => {
+  try {
+    const response = await instance(`loanchecklist/${loanGoodsId}`, {
+      method: 'GET',
+      credentials: 'include',
+    });
+    return response.data; 
+  } catch (error) {
+    console.error("Error fetching loan details:", error);
+    throw error;
   }
 };

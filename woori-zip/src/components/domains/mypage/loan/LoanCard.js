@@ -19,13 +19,13 @@ const LoanCard = ({ property, hasNext }) => {
                         </div>
                         <div className={styles.textBox}>
                             <div className={styles.textTitle}>
-                                <p>{data?.loanType}</p>
+                                <p className = {styles.loanType}>{data?.loanType}</p>
                                 <p>{data?.name}</p>
                             </div>
                             <div className={styles.textInfo}>
-                                <p>대출 대상 : {data?.target}</p>
-                                <p>대출 기간 : {data?.term}</p>
-                                <p>대출 조건 : {data?.limitAmount}</p>
+                                <p title={data?.target} className = {styles.text1}>대출 대상 : {data?.target}</p>
+                                <p title={data?.term} className = {styles.text1}>대출 기간 : {data?.term}</p>
+                                <p title={data?.limitAmount} className = {styles.text1}>대출 조건 : {data?.limitAmount}</p>
                             </div>
                         </div>
                     </div>
