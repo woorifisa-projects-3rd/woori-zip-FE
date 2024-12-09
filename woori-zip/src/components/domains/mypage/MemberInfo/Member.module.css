@@ -38,7 +38,7 @@
   align-items: center;
 }
 
-.img {
+.myImg {
   width: 250px;
   height: 250px;
   background-color: var(--color-border-light);
@@ -60,7 +60,7 @@
     padding: 10px;
   }
 
-  .img {
+  .myImg {
     width: 200px;
     height: 200px;
     order: 1;
