@@ -266,6 +266,32 @@
   transition: color 0.3s ease;
 }
 
+.filterButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #ffffff;
+  color: #333;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+
+.arrow {
+  font-size: 14px;
+  color: #333; /* 화살표 색상 */
+  transition: transform 0.3s ease;
+}
+
+.filterButton:hover .arrow {
+  transform: rotate(180deg);
+}
+
+
 /* 모바일에서 NavBar 숨김 */
 @media (max-width: 393px) {
   .navBar {

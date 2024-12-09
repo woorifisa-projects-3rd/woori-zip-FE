@@ -97,6 +97,7 @@
 }
 
 .logTable {
+  table-layout: fixed;
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
@@ -136,7 +137,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 120px;
+  min-width: 100px;
   margin: 0 auto;
   transition: all 0.3s ease;
 }

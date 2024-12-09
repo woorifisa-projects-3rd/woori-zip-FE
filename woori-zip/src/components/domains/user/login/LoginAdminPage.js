@@ -87,11 +87,6 @@ function Login({ onLogin }) {
 
           <SubmitButton />
         </form>
-
-        <div className={styles.links}>
-          <p className={styles.pText}>아직 중개자 아니신가요?</p>
-          <a href="#" className={styles.link} onClick={handleSignupClick}>가입하기</a>
-        </div>
       </div>
     </div>
   );
