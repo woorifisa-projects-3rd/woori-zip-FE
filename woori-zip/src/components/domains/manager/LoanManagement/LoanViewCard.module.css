@@ -56,6 +56,7 @@
 
 .loanTarget, .loanDate, .loanLimit {
   margin: 5px;
+  margin-top: 10px;
   white-space: nowrap;
   color: var(--color-text-dark);
   font-weight: 800;
@@ -64,7 +65,8 @@
 .loanTargetText, .loanDateText, .loanLimitText {
   flex: 9;
   margin: 5px;
-  max-width: 600px;
+  margin-top: 10px;
+  max-width: 500px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
