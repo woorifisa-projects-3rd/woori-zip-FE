@@ -71,7 +71,7 @@ const Member = () => {
             </div>
           </div>
           <div className={styles.imgBox}>
-            <div className={styles.img}></div>
+            <img className={styles.myImg} src='https://fisa-woorizip.s3.ap-northeast-2.amazonaws.com/images/user/profile.png'/>
           </div>
         </>
       )}
