@@ -8,7 +8,7 @@ import { getLoanCheckListDetails } from '@/app/api/manager/managerAPI';
 
 const ChecklistModal = ({ loanGoodsId, isOpen, onClose }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
 
   const checkListFields = [//key수정
     { key: 'workStatus', label: '직업' },
@@ -60,15 +60,19 @@ const ChecklistModal = ({ loanGoodsId, isOpen, onClose }) => {
           <div className={styles.content}>
             {checkListFields.map((field) => {
               const value = data[field.key];
-              return value ? (
+              let displayValue;
+
+              if (field.key === 'contract') {
+                displayValue = value ? '예' : '아니오';
+              } else {
+                displayValue = value !== undefined ? value : '해당 없음';
+              }
+              return (
                 <div key={field.key} className={styles.checklistItem}>
                   <div className={styles.label}>{field.label}</div>
-                  <div className={styles.value}>{value}</div>
+                  <div className={styles.value}>{displayValue}</div>
                 </div>
-              ) : <div key={field.key} className={styles.checklistItem}>
-                    <div className={styles.label}>{field.label}</div>
-                    <div className={styles.value}>해당 없음</div>
-                  </div>;
+              );
           })}
         
           </div>
