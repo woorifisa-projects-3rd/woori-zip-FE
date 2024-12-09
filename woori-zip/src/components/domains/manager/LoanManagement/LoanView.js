@@ -72,8 +72,8 @@ const LoanView = () => {
 
   const handleEdit = async (loanId, editedData) => {
     try {
-      await updateLoanProduct(loanId, editedData);
-      
+     await updateLoanProduct(loanId, editedData);
+      console.log(editedData, "hi");
       setLoanData(prevData => ({
         ...prevData,
         loans: prevData.loans.map(loan =>
@@ -136,6 +136,7 @@ const LoanView = () => {
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onModalStateChange={setIsAnyModalOpen}
+                setLoanData = {setLoanData}
               />
             </div>
           );

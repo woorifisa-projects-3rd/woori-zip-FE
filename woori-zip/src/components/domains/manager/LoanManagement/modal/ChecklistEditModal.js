@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import styles from './ChecklistModal.module.css';
+import styles from './ChecklistEditModal.module.css';
 import Modal from './Modal';
+import { updateLoanChecklist } from '@/app/api/manager/managerAPI';
 
 const MARRIAGE_STATUS = {
   SINGLE: "미혼",
@@ -23,38 +24,46 @@ const WORK_TERM = {
   THREE_MONTH: "3개월 이상"
 };
 
-const ChecklistEditModal = ({ isOpen, onClose, onSave, initialData }) => {
-  const [formData, setFormData] = useState({
-    workStatus: 'NONE_WORK_STATUS',
-    workTerm: 'NONE_TERM',
-    annualIncome: '',
-    totalAssets: '',
-    contract: false,
-    marriageStatus: 'NONE_MARRIAGE',
-    leaseDeposit: '',
-    monthlyRent: '',
-    exclusiveArea: ''
-  });
+const ChecklistEditModal = ({ loanGoodsId, isOpen, onClose, onSave,initialData}) => {
+  const [formData, setFormData] = useState({initialData});
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = (key, value) => {
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [key]: value
     }));
   };
+  
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const submitData = {
-      ...formData,
-      annualIncome: Number(formData.annualIncome),
-      totalAssets: Number(formData.totalAssets),
-      leaseDeposit: Number(formData.leaseDeposit),
-      monthlyRent: Number(formData.monthlyRent),
-      exclusiveArea: Number(formData.exclusiveArea)
-    };
-    onSave(submitData);
-  };
+      const changeValue = (value) => {
+        if (!value || value.trim() === '') return 0;  
+        return value.replace(/,/g, ''); 
+      };
+  
+      const modifyLoanChecklistRequest = {
+        annualIncome: changeValue(formData.annualIncome),
+        totalAssets: changeValue(formData.totalAssets),
+        leaseDeposit: changeValue(formData.leaseDeposit),
+        monthlyRent: changeValue(formData.monthlyRent),
+        exclusiveArea: formData.exclusiveArea ? parseFloat(formData.exclusiveArea) : 0,
+        marriageStatus: formData.marriageStatus,
+        contract: formData.contract,
+        workStatus: formData.workStatus,
+        workTerm: formData.workTerm
+      };
+      console.log("수정");
+      console.log(modifyLoanChecklistRequest);
+
+      await updateLoanChecklist(loanGoodsId, modifyLoanChecklistRequest); 
+      onSave(modifyLoanChecklistRequest);
+      onClose();
+    } catch (err) {
+      console.error("Error modify loan checklist:", err);
+    } 
+  }; 
 
   const renderStatusButtons = (field, options) => (
     <div className={styles.buttonGroup}>
@@ -72,7 +81,7 @@ const ChecklistEditModal = ({ isOpen, onClose, onSave, initialData }) => {
   );
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="체크리스트 수정">
+    <Modal className={styles.modalBox} isOpen={isOpen} onClose={onClose} title="체크리스트 수정">
       <form onSubmit={handleSubmit} className={styles.editContainer}>
         <div className={styles.formGroup}>
           <label>근로 상태</label>

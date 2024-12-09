@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import styles from './WideCard.module.css';
 import WideCardButton from './WideCardButton';
 import { fetchLoanRecommendations } from '@/app/api/loan/loanAPI';
+import BackButton from '@/components/atoms/BackButton';
 
 const WideCard = ({houseId,onDataChange }) => {
   
@@ -17,10 +18,14 @@ const WideCard = ({houseId,onDataChange }) => {
     try {
       e.preventDefault();
 
-      
+      const safeBigInt = (value) => {
+        if (!value || value.trim() === '') return BigInt(0);  
+        return BigInt(value.replace(/,/g, '')); 
+      };
+
     const loanChecklistRequest = {
-      annualIncome: BigInt(annualIncome),
-      totalAssets: BigInt(totalAssets),
+      annualIncome: safeBigInt(annualIncome),
+      totalAssets: safeBigInt(totalAssets),
       marriageStatus:
         marriageStatus == "single" ? "SINGLE" : 
         marriageStatus == "married" ? "MARRIED" : 
@@ -52,6 +57,9 @@ const WideCard = ({houseId,onDataChange }) => {
   };
 
   return (
+  <div>
+    <div className={styles.forBackButton}>
+    </div>
     <div className={styles.backCard}>
       <div className={styles.container}>
         <div className={styles.wideCard}>
@@ -200,6 +208,7 @@ const WideCard = ({houseId,onDataChange }) => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

@@ -1,137 +1,144 @@
-.checklistContainer {
-    padding: 20px;
-  }
-  
-  .headerContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--color-border-light);
-  }
-  
-  .title {
-    font-size: 18px;
-    font-weight: 600;
-    margin: 0;
-  }
-  
-  .content {
-    margin-bottom: 20px;
-  }
-  
-  .formGroup {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--color-border-light);
-  }
-  
-  .formGroup label {
-    font-size: 16px;
-    color: var(--color-text-dark);
-    flex: 1;
-  }
-  
-  .buttonGroup {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-    flex: 2;
-  }
-  
-  .statusButton {
-    padding: 6px 12px;
-    border: 1px solid var(--color-border-light);
-    border-radius: 4px;
-    background-color: white;
-    font-size: 14px;
-    color: var(--color-text);
-    cursor: pointer;
-  }
-  
-  .statusButton.selected {
-    background-color: var(--color-blue);
-    color: white;
-    border-color: var(--color-blue);
-  }
-  
-  .input {
-    flex: 2;
-    text-align: right;
-    border: none;
-    background: transparent;
-    font-size: 16px;
-    color: var(--color-text);
-    padding: 8px 0;
-  }
-  
-  .input:focus {
-    outline: none;
-  }
-  
-  .input::placeholder {
-    color: #9ca3af;
-    text-align: right;
-  }
-  
-  .checkbox {
-    flex: 2;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .checkbox input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-  }
-  
-  .checkbox span {
-    color: var(--color-text);
-    font-size: 14px;
-  }
-  
-  .modalActions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 24px;
-    padding-top: 16px;
-    border-top: 1px solid var(--color-border-light);
-  }
-  
-  .button {
-    padding: 6px 16px;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  
-  .cancelButton {
-    background-color: white;
-    border: 1px solid var(--color-border-light);
-    color: var(--color-text);
-  }
-  
-  .confirmButton {
-    background-color: var(--color-blue);
-    color: white;
-    border: none;
-  }
-  
+
+.editContainer {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+}
+
+.formGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.formGroup:last-of-type {
+  border-bottom: none;
+}
+
+.formGroup label {
+  font-size: 15px;
+  color: #374151;
+  font-weight: 500;
+  flex: 1;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  flex: 2;
+}
+
+.statusButton {
+  padding: 6px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 14px;
+  color: #4b5563;
+  transition: all 0.3s ease;
+}
+
+.statusButton:hover {
+  background-color: #f3f4f6;
+}
+
+.statusButton.selected {
+  background-color: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.input {
+  flex: 2;
+  text-align: right;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  color: #111827;
+  padding: 8px 0;
+  transition: color 0.3s ease;
+}
+
+.input:focus {
+  outline: none;
+  color: #3b82f6;
+}
+
+.input::placeholder {
+  color: #9ca3af;
+  text-align: right;
+}
+
+.checkbox {
+  flex: 2;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3b82f6;
+  cursor: pointer;
+}
+
+.checkbox span {
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 16px;
+
+}
+
+.button {
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancelButton {
+  background-color: white;
+  border: 1px solid #d1d5db;
+  color: #4b5563;
+}
+
+.cancelButton:hover {
+  background-color: #f3f4f6;
+}
+
+.confirmButton {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+}
+
+.confirmButton:hover {
+  background-color: #2563eb;
+}
   /* Remove spinners from number inputs */
-  input[type="number"]::-webkit-outer-spin-button,
+  /* input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
-  }
+  } */
   
-  input[type="number"] {
+  /* input[type="number"] {
     -moz-appearance: textfield;
-  }
+  } */

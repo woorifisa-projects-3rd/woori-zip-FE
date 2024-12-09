@@ -9,26 +9,47 @@
     background-color: var(--color-bg);
 }
 .cardItem {
-    width: 90vh;
+    /* width: 90vh;
     height: 35vh;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top : 20px;
-    margin-bottom: 30px;
+    margin-bottom: 30px; */
+    width: 100%;
+    max-width: 1000px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
 .cardItem {
-    flex: 0 0 auto;
+    /* flex: 0 0 auto;
     width: 100%;
     max-width: 1000px;
     height: 300px;
     border-radius: 10px;
     background-color: white;
     overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    width: 100%;
+    max-width: 1000px;
+    background-color: white;
+    border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 60px;
 }
-
+.cardContent {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.cardTopContent {
+    position: relative;
+}
 .loanDescription {
     margin:20px;
 }
@@ -70,10 +91,6 @@
   }
  */
 
-
-
-
-  
 .loanType {
     text-align: left;
     margin: 20px;
@@ -166,17 +183,25 @@
 
 
 .imageContainer {
-    margin-left: auto; 
+    /* margin-left: auto; 
     display: flex;  
     align-items: center;    
     justify-content: center;
     width: 200px;
     height: 300px;
-    background-color: #ffffff;
+    background-color: #ffffff; */
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .cardImage {
-    width: 20vh;
+    /* width: 20vh;
     height: 20vh;
     align-items: center;    
     justify-content: center;
@@ -184,8 +209,16 @@
     margin-bottom: 550px;
     object-fit: cover;
     border-radius: 50%;
+    background-color: #a73636; */
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    background-color: #a73636;
 }
-
+.cardContent {
+    padding-right: 220px;
+}
 .bottomBoxLabel {
     color: #7C7C7C;
     font-weight: bold;

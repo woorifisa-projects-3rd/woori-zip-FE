@@ -236,14 +236,14 @@
         height: auto;
     }
     .imageContainer {
-        width: 393px; /* Adjust width for smaller screens */
-        height: 150px; /* Adjust height for smaller screens */
-        justify-content: center; /* 수평 중앙 정렬 */
+        width: 393px; 
+        height: 150px; 
+        justify-content: center; 
         align-items: flex-end; 
     }
     
       .cardImage {
-        width: 15vh; /* 이미지 크기 조정 */
+        width: 15vh; 
         height: 15vh;
         margin-right: 100px;
         margin-bottom: 20px;
