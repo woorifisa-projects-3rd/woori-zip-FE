@@ -39,8 +39,9 @@ const ChecklistEditModal = ({ loanGoodsId, isOpen, onClose, onSave,initialData})
       e.preventDefault();
 
       const changeValue = (value) => {
-        if (!value || value.trim() === '') return 0;  
-        return value.replace(/,/g, ''); 
+        if (!value) return 0; 
+        const stringValue = typeof value === "string" ? value.replace(/,/g, "") : value.toString();
+        return Number(stringValue);
       };
   
       const modifyLoanChecklistRequest = {
@@ -101,9 +102,9 @@ const ChecklistEditModal = ({ loanGoodsId, isOpen, onClose, onSave,initialData})
         <div className={styles.formGroup}>
           <label>연소득</label>
           <input
-            type="number"
-            value={formData.annualIncome}
-            onChange={(e) => handleInputChange('annualIncome', e.target.value)}
+            type="text"
+            defaultValue={formData.annualIncome ? Number(formData.annualIncome).toString() : ''}
+            onChange={(e) => handleInputChange('annualIncome',  Number(e.target.value))}
             className={styles.input}
             placeholder="연소득을 입력하세요"
           />
@@ -112,9 +113,9 @@ const ChecklistEditModal = ({ loanGoodsId, isOpen, onClose, onSave,initialData})
         <div className={styles.formGroup}>
           <label>총자산</label>
           <input
-            type="number"
-            value={formData.totalAssets}
-            onChange={(e) => handleInputChange('totalAssets', e.target.value)}
+            type="text"
+            defaultValue={formData.totalAssets ? Number(formData.totalAssets).toString() : ''}
+            onChange={(e) => handleInputChange('totalAssets',  Number(e.target.value))}
             className={styles.input}
             placeholder="총자산을 입력하세요"
           />
@@ -135,9 +136,9 @@ const ChecklistEditModal = ({ loanGoodsId, isOpen, onClose, onSave,initialData})
         <div className={styles.formGroup}>
           <label>전세금</label>
           <input
-            type="number"
-            value={formData.leaseDeposit}
-            onChange={(e) => handleInputChange('leaseDeposit', e.target.value)}
+            type="text"
+            defaultValue={formData.leaseDeposit ? Number(formData.exclusiveArea).toString() : ''}
+            onChange={(e) => handleInputChange('leaseDeposit',  Number(e.target.value))}
             className={styles.input}
             placeholder="전세금을 입력하세요"
           />
@@ -146,9 +147,9 @@ const ChecklistEditModal = ({ loanGoodsId, isOpen, onClose, onSave,initialData})
         <div className={styles.formGroup}>
           <label>월세</label>
           <input
-            type="number"
-            value={formData.monthlyRent}
-            onChange={(e) => handleInputChange('monthlyRent', e.target.value)}
+            type="text"
+            defaultValue={formData.monthlyRent ? Number(formData.monthlyRent).toString() : ''}
+            onChange={(e) => handleInputChange('monthlyRent',  Number(e.target.value))}
             className={styles.input}
             placeholder="월세를 입력하세요"
           />
@@ -157,9 +158,9 @@ const ChecklistEditModal = ({ loanGoodsId, isOpen, onClose, onSave,initialData})
         <div className={styles.formGroup}>
           <label>전용면적</label>
           <input
-            type="number"
-            value={formData.exclusiveArea}
-            onChange={(e) => handleInputChange('exclusiveArea', e.target.value)}
+            type="text"
+            defaultValue={formData.exclusiveArea ? Number(formData.exclusiveArea).toString() : ''}
+            onChange={(e) => handleInputChange('exclusiveArea', Number(e.target.value))}
             className={styles.input}
             placeholder="전용면적을 입력하세요"
             step="0.01"
